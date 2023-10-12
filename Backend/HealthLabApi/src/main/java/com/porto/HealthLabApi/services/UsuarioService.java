@@ -19,31 +19,48 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     public List<Usuario> listarUsuarios() {
-        return null;
+        return usuarioRepository.findAll();
     }
 
     public Usuario detalharUsuario(Long id) {
-        return null;
+        return usuarioRepository.getReferenceById(id);
     }
 
     public Usuario cadastrarUsuario(@Valid RequestCadastrarUsuario dadosUsuario) {
-        return null;
+        var novoUsuario = new Usuario(dadosUsuario);
+        return usuarioRepository.save(novoUsuario);
     }
 
     public Usuario editarUsuario(@Valid RequestEditarUsuario dadosUsuario) {
-        return null;
+        var usuario = usuarioRepository.getReferenceById(dadosUsuario.id());
+        usuario.atualizarInformacoes(dadosUsuario);
+        return usuarioRepository.save(usuario);
     }
 
     public void inativarUsuario(Long id) {
+        var usuario = usuarioRepository.getReferenceById(id);
+        //caso usuário a ser inativo == administrador, então o usuário que está inativando também deve ser administrador
+        usuario.inativar();
+        usuarioRepository.save(usuario);
     }
 
     public void reativarUsuario(Long id) {
+        var usuario = usuarioRepository.getReferenceById(id);
+        //caso usuário a ser ativado == administrador, então o usuário que está ativando também deve ser administrador
+        usuario.ativar();
+        usuarioRepository.save(usuario);
     }
 
     public void deletarUsuario(Long id) {
+        //caso usuário a ser deletado == administrador, então o usuário que está deletando também deve ser administrador
+        usuarioRepository.deleteById(id);
     }
 
     public void elegerAdministrador(Long id) {
+        //usuário que está delegando o outro como administrador deve ser administrador
+        var usuario = usuarioRepository.getReferenceById(id);
+        usuario.tornarAdministrador();
+        usuarioRepository.save(usuario);
     }
 
 }

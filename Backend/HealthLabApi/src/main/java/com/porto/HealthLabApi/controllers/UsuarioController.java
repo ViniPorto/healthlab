@@ -1,8 +1,7 @@
 package com.porto.HealthLabApi.controllers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,11 +11,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.porto.HealthLabApi.domain.usuario.DTO.RequestCadastrarUsuario;
 import com.porto.HealthLabApi.domain.usuario.DTO.RequestEditarUsuario;
 import com.porto.HealthLabApi.domain.usuario.DTO.ResponseUsuario;
+import com.porto.HealthLabApi.infra.ResponseHandler;
 import com.porto.HealthLabApi.services.UsuarioService;
 
 import jakarta.transaction.Transactional;
@@ -29,63 +28,68 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private ResponseHandler responseHandler;
+
     @GetMapping
-    public ResponseEntity<List<ResponseUsuario>> listarUsuarios(){
-        return ResponseEntity.ok(ResponseUsuario.toListResponseUsuario(usuarioService.listarUsuarios()));
+    public ResponseEntity<Object> listarUsuarios(){
+        return responseHandler.generateResponse("Consulta realizada com sucesso", HttpStatus.OK, ResponseUsuario.toListResponseUsuario(usuarioService.listarUsuarios()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseUsuario> detalharUsuario(@PathVariable Long id){
-        return ResponseEntity.ok(new ResponseUsuario(usuarioService.detalharUsuario(id)));
+    public ResponseEntity<Object> detalharUsuario(@PathVariable Long id){
+        return responseHandler.generateResponse("Consulta realizada com sucesso", HttpStatus.OK, new ResponseUsuario(usuarioService.detalharUsuario(id)));
     }
 
     @PostMapping
     @Transactional
-    public ResponseEntity<ResponseUsuario> cadastrarUsuario(@RequestBody @Valid RequestCadastrarUsuario dadosUsuario, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<Object> cadastrarUsuario(@RequestBody @Valid RequestCadastrarUsuario dadosUsuario){
         var usuarioCriado = usuarioService.cadastrarUsuario(dadosUsuario);
         
-        var uri = uriBuilder.path("/usuario/{id}").buildAndExpand(usuarioCriado.getId()).toUri();
-
-        return ResponseEntity.created(uri).body(new ResponseUsuario(usuarioCriado));
+        return responseHandler.generateResponse("Cadastrado com sucesso", HttpStatus.CREATED, new ResponseUsuario(usuarioCriado));
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity<ResponseUsuario> editarUsuario(@RequestBody @Valid RequestEditarUsuario dadosUsuario){
+    public ResponseEntity<Object> editarUsuario(@RequestBody @Valid RequestEditarUsuario dadosUsuario){
         var usuarioEditado = usuarioService.editarUsuario(dadosUsuario);
         
-        return ResponseEntity.ok(new ResponseUsuario(usuarioEditado));
+        return responseHandler.generateResponse("Editado com sucesso", HttpStatus.OK, new ResponseUsuario(usuarioEditado));
     }
 
     @DeleteMapping("/inativar/{id}")
     @Transactional
-    public ResponseEntity<Void> inativarUsuario(@PathVariable Long id){
+    public ResponseEntity<Object> inativarUsuario(@PathVariable Long id){
         usuarioService.inativarUsuario(id);
 
-        return ResponseEntity.noContent().build();
+        return responseHandler.generateResponse("Inativado com sucesso", HttpStatus.OK, null);
     }
 
     @PostMapping("/reativar/{id}")
     @Transactional
-    public ResponseEntity<Void> reativarUsuario(@PathVariable Long id){
+    public ResponseEntity<Object> reativarUsuario(@PathVariable Long id){
         usuarioService.reativarUsuario(id);
 
-        return ResponseEntity.noContent().build();
+        return responseHandler.generateResponse("Reativado com sucesso", HttpStatus.OK, null);
     }
 
     @DeleteMapping("/deletar/{id}")
     @Transactional
-    public ResponseEntity<Void> deletarUsuario(@PathVariable Long id){
+    public ResponseEntity<Object> deletarUsuario(@PathVariable Long id){
         usuarioService.deletarUsuario(id);
 
-        return ResponseEntity.noContent().build();
+        return responseHandler.generateResponse("Deletado com sucesso", HttpStatus.OK, null);
     }
 
     @PostMapping("/elegerAdministrador/{id}")
     @Transactional
-    public ResponseEntity<Void> elegerAdministrador(@PathVariable Long id){
+    public ResponseEntity<Object> elegerAdministrador(@PathVariable Long id){
         usuarioService.elegerAdministrador(id);
 
-        return ResponseEntity.noContent().build();
+        return responseHandler.generateResponse("Eleito administrador com sucesso", HttpStatus.OK, null);
     }
+
+    //HttpStatus.OK -> poderia ser substituido por HttpStatus.NO_CONTENT em alguns métodos, 
+    //porém para fins estudantis e para testes estou utilizando o status "fora do padrão"
+    
 }

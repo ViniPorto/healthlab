@@ -26,6 +26,13 @@
 	🚧  HealthLab 🧬 Em construção 👷‍♂️ 🚧
 </h4>
 
+<h2 align="center">
+
+![4%](https://progress-bar.dev/4)
+    
+</h2>
+
+
 <p align="center">
  <a href="#-sobre-o-projeto">Sobre</a> •
  <a href="#-funcionalidades">Funcionalidades</a> •

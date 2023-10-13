@@ -53,7 +53,7 @@ Projeto desenvolvido apenas para fins estudantis, afim de treinar e aperfeiçoar
 
 ---
 
-## ⚙️ Funcionalidades
+## ⚙ Funcionalidades
 
 - [x] Usuários do laboratório podem logar e realizar: 
   - [x] cadastro de pacientes

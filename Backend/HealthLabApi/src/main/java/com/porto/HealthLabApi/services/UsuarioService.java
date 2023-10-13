@@ -40,6 +40,9 @@ public class UsuarioService {
     public void inativarUsuario(Long id) {
         var usuario = usuarioRepository.getReferenceById(id);
         //caso usuário a ser inativo == administrador, então o usuário que está inativando também deve ser administrador
+        //if(usuarioNaoEhAdministrador){
+        //     throw new UsuarioNaoAdministradorException();
+        // }
         usuario.inativar();
         usuarioRepository.save(usuario);
     }
@@ -47,17 +50,28 @@ public class UsuarioService {
     public void reativarUsuario(Long id) {
         var usuario = usuarioRepository.getReferenceById(id);
         //caso usuário a ser ativado == administrador, então o usuário que está ativando também deve ser administrador
+        //if(usuarioNaoEhAdministrador){
+        //     throw new UsuarioNaoAdministradorException();
+        // }
         usuario.ativar();
         usuarioRepository.save(usuario);
     }
 
     public void deletarUsuario(Long id) {
         //caso usuário a ser deletado == administrador, então o usuário que está deletando também deve ser administrador
-        usuarioRepository.deleteById(id);
+        //if(usuarioNaoEhAdministrador){
+        //     throw new UsuarioNaoAdministradorException();
+        // }
+        var usuario = usuarioRepository.getReferenceById(id);
+        System.out.println(usuario.getNome()); //verificar por que o Spring não lança a exceção ao deletar um user inexistente, porém lança ao printar isto
+        usuarioRepository.delete(usuario);
     }
 
     public void elegerAdministrador(Long id) {
         //usuário que está delegando o outro como administrador deve ser administrador
+        //if(usuarioNaoEhAdministrador){
+        //     throw new UsuarioNaoAdministradorException();
+        // }
         var usuario = usuarioRepository.getReferenceById(id);
         usuario.tornarAdministrador();
         usuarioRepository.save(usuario);

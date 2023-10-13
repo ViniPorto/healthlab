@@ -33,12 +33,12 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<Object> listarUsuarios(){
-        return responseHandler.generateResponse("Consulta realizada com sucesso", HttpStatus.OK, ResponseUsuario.toListResponseUsuario(usuarioService.listarUsuarios()));
+        return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, ResponseUsuario.toListResponseUsuario(usuarioService.listarUsuarios()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> detalharUsuario(@PathVariable Long id){
-        return responseHandler.generateResponse("Consulta realizada com sucesso", HttpStatus.OK, new ResponseUsuario(usuarioService.detalharUsuario(id)));
+        return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, new ResponseUsuario(usuarioService.detalharUsuario(id)));
     }
 
     @PostMapping
@@ -46,7 +46,7 @@ public class UsuarioController {
     public ResponseEntity<Object> cadastrarUsuario(@RequestBody @Valid RequestCadastrarUsuario dadosUsuario){
         var usuarioCriado = usuarioService.cadastrarUsuario(dadosUsuario);
         
-        return responseHandler.generateResponse("Cadastrado com sucesso", HttpStatus.CREATED, new ResponseUsuario(usuarioCriado));
+        return responseHandler.generateResponse("Cadastrado com sucesso", true, HttpStatus.CREATED, new ResponseUsuario(usuarioCriado));
     }
 
     @PutMapping
@@ -54,7 +54,7 @@ public class UsuarioController {
     public ResponseEntity<Object> editarUsuario(@RequestBody @Valid RequestEditarUsuario dadosUsuario){
         var usuarioEditado = usuarioService.editarUsuario(dadosUsuario);
         
-        return responseHandler.generateResponse("Editado com sucesso", HttpStatus.OK, new ResponseUsuario(usuarioEditado));
+        return responseHandler.generateResponse("Editado com sucesso", true, HttpStatus.OK, new ResponseUsuario(usuarioEditado));
     }
 
     @DeleteMapping("/inativar/{id}")
@@ -62,7 +62,7 @@ public class UsuarioController {
     public ResponseEntity<Object> inativarUsuario(@PathVariable Long id){
         usuarioService.inativarUsuario(id);
 
-        return responseHandler.generateResponse("Inativado com sucesso", HttpStatus.OK, null);
+        return responseHandler.generateResponse("Inativado com sucesso", true, HttpStatus.OK, null);
     }
 
     @PostMapping("/reativar/{id}")
@@ -70,7 +70,7 @@ public class UsuarioController {
     public ResponseEntity<Object> reativarUsuario(@PathVariable Long id){
         usuarioService.reativarUsuario(id);
 
-        return responseHandler.generateResponse("Reativado com sucesso", HttpStatus.OK, null);
+        return responseHandler.generateResponse("Reativado com sucesso", true, HttpStatus.OK, null);
     }
 
     @DeleteMapping("/deletar/{id}")
@@ -78,7 +78,7 @@ public class UsuarioController {
     public ResponseEntity<Object> deletarUsuario(@PathVariable Long id){
         usuarioService.deletarUsuario(id);
 
-        return responseHandler.generateResponse("Deletado com sucesso", HttpStatus.OK, null);
+        return responseHandler.generateResponse("Deletado com sucesso", true, HttpStatus.OK, null);
     }
 
     @PostMapping("/elegerAdministrador/{id}")
@@ -86,7 +86,7 @@ public class UsuarioController {
     public ResponseEntity<Object> elegerAdministrador(@PathVariable Long id){
         usuarioService.elegerAdministrador(id);
 
-        return responseHandler.generateResponse("Eleito administrador com sucesso", HttpStatus.OK, null);
+        return responseHandler.generateResponse("Eleito administrador com sucesso", true, HttpStatus.OK, null);
     }
 
     //HttpStatus.OK -> poderia ser substituido por HttpStatus.NO_CONTENT em alguns métodos, 

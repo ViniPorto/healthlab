@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.porto.HealthLabApi.domain.usuario.DTO.RequestCadastrarUsuario;
 import com.porto.HealthLabApi.domain.usuario.DTO.RequestEditarUsuario;
 import com.porto.HealthLabApi.domain.usuario.DTO.ResponseUsuario;
-import com.porto.HealthLabApi.infra.ResponseHandler;
 import com.porto.HealthLabApi.services.UsuarioService;
+import com.porto.HealthLabApi.utils.ResponseHandler;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;

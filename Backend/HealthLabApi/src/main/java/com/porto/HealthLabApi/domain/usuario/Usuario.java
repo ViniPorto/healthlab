@@ -1,5 +1,12 @@
 package com.porto.HealthLabApi.domain.usuario;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.porto.HealthLabApi.domain.usuario.DTO.RequestCadastrarUsuario;
 import com.porto.HealthLabApi.domain.usuario.DTO.RequestEditarUsuario;
 
@@ -23,7 +30,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Usuario {
+public class Usuario implements UserDetails{
     
     public Usuario(@Valid RequestCadastrarUsuario dadosUsuario) {
         this.login = dadosUsuario.login();
@@ -72,40 +79,36 @@ public class Usuario {
         this.administrador = true;
     }
 
-    // @Override
-    // public Collection<? extends GrantedAuthority> getAuthorities() {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
-    // }
-    // @Override
-    // public String getPassword() {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
-    // }
-    // @Override
-    // public String getUsername() {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
-    // }
-    // @Override
-    // public boolean isAccountNonExpired() {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'isAccountNonExpired'");
-    // }
-    // @Override
-    // public boolean isAccountNonLocked() {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'isAccountNonLocked'");
-    // }
-    // @Override
-    // public boolean isCredentialsNonExpired() {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'isCredentialsNonExpired'");
-    // }
-    // @Override
-    // public boolean isEnabled() {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'isEnabled'");
-    // }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.administrador == true){
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+    @Override
+    public String getPassword() {
+        return this.senha;
+    }
+    @Override
+    public String getUsername() {
+        return this.login;
+    }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+    @Override
+    public boolean isEnabled() {
+        return this.isAtivo();
+    }
 
 }

@@ -3,6 +3,7 @@ package com.porto.HealthLabApi.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.porto.HealthLabApi.domain.usuario.Usuario;
@@ -18,6 +19,9 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     public List<Usuario> listarUsuarios() {
         return usuarioRepository.findAll();
     }
@@ -28,50 +32,38 @@ public class UsuarioService {
 
     public Usuario cadastrarUsuario(@Valid RequestCadastrarUsuario dadosUsuario) {
         var novoUsuario = new Usuario(dadosUsuario);
+        novoUsuario.setSenha(passwordEncoder.encode(dadosUsuario.senha()));
         return usuarioRepository.save(novoUsuario);
     }
 
     public Usuario editarUsuario(@Valid RequestEditarUsuario dadosUsuario) {
         var usuario = usuarioRepository.getReferenceById(dadosUsuario.id());
         usuario.atualizarInformacoes(dadosUsuario);
+        if(dadosUsuario.senha() != null){
+            usuario.setSenha(passwordEncoder.encode(dadosUsuario.senha()));
+        }
         return usuarioRepository.save(usuario);
     }
 
     public void inativarUsuario(Long id) {
         var usuario = usuarioRepository.getReferenceById(id);
-        //caso usuário a ser inativo == administrador, então o usuário que está inativando também deve ser administrador
-        //if(usuarioNaoEhAdministrador){
-        //     throw new UsuarioNaoAdministradorException();
-        // }
         usuario.inativar();
         usuarioRepository.save(usuario);
     }
 
     public void reativarUsuario(Long id) {
         var usuario = usuarioRepository.getReferenceById(id);
-        //caso usuário a ser ativado == administrador, então o usuário que está ativando também deve ser administrador
-        //if(usuarioNaoEhAdministrador){
-        //     throw new UsuarioNaoAdministradorException();
-        // }
         usuario.ativar();
         usuarioRepository.save(usuario);
     }
 
     public void deletarUsuario(Long id) {
-        //caso usuário a ser deletado == administrador, então o usuário que está deletando também deve ser administrador
-        //if(usuarioNaoEhAdministrador){
-        //     throw new UsuarioNaoAdministradorException();
-        // }
         var usuario = usuarioRepository.getReferenceById(id);
         System.out.println(usuario.getNome()); //verificar por que o Spring não lança a exceção ao deletar um user inexistente, porém lança ao printar isto
         usuarioRepository.delete(usuario);
     }
 
     public void elegerAdministrador(Long id) {
-        //usuário que está delegando o outro como administrador deve ser administrador
-        //if(usuarioNaoEhAdministrador){
-        //     throw new UsuarioNaoAdministradorException();
-        // }
         var usuario = usuarioRepository.getReferenceById(id);
         usuario.tornarAdministrador();
         usuarioRepository.save(usuario);

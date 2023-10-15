@@ -1,4 +1,4 @@
-package com.porto.HealthLabApi.infra;
+package com.porto.HealthLabApi.utils;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -26,3 +26,5 @@ public class ResponseHandler {
     }
 
 }
+
+

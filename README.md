@@ -49,7 +49,7 @@
 
 🧬 HealthLab - é uma plataforma de gerenciamento de exames laboratoriais conectando resultados aos pacientes.
 
-Projeto desenvolvido apenas para fins estudantis, afim de treinar e aperfeiçoar a habilidade de programar. Este projeto deve ser o principal no meu portóflio, dada sua complexidade. Desta forma, deve servir para demonstrar habilidades na programação backend com Java e Spring e frontend com React.
+Projeto desenvolvido apenas para fins estudantis, afim de treinar e aperfeiçoar a habilidade de programar. Este projeto deve ser o **principal no meu portóflio**, dada sua **complexidade**. Desta forma, deve servir para demonstrar habilidades na **programação backend com Java e Spring e frontend com React**.
 
 ---
 

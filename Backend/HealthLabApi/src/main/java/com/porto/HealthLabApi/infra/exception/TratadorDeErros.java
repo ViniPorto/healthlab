@@ -1,9 +1,6 @@
 package com.porto.HealthLabApi.infra.exception;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpServerErrorException.InternalServerError;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.porto.HealthLabApi.infra.exception.exceptions.TokenJWTInvalidoOuExpiradoException;
@@ -36,7 +34,7 @@ public class TratadorDeErros implements AccessDeniedHandler{
     @Autowired
     private ResponseHandler responseHandler;
  
-    @ExceptionHandler(EntityNotFoundException.class)
+    @ExceptionHandler({EntityNotFoundException.class, NoHandlerFoundException.class})
     public ResponseEntity<Object> tratarErro404(){
         return responseHandler.generateResponse("Não encontrado", false, HttpStatus.NOT_FOUND, null);
     }
@@ -88,12 +86,8 @@ public class TratadorDeErros implements AccessDeniedHandler{
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
             AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        var map = responseHandler.generateMap("Acesso negado", false, HttpStatus.FORBIDDEN, null);
         ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("sucessful", false);
-        map.put("timestamp", new Timestamp(System.currentTimeMillis()));
-		map.put("message", "Acesso negado");
-		map.put("status", HttpStatus.FORBIDDEN.value());
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.getWriter().write( mapper.writeValueAsString(map));
     }

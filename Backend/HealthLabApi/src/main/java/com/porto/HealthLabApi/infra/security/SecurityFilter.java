@@ -3,13 +3,16 @@ package com.porto.HealthLabApi.infra.security;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.porto.HealthLabApi.repositories.UsuarioRepository;
 import com.porto.HealthLabApi.services.TokenService;
+import com.porto.HealthLabApi.utils.ResponseHandler;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,21 +28,32 @@ public class SecurityFilter extends OncePerRequestFilter  {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private ResponseHandler responseHandler;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        var tokenJWT = recuperarToken(request);
+        try {
+            var tokenJWT = recuperarToken(request);
 
-        if(tokenJWT != null){
-            var subject = tokenService.getSubject(tokenJWT);
-            var usuario = usuarioRepository.findByLogin(subject);
+            if(tokenJWT != null){
+                var subject = tokenService.getSubject(tokenJWT);
+                var usuario = usuarioRepository.findByLogin(subject);
 
-            var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+                var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+
+            filterChain.doFilter(request, response);
+        } catch (Exception e) { //Caso o Token esteja expirado ou inválido
+            var map = responseHandler.generateMap("Token expirado ou invalido", false, HttpStatus.FORBIDDEN, null);
+            var mapper = new ObjectMapper();
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.getWriter().write(mapper.writeValueAsString(map));
         }
-
-        filterChain.doFilter(request, response);
+        
     }
 
     private String recuperarToken(HttpServletRequest request) {

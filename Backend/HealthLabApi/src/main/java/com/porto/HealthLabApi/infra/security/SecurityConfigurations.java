@@ -30,19 +30,15 @@ public class SecurityConfigurations {
 
     @Autowired
     private SecurityFilter securityFilter;
-    
+ 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/usuario").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/usuario", "/usuario/reativar/{id}", "/usuario/elegerAdministrador/{id}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/usuario").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/usuario/{id}").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/usuario/inativar/{id}").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/usuario/reativar/{id}").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/usuario/deletar/{id}").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/usuario/elegerAdministrador/{id}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/usuario/{id}", "/usuario/inativar/{id}", "/usuario/deletar/{id}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

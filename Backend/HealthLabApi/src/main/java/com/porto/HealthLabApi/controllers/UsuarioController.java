@@ -1,5 +1,7 @@
 package com.porto.HealthLabApi.controllers;
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,12 +35,16 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<Object> listarUsuarios(){
-        return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, ResponseUsuario.toListResponseUsuario(usuarioService.listarUsuarios()));
+        var usuarios = usuarioService.listarUsuarios().stream().map(usuario -> new ResponseUsuario(usuario)).collect(Collectors.toList());
+
+        return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, usuarios);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> detalharUsuario(@PathVariable Long id){
-        return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, new ResponseUsuario(usuarioService.detalharUsuario(id)));
+        var usuario = usuarioService.detalharUsuario(id);
+
+        return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, new ResponseUsuario(usuario));
     }
 
     @PostMapping

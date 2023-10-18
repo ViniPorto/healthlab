@@ -48,6 +48,8 @@ public class SecurityFilter extends OncePerRequestFilter  {
 
             filterChain.doFilter(request, response);
         } catch (Exception e) { //Caso o Token esteja expirado ou inválido
+            System.out.println(e);
+
             var map = responseHandler.generateMap("Token expirado ou invalido", false, HttpStatus.FORBIDDEN, null);
             var mapper = new ObjectMapper();
             response.setStatus(HttpStatus.FORBIDDEN.value());

@@ -28,10 +28,10 @@ import jakarta.validation.Valid;
 public class PessoaController {
 
     @Autowired
-    private PessoaService pessoaService;
+    private ResponseHandler responseHandler;
 
     @Autowired
-    private ResponseHandler responseHandler;
+    private PessoaService pessoaService;
 
     @GetMapping
     private ResponseEntity<Object> listarPessoas(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){

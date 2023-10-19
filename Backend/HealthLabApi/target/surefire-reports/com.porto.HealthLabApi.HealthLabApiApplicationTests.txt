@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.porto.HealthLabApi.HealthLabApiApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.282 s - in com.porto.HealthLabApi.HealthLabApiApplicationTests

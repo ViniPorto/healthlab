@@ -18,9 +18,9 @@ public class PessoaService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
-    // public Page<Pessoa> listarPessoas(Pageable paginacao) {
-    //     return pessoaRepository.findAll(paginacao);
-    // }
+    public Page<Pessoa> listarPessoas(Pageable paginacao) {
+        return pessoaRepository.findAll(paginacao);
+    }
 
     public Pessoa cadastrarPessoa(@Valid RequestCadastrarPessoa dadosPessoa) {
         var pessoa = new Pessoa(dadosPessoa);

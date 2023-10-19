@@ -20,7 +20,6 @@ import com.porto.HealthLabApi.domain.usuario.DTO.ResponseUsuario;
 import com.porto.HealthLabApi.services.UsuarioService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
@@ -48,7 +47,6 @@ public class UsuarioController {
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity<Object> cadastrarUsuario(@RequestBody @Valid RequestCadastrarUsuario dadosUsuario){
         var usuarioCriado = usuarioService.cadastrarUsuario(dadosUsuario);
         
@@ -56,7 +54,6 @@ public class UsuarioController {
     }
 
     @PutMapping
-    @Transactional
     public ResponseEntity<Object> editarUsuario(@RequestBody @Valid RequestEditarUsuario dadosUsuario){
         var usuarioEditado = usuarioService.editarUsuario(dadosUsuario);
         
@@ -64,7 +61,6 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/inativar/{id}")
-    @Transactional
     public ResponseEntity<Object> inativarUsuario(@PathVariable Long id){
         usuarioService.inativarUsuario(id);
 
@@ -72,7 +68,6 @@ public class UsuarioController {
     }
 
     @PostMapping("/reativar/{id}")
-    @Transactional
     public ResponseEntity<Object> reativarUsuario(@PathVariable Long id){
         usuarioService.reativarUsuario(id);
 
@@ -80,7 +75,6 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/deletar/{id}")
-    @Transactional
     public ResponseEntity<Object> deletarUsuario(@PathVariable Long id){
         usuarioService.deletarUsuario(id);
 
@@ -88,7 +82,6 @@ public class UsuarioController {
     }
 
     @PostMapping("/elegerAdministrador/{id}")
-    @Transactional
     public ResponseEntity<Object> elegerAdministrador(@PathVariable Long id){
         usuarioService.elegerAdministrador(id);
 

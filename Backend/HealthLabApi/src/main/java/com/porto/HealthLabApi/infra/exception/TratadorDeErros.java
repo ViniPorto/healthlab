@@ -1,6 +1,7 @@
 package com.porto.HealthLabApi.infra.exception;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.client.HttpServerErrorException.InternalServerErr
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.porto.HealthLabApi.infra.exception.exceptions.CPFJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.TokenJWTInvalidoOuExpiradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.TokenJWTNaoInformadoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.UsuarioNaoAdministradorException;
@@ -34,7 +36,7 @@ public class TratadorDeErros implements AccessDeniedHandler{
     @Autowired
     private ResponseHandler responseHandler;
  
-    @ExceptionHandler({EntityNotFoundException.class, NoHandlerFoundException.class})
+    @ExceptionHandler({EntityNotFoundException.class, NoHandlerFoundException.class, NoSuchElementException.class})
     public ResponseEntity<Object> tratarErro404(){
         return responseHandler.generateResponse("Não encontrado", false, HttpStatus.NOT_FOUND, null);
     }
@@ -73,6 +75,11 @@ public class TratadorDeErros implements AccessDeniedHandler{
     @ExceptionHandler(TokenJWTInvalidoOuExpiradoException.class)
     public ResponseEntity<Object> tratarErroTokenJWTInvalidoOuExpirado(){
         return responseHandler.generateResponse("Token JWT inválido ou expirado", false, HttpStatus.FORBIDDEN, null);
+    }
+
+    @ExceptionHandler(CPFJaCadastradoException.class)
+    public ResponseEntity<Object> tratarErrocPFJaCadastrado(){
+        return responseHandler.generateResponse("CPF já cadastrado", false, HttpStatus.FORBIDDEN, null); 
     }
 
     private record DadosErroValidacao(String campo, String mensagem){

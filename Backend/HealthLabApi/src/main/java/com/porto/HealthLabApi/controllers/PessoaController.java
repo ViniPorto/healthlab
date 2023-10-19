@@ -20,7 +20,6 @@ import com.porto.HealthLabApi.domain.pessoa.DTO.ResponsePessoa;
 import com.porto.HealthLabApi.services.PessoaService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
@@ -49,7 +48,6 @@ public class PessoaController {
     }
 
     @PostMapping
-    @Transactional
     private ResponseEntity<Object> cadastrarPessoa(@RequestBody @Valid RequestCadastrarPessoa dadosPessoa){
         var pessoaCriada = pessoaService.cadastrarPessoa(dadosPessoa);
 
@@ -57,7 +55,6 @@ public class PessoaController {
     }
 
     @PutMapping
-    @Transactional
     private ResponseEntity<Object> editarPessoa(@RequestBody @Valid RequestEditarPessoa dadosPessoa){
         var pessoaEditada = pessoaService.editarPessoa(dadosPessoa);
 
@@ -65,7 +62,6 @@ public class PessoaController {
     }
 
     @DeleteMapping("/{id}")
-    @Transactional
     private ResponseEntity<Object> deletarPessoa(@PathVariable Long id){
         pessoaService.deletarPessoa(id);
 

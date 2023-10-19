@@ -12,4 +12,6 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
     
     Page<Pessoa> findAll(Pageable paginacao);
 
+    boolean existsByCPF(String cpf);
+
 }

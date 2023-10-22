@@ -1,4 +1,4 @@
-create table usuario(
+create table Usuario(
     UsuarioId bigint not null auto_increment,
     UsuarioLogin varchar(20) not null unique,
     UsuarioSenha varchar(255) not null,

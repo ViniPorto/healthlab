@@ -1,4 +1,4 @@
-create table pessoa(
+create table Pessoa(
     UsuarioId bigint not null auto_increment,
     PessoaNome varchar(50) not null,
     PessoaCPF varchar(11) not null unique,

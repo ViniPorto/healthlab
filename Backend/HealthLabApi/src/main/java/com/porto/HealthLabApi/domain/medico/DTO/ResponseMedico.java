@@ -4,14 +4,14 @@ import com.porto.HealthLabApi.domain.medico.Medico;
 import com.porto.HealthLabApi.domain.medico.MedicoUF;
 
 public record ResponseMedico(
-    Long id,
-    String medicoEmail,
-    String medicoTelefone,
+    Long MedicoId,
+    String medicoNome,
     String medicoCRM,
     MedicoUF medicoUF,
-    String medicoNome
+    String medicoEmail,
+    String medicoTelefone
 ) {
     public ResponseMedico(Medico medico){
-        this(medico.getId(), medico.getEmail(), medico.getTelefone(), medico.getCrm(), medico.getUf(), medico.getNome());
+        this(medico.getId(), medico.getNome(), medico.getCrm(), medico.getUf(), medico.getEmail(), medico.getTelefone());
     }
 }

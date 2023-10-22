@@ -1,4 +1,4 @@
-create table medico(
+create table Medico(
     MedicoId bigint not null auto_increment,
     MedicoEmail varchar(50),
     MedicoTelefone varchar(11),

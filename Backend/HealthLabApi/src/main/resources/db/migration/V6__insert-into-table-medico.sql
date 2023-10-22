@@ -1,3 +1,3 @@
-insert into medico (MedicoEmail, MedicoTelefone, MedicoCRM, MedicoUF, MedicoNome) values ('luciano.martin@gmail.com', '49988763423', '26862', 'SC', 'Luciano Martin');
-insert into medico (MedicoEmail, MedicoTelefone, MedicoCRM, MedicoUF, MedicoNome) values ('andersonsoares@outlook.com', '47988769223', '27632', 'SC', 'Anderson Soares');
-insert into medico (MedicoCRM, MedicoUF, MedicoNome) values ('18888', 'SC', 'Joaquim Souza');
+insert into Medico (MedicoEmail, MedicoTelefone, MedicoCRM, MedicoUF, MedicoNome) values ('luciano.martin@gmail.com', '49988763423', '26862', 'SC', 'Luciano Martin');
+insert into Medico (MedicoEmail, MedicoTelefone, MedicoCRM, MedicoUF, MedicoNome) values ('andersonsoares@outlook.com', '47988769223', '27632', 'SC', 'Anderson Soares');
+insert into Medico (MedicoCRM, MedicoUF, MedicoNome) values ('18888', 'SC', 'Joaquim Souza');

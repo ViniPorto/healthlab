@@ -19,13 +19,13 @@ import lombok.NoArgsConstructor;
 
 @Table(name = "Pessoa")
 @Entity(name = "Pessoa")
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @EqualsAndHashCode(of = "id")
 public class Pessoa {
     
-    public Pessoa(@Valid RequestCadastrarPessoa dadosPessoa) {
+    public Pessoa(RequestCadastrarPessoa dadosPessoa) {
         this.nome = dadosPessoa.nome();
         this.cpf = dadosPessoa.cpf();
         this.email = dadosPessoa.email();

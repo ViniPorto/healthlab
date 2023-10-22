@@ -1,3 +1,11 @@
+create table Material(
+    MaterialId bigint not null auto_increment,
+    MaterialNome varchar(50) not null,
+    MaterialDescricao text,
+
+    primary key(MaterialId)
+);
+
 insert into Material(MaterialNome, MaterialDescricao) values ('Soro', 'Plasma sem fibrinogênio, liberado após a coagulação do sangue, enquanto o plasma é preparado para coagulação do sangue, e com função no sistema imunológico');
 insert into Material(MaterialNome, MaterialDescricao) values ('Urina', 'Urina');
 insert into Material(MaterialNome, MaterialDescricao) values ('Sangue Total', ' É o sangue doado sem nenhuma modificação, que será processado nos hemocomponentes descritos abaixo.

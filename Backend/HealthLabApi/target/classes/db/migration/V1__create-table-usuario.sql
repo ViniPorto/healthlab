@@ -8,3 +8,5 @@ create table Usuario(
 
     primary key(UsuarioId)
 );
+
+insert into Usuario(UsuarioLogin, UsuarioSenha, UsuarioAtivo, UsuarioAdministrador, UsuarioNome) values ('admin', '$2a$12$KQSM9izb33mPNP6HbUUiduE/JuxxVExwhBaPXdRHcoDUddgyH2EVS', 1, 1, 'administrador');

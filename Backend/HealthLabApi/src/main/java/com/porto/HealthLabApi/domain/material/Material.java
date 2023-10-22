@@ -16,9 +16,9 @@ import lombok.NoArgsConstructor;
 
 @Table(name = "Material")
 @Entity(name = "Material")
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @EqualsAndHashCode(of = "id")
 public class Material {
     

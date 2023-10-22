@@ -11,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,13 +18,13 @@ import lombok.NoArgsConstructor;
 
 @Table(name = "Medico")
 @Entity(name = "Medico")
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @EqualsAndHashCode(of = "id")
 public class Medico {
     
-    public Medico(@Valid RequestCadastrarMedico dadosMedico) {
+    public Medico(RequestCadastrarMedico dadosMedico) {
         this.email = dadosMedico.email();
         this.telefone = dadosMedico.telefone();
         this.crm = dadosMedico.crm();

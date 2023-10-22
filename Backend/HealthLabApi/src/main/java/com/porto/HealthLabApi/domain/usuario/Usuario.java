@@ -27,12 +27,12 @@ import lombok.Setter;
 @Entity(name = "Usuario")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Usuario implements UserDetails{
     
-    public Usuario(@Valid RequestCadastrarUsuario dadosUsuario) {
+    public Usuario(RequestCadastrarUsuario dadosUsuario) {
         this.login = dadosUsuario.login();
         this.ativo = true;
         this.administrador = false;

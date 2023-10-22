@@ -28,7 +28,7 @@
 
 <h2 align="center">
 
-![16%](https://progress-bar.dev/16)
+![18%](https://progress-bar.dev/18)
     
 </h2>
 

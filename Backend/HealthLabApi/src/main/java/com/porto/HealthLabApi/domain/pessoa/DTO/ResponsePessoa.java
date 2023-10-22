@@ -16,7 +16,7 @@ public record ResponsePessoa(
 ) {
 
     public ResponsePessoa(Pessoa pessoa) {
-        this(pessoa.getId(), pessoa.getNome(), pessoa.getCPF(), pessoa.getEmail(), pessoa.getTelefone(), pessoa.getDadosGerais(), pessoa.getDataNascimento(), pessoa.getObservacao());
+        this(pessoa.getId(), pessoa.getNome(), pessoa.getCpf(), pessoa.getEmail(), pessoa.getTelefone(), pessoa.getDadosGerais(), pessoa.getDataNascimento(), pessoa.getObservacao());
     }
     
 }

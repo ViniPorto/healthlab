@@ -27,7 +27,7 @@ public class Pessoa {
     
     public Pessoa(@Valid RequestCadastrarPessoa dadosPessoa) {
         this.nome = dadosPessoa.nome();
-        this.CPF = dadosPessoa.CPF();
+        this.cpf = dadosPessoa.cpf();
         this.email = dadosPessoa.email();
         this.telefone = dadosPessoa.telefone();
         this.dataNascimento = dadosPessoa.dataNascimento();
@@ -42,7 +42,7 @@ public class Pessoa {
     @Column(name = "PessoaNome")
     private String nome;
     @Column(name = "PessoaCPF")
-    private String CPF;
+    private String cpf;
     @Column(name = "PessoaEmail")
     private String email;
     @Column(name = "PessoaTelefone")

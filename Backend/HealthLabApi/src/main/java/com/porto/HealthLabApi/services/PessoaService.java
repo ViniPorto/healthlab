@@ -19,13 +19,13 @@ public class PessoaService {
     @Autowired
     private PessoaRepository pessoaRepository;;
 
-    public Page<Pessoa> listarPessoas(Pageable paginacao) {
-        return pessoaRepository.findAll(paginacao);
+    public Page<Pessoa> listarPessoas(Pageable paginacao, String nome, String cpf) {
+        return pessoaRepository.findAll(paginacao, nome, cpf);
     }
 
     @Transactional
     public Pessoa cadastrarPessoa(RequestCadastrarPessoa dadosPessoa) {
-        if(pessoaRepository.existsByCPF(dadosPessoa.CPF())){
+        if(pessoaRepository.existsByCpf(dadosPessoa.cpf())){
             throw new CPFJaCadastradoException();
         }
 

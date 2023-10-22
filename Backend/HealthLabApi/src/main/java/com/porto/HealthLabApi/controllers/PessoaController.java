@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.porto.HealthLabApi.domain.pessoa.DTO.RequestCadastrarPessoa;
@@ -33,36 +34,38 @@ public class PessoaController {
     private PessoaService pessoaService;
 
     @GetMapping
-    private ResponseEntity<Object> listarPessoas(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){
-        var pessoas = pessoaService.listarPessoas(paginacao).map(ResponsePessoa::new);
+    public ResponseEntity<Object> listarPessoas(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao,
+                                                @RequestParam(required = false) String nome,
+                                                @RequestParam(required = false) String cpf){
+        var pessoas = pessoaService.listarPessoas(paginacao, nome, cpf).map(ResponsePessoa::new);
 
         
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, pessoas);
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<Object> detalharPessoa(@PathVariable Long id){
+    public ResponseEntity<Object> detalharPessoa(@PathVariable Long id){
         var pessoa =  pessoaService.detalharPessoa(id);
 
-        return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, pessoa);
+        return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, new ResponsePessoa(pessoa));
     }
 
     @PostMapping
-    private ResponseEntity<Object> cadastrarPessoa(@RequestBody @Valid RequestCadastrarPessoa dadosPessoa){
+    public ResponseEntity<Object> cadastrarPessoa(@RequestBody @Valid RequestCadastrarPessoa dadosPessoa){
         var pessoaCriada = pessoaService.cadastrarPessoa(dadosPessoa);
 
-        return responseHandler.generateResponse("Cadastrado com sucesso", true, HttpStatus.CREATED, pessoaCriada);
+        return responseHandler.generateResponse("Cadastrado com sucesso", true, HttpStatus.CREATED, new ResponsePessoa(pessoaCriada));
     }
 
     @PutMapping
-    private ResponseEntity<Object> editarPessoa(@RequestBody @Valid RequestEditarPessoa dadosPessoa){
+    public ResponseEntity<Object> editarPessoa(@RequestBody @Valid RequestEditarPessoa dadosPessoa){
         var pessoaEditada = pessoaService.editarPessoa(dadosPessoa);
 
-        return responseHandler.generateResponse("Editado com sucesso", true, HttpStatus.OK, pessoaEditada);
+        return responseHandler.generateResponse("Editado com sucesso", true, HttpStatus.OK, new ResponsePessoa(pessoaEditada));
     }
 
     @DeleteMapping("/{id}")
-    private ResponseEntity<Object> deletarPessoa(@PathVariable Long id){
+    public ResponseEntity<Object> deletarPessoa(@PathVariable Long id){
         pessoaService.deletarPessoa(id);
 
         return responseHandler.generateResponse("Deletado com sucesso", true, HttpStatus.OK, null);

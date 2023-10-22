@@ -7,15 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.porto.HealthLabApi.domain.metodo.Metodo;
+import com.porto.HealthLabApi.domain.setor.Setor;
 
 @Repository
-public interface MetodoRepository extends JpaRepository<Metodo, Long> {
+public interface SetorRepository extends JpaRepository<Setor, Long> {
 
     @Query(value = """
-        SELECT m FROM Metodo m WHERE
-        (:nome is null or m.nome LIKE %:nome%)
+        SELECT s FROM Setor s WHERE
+        (:nome is null or s.nome LIKE %:nome%)    
         """)
-    Page<Metodo> findAll(Pageable paginacao, @Param("nome") String nome);
+    Page<Setor> findAll(Pageable paginacao, @Param("nome") String nome);
     
 }

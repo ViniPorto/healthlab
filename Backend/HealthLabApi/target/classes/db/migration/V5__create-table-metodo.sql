@@ -6,13 +6,7 @@ create table Metodo(
     primary key(MetodoId)
 );
 
-insert into Metodo(MetodoNome, MetodoDescricao) values ('COAGULOMÉTRICO', 'O método coagulométrico é uma técnica laboratorial usada para medir a capacidade de coagulação do sangue, ou seja, avaliar a rapidez com que o sangue coagula em resposta a estímulos ou agentes de coagulação. É um método importante na área da hematologia e é frequentemente utilizado para diagnosticar distúrbios de coagulação, monitorar pacientes em tratamento anticoagulante, avaliar riscos de sangramento e garantir a eficácia de transfusões de componentes sanguíneos.
-O método coagulométrico envolve o uso de um coagulômetro, um dispositivo de laboratório que monitora o tempo que leva para que o sangue coagule. Existem várias variantes deste método, incluindo:
-Tempo de Tromboplastina Parcial Ativada (TTPa ou aPTT): Mede o tempo que leva para que o plasma sanguíneo coagule quando é ativado com reagentes específicos. É usado para avaliar a via intrínseca da coagulação e monitorar o uso de medicamentos anticoagulantes, como a heparina.
-Tempo de Protrombina (TP): Mede o tempo que leva para que o plasma sanguíneo coagule em resposta a uma substância chamada tromboplastina. É usado para avaliar a via extrínseca da coagulação e monitorar o uso de medicamentos anticoagulantes, como a varfarina (warfarin).
-Tempo de Trombina (TT): Mede o tempo que leva para que o plasma sanguíneo coagule quando é ativado por uma enzima chamada trombina. É usado para avaliar a formação de trombos e distúrbios de coagulação.
-Esses testes coagulométricos fornecem informações valiosas para médicos e hematologistas no diagnóstico de condições como trombose, hemofilia, distúrbios de coagulação hereditários ou adquiridos, além de monitorar pacientes que recebem tratamento com anticoagulantes.
-O método coagulométrico é uma ferramenta essencial no campo da medicina e desempenha um papel fundamental na avaliação da saúde e na gestão de pacientes com condições relacionadas à coagulação sanguínea.');
+insert into Metodo(MetodoNome) values ('RESISTIVIDADE - IMPEDÂNCIA - MICROSCOPIA');
 insert into Metodo(MetodoNome, MetodoDescricao) values ('ELETRODO SELETIVO', 'Um eletrodo seletivo é um dispositivo usado na análise e medição de íons específicos em soluções aquosas. Os eletrodos seletivos são amplamente utilizados em química analítica, bioquímica, e outros campos para medir concentrações de íons em soluções, como íons de hidrogênio (pH), íons de metais pesados, íons de sódio, potássio, entre outros.
 
 A principal característica de um eletrodo seletivo é a sua capacidade de responder seletivamente a um tipo específico de íon em uma solução. Isso é alcançado por meio de membranas ou materiais que são sensíveis ao íon-alvo e que geram uma diferença de potencial elétrico em resposta à concentração desse íon.

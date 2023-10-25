@@ -5,5 +5,4 @@ create table Layout(
 );
 
 insert into Layout() values ();
-insert into Layout() values ();
-insert into Layout() values ();
+

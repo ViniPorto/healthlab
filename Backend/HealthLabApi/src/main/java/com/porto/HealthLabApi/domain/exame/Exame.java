@@ -78,4 +78,8 @@ public class Exame {
     @Column(name = "ExameTempoExecucaoNormal")
     private Integer tempoExecucaoNormal;
 
+    public void alterarLayout(Layout layout){
+        this.layout = layout;
+    }
+
 }

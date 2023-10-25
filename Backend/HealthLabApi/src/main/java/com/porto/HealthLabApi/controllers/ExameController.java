@@ -78,7 +78,7 @@ public class ExameController {
 
         var layoutCampos = layoutService.listarCamposLayout(exame.getLayout()).stream().map(ResponseLayoutCampos::new).toList();
         
-        var responseLayout = new ResponseLayout(exame.getLayout().getId(), layoutCampos);
+        var responseLayout = new ResponseLayout(exame.getLayout(), layoutCampos);
 
         return new ResponseExame(exame, responseSetor, responseMaterial, responseMetodo, responseLayout);
     }

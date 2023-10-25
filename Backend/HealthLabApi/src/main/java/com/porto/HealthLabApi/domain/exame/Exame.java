@@ -2,6 +2,7 @@ package com.porto.HealthLabApi.domain.exame;
 
 import java.math.BigDecimal;
 
+import com.porto.HealthLabApi.domain.exame.DTO.RequestCadastrarExame;
 import com.porto.HealthLabApi.domain.layout.Layout;
 import com.porto.HealthLabApi.domain.material.Material;
 import com.porto.HealthLabApi.domain.metodo.Metodo;
@@ -29,6 +30,23 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = "id")
 public class Exame {
     
+    public Exame(RequestCadastrarExame dadosExame, Layout layout, Setor setor,
+        Metodo metodo, Material material) {
+        this.setor = setor;
+        this.layout = layout;
+        this.principal = dadosExame.principal();
+        this.titulo = dadosExame.titulo();
+        this.sigla = dadosExame.sigla().toUpperCase();
+        this.tempoExecucaoUrgente = dadosExame.tempoExecucaoUrgente();
+        this.metodo = metodo;
+        this.material = material;
+        if(dadosExame.descricao() != null){
+            this.descricao = dadosExame.descricao();
+        }
+        this.preco = dadosExame.preco();
+        this.tempoExecucaoNormal = dadosExame.tempoExecucaoNormal();
+    }   
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ExameId")
@@ -58,6 +76,6 @@ public class Exame {
     @Column(name = "ExamePreco")
     private BigDecimal preco;
     @Column(name = "ExameTempoExecucaoNormal")
-    private Integer tempoExecucao;
+    private Integer tempoExecucaoNormal;
 
 }

@@ -24,7 +24,7 @@ public record ResponseExame(
 ) {
 
     public ResponseExame(Exame exame, ResponseSetor responseSetor, ResponseMaterial responseMaterial, ResponseMetodo responseMetodo, ResponseLayout responseLayout) {
-        this(exame.getId(), exame.getTitulo(), exame.getSigla(), exame.getDescricao(), exame.isPrincipal(), responseSetor, responseMaterial, responseMetodo, exame.getPreco(), exame.getTempoExecucao(), exame.getTempoExecucaoUrgente(), responseLayout);
+        this(exame.getId(), exame.getTitulo(), exame.getSigla(), exame.getDescricao(), exame.isPrincipal(), responseSetor, responseMaterial, responseMetodo, exame.getPreco(), exame.getTempoExecucaoNormal(), exame.getTempoExecucaoUrgente(), responseLayout);
     }
 
 }

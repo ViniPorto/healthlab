@@ -18,5 +18,7 @@ public interface ExameRepository extends JpaRepository<Exame, Long> {
             (:titulo is null or e.titulo LIKE %:titulo%)
             """)
     List<Exame> findAll(Pageable paginacao, @Param("titulo") String titulo);
+
+    Exame findBySigla(String idOuSigle);
     
 }

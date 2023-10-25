@@ -45,6 +45,7 @@ public class LayoutController {
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, responseLayout);
     }
 
+    //refatorar pois ao cadastrar layout, na visão do usuário estamos alterando o layout de um exame existente -> receber id do exame para alterar seu layout
     @PostMapping
     public ResponseEntity<Object> cadastrarLayout(@RequestBody @Valid RequestCadastrarLayout dadosLayout){
         var layoutCriado = layoutService.cadastrarLayout();

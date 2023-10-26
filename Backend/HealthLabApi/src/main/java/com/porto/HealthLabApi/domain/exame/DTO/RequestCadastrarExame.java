@@ -21,7 +21,7 @@ public record RequestCadastrarExame(
     @NotNull
     Long materialId,
     @NotNull
-    boolean principal,
+    Boolean principal,
     @NotNull
     BigDecimal preco,
     @NotNull

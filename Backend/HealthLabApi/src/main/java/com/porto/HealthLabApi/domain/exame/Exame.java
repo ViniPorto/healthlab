@@ -3,6 +3,7 @@ package com.porto.HealthLabApi.domain.exame;
 import java.math.BigDecimal;
 
 import com.porto.HealthLabApi.domain.exame.DTO.RequestCadastrarExame;
+import com.porto.HealthLabApi.domain.exame.DTO.RequestEditarExame;
 import com.porto.HealthLabApi.domain.layout.Layout;
 import com.porto.HealthLabApi.domain.material.Material;
 import com.porto.HealthLabApi.domain.metodo.Metodo;
@@ -80,6 +81,39 @@ public class Exame {
 
     public void alterarLayout(Layout layout){
         this.layout = layout;
+    }
+
+    public void atualizarInformacoes(RequestEditarExame dadosExame, Setor setor, Metodo metodo, Material material) {
+        if(setor != null){
+            this.setor = setor;
+        }
+        if(metodo != null){
+            this.metodo = metodo;
+        }
+        if(material != null){
+            this.material = material;
+        }
+        if(dadosExame.principal() != null){
+            this.principal = dadosExame.principal();
+        }
+        if(dadosExame.titulo() != null){
+            this.titulo = dadosExame.titulo();
+        }
+        if(dadosExame.sigla() != null){
+            this.sigla = dadosExame.sigla();
+        }
+        if(dadosExame.tempoExecucaoNormal() != null){
+            this.tempoExecucaoNormal = dadosExame.tempoExecucaoNormal();
+        }
+        if(dadosExame.tempoExecucaoUrgente() != null){
+            this.tempoExecucaoUrgente = dadosExame.tempoExecucaoUrgente();
+        }
+        if(dadosExame.descricao() != null){
+            this.descricao = dadosExame.descricao();
+        }
+        if(dadosExame.preco() != null){
+            this.preco = dadosExame.preco();
+        }
     }
 
 }

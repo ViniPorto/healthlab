@@ -5,9 +5,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.porto.HealthLabApi.domain.exame.Exame;
 import com.porto.HealthLabApi.domain.exame.DTO.RequestCadastrarExame;
+import com.porto.HealthLabApi.domain.exame.DTO.RequestEditarExame;
 import com.porto.HealthLabApi.domain.exame.DTO.ResponseExame;
 import com.porto.HealthLabApi.domain.layout.DTO.ResponseLayout;
 import com.porto.HealthLabApi.domain.layout.DTO.ResponseLayoutCampos;
@@ -51,7 +54,7 @@ public class ExameController {
     }
 
     @GetMapping("/{idOuSigle}")
-    public ResponseEntity<Object> detalhar(@PathVariable String idOuSigle){
+    public ResponseEntity<Object> detalharExame(@PathVariable String idOuSigle){
         Exame exame = null;
         try{
             Long id = Long.parseLong(idOuSigle);
@@ -67,6 +70,20 @@ public class ExameController {
         var exameCadastrado = exameService.cadastrarExame(dadosExame);
 
         return responseHandler.generateResponse("Cadastrado com sucesso", true, HttpStatus.CREATED, toResponseExame(exameCadastrado));
+    }
+
+    @PutMapping
+    public ResponseEntity<Object> editarExame(@RequestBody @Valid RequestEditarExame dadosExame){
+        var exameEditado = exameService.editarExame(dadosExame);
+
+        return responseHandler.generateResponse("Editado com sucesso", true, HttpStatus.OK, toResponseExame(exameEditado));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deletarExame(@PathVariable Long id){
+        exameService.deletarExame(id);
+
+        return responseHandler.generateResponse("Deletado com sucesso", true, HttpStatus.OK, null);
     }
 
     private ResponseExame toResponseExame(Exame exame){

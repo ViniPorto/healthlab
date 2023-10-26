@@ -21,6 +21,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.porto.HealthLabApi.infra.exception.exceptions.CPFJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.MedicoJaCadastradoException;
+import com.porto.HealthLabApi.infra.exception.exceptions.SiglaJaCadastradaException;
 import com.porto.HealthLabApi.infra.exception.exceptions.TokenJWTInvalidoOuExpiradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.TokenJWTNaoInformadoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.UsuarioNaoAdministradorException;
@@ -85,7 +86,12 @@ public class TratadorDeErros implements AccessDeniedHandler{
     
     @ExceptionHandler(MedicoJaCadastradoException.class)
     public ResponseEntity<Object> tratarErroCRMJaCadastrado(){
-        return responseHandler.generateResponse("Médico já cadastrado com o CRM e UF informados", false, HttpStatus.FORBIDDEN, null); 
+        return responseHandler.generateResponse("Já existe médico cadastrado com o CRM e UF informados", false, HttpStatus.FORBIDDEN, null); 
+    }
+
+    @ExceptionHandler(SiglaJaCadastradaException.class)
+    public ResponseEntity<Object> tratarErroSiglaJaCadastrada(){
+        return responseHandler.generateResponse("Já existe exame cadastrado com a sigla informada", false, HttpStatus.FORBIDDEN, null); 
     }
 
     private record DadosErroValidacao(String campo, String mensagem){

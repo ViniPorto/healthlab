@@ -20,5 +20,7 @@ public interface ExameRepository extends JpaRepository<Exame, Long> {
     List<Exame> findAll(Pageable paginacao, @Param("titulo") String titulo);
 
     Exame findBySigla(String idOuSigle);
+
+    boolean existsBySigla(String sigla);
     
 }

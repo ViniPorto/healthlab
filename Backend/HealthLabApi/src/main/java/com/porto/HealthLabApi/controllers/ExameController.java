@@ -100,4 +100,6 @@ public class ExameController {
         return new ResponseExame(exame, responseSetor, responseMaterial, responseMetodo, responseLayout);
     }
 
+    //:D
+
 }

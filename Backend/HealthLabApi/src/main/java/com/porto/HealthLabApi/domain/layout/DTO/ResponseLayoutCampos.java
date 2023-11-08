@@ -6,6 +6,7 @@ import com.porto.HealthLabApi.domain.layout.TipoCampo;
 
 public record ResponseLayoutCampos(
     Long layoutCamposId,
+    Integer codigoCampo,
     TipoCampo layoutCamposTipoCampo,
     Integer layoutCamposAltura,
     Integer layoutCamposLargura,
@@ -15,7 +16,7 @@ public record ResponseLayoutCampos(
     Integer layoutCamposPosicao
 ) {
     public ResponseLayoutCampos(LayoutCampos layoutCampos){
-        this(layoutCampos.getId(), layoutCampos.getTipoCampo(), layoutCampos.getAltura(), layoutCampos.getLargura(), layoutCampos.getTexto(), layoutCampos.getFonteCor(), layoutCampos.getFonteTamanho(), layoutCampos.getPosicao());
+        this(layoutCampos.getId(), layoutCampos.getCodigoCampo(), layoutCampos.getTipoCampo(), layoutCampos.getAltura(), layoutCampos.getLargura(), layoutCampos.getTexto(), layoutCampos.getFonteCor(), layoutCampos.getFonteTamanho(), layoutCampos.getPosicao());
     }
 
 }

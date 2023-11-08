@@ -9,6 +9,8 @@ import jakarta.validation.constraints.Size;
 
 public record RequestCadastrarLayoutCampos(
     @NotNull
+    Integer codigoCampo,
+    @NotNull
     @Enumerated
     TipoCampo tipoCampo,
     @NotNull

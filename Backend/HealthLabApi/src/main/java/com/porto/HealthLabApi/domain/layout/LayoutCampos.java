@@ -37,12 +37,15 @@ public class LayoutCampos {
         }
         this.fonteCor = layoutCampo.fonteCor();
         this.fonteTamanho = layoutCampo.fonteTamanho();
+        this.codigoCampo = layoutCampo.codigoCampo();
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "LayoutCamposId")
     private Long id;
+    @Column(name = "LayoutCamposCodigoCampo")
+    private Integer codigoCampo;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "LayoutCamposLayoutId")
     private Layout layout;

@@ -1,5 +1,5 @@
 create table Pessoa(
-    UsuarioId bigint not null auto_increment,
+    PessoaId bigint not null auto_increment,
     PessoaNome varchar(50) not null,
     PessoaCPF varchar(11) not null unique,
     PessoaEmail varchar(50) not null,
@@ -8,7 +8,7 @@ create table Pessoa(
     PessoaDataNascimento date not null,
     PessoaObservacao varchar(300),
 
-    primary key (UsuarioId)
+    primary key (PessoaId)
 );
 
 insert into Pessoa(PessoaNome, PessoaCPF, PessoaEmail, PessoaTelefone, PessoaDadosGerais, PessoaDataNascimento, PessoaObservacao) values('Teste da Silva', '24061982001', 'testedasilva@gmail.com', '49988365688', 'Sangue O+, Altura 175cm, 75KG', '2000-01-01', 'Observação do teste da silva');

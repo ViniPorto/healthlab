@@ -37,7 +37,7 @@ public class Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "UsuarioId")
+    @Column(name = "PessoaId")
     private Long id;
     @Column(name = "PessoaNome")
     private String nome;

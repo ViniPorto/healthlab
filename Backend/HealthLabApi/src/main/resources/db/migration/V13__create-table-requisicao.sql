@@ -25,8 +25,8 @@ create table RequisicaoExame(
     RequisicaoExameExameId bigint not null,
     RequisicaoExameStatusCodigo varchar(2) not null,
     RequisicaoExameDataHoraInclusao datetime not null,
-    RequisicaoExameDataHoraTriagem datetime not null,
-
+    RequisicaoExameDataHoraTriagem datetime,
+    
     primary key(RequisicaoExameId),
     foreign key(RequisicaoExameLayoutVigenteId) references Layout(LayoutId),
     foreign key(RequisicaoExameMotivoRecoletaId) references MotivoRecoleta(MotivoRecoletaId),

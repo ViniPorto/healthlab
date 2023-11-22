@@ -1,5 +1,7 @@
 package com.porto.HealthLabApi.repositories;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,5 +22,7 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
     Page<Pessoa> findAll(Pageable paginacao, @Param("nome") String nome, @Param("cpf") String cpf);
 
     boolean existsByCpf(String cpf);
+
+    Optional<Pessoa> findById(Integer pessoaId);
 
 }

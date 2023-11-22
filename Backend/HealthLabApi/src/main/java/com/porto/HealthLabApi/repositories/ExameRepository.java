@@ -1,6 +1,7 @@
 package com.porto.HealthLabApi.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,5 +23,7 @@ public interface ExameRepository extends JpaRepository<Exame, Long> {
     Exame findBySigla(String idOuSigle);
 
     boolean existsBySigla(String sigla);
+
+    Optional<Exame> findById(Integer exameId);
     
 }

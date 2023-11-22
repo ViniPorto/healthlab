@@ -1,5 +1,7 @@
 package com.porto.HealthLabApi.repositories;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,5 +23,7 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
     Page<Medico> findAll(Pageable paginacao, @Param("nome") String nome, @Param("crm") String crm);
 
     boolean existsByCrmAndUf(String crm, MedicoUF uf);
+
+    Optional<Medico> findById(Integer medicoId);
     
 }

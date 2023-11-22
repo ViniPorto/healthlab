@@ -20,6 +20,7 @@ import com.porto.HealthLabApi.domain.layout.DTO.ResponseLayoutCampos;
 import com.porto.HealthLabApi.services.LayoutService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
@@ -46,6 +47,7 @@ public class LayoutController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<Object> cadastrarLayout(@RequestBody @Valid RequestCadastrarLayout dadosLayout){
         var layoutCriado = layoutService.cadastrarLayout(dadosLayout.exameId());
         var layoutCamposCriados = layoutService.cadastrarLayoutCampos(layoutCriado, dadosLayout);

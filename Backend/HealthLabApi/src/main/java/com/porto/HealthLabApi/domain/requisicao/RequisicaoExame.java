@@ -1,11 +1,13 @@
 package com.porto.HealthLabApi.domain.requisicao;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import com.porto.HealthLabApi.domain.bioquimico.Bioquimico;
 import com.porto.HealthLabApi.domain.exame.Exame;
 import com.porto.HealthLabApi.domain.layout.Layout;
 import com.porto.HealthLabApi.domain.motivoRecoleta.MotivoRecoleta;
+import com.porto.HealthLabApi.domain.requisicao.DTO.RequestCadastrarRequisicao;
 import com.porto.HealthLabApi.domain.status.Status;
 
 import jakarta.persistence.Column;
@@ -16,6 +18,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -30,6 +33,14 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = "id")
 public class RequisicaoExame {
     
+    public RequisicaoExame(RequestCadastrarRequisicao dadosRequisicao, Layout layout, Requisicao requisicao, Exame exame, Status status) {
+        this.layout = layout;
+        this.requisicao = requisicao;
+        this.exame = exame;
+        this.status = status;
+        this.dataHoraInclusao = LocalDateTime.now();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RequisicaoExameId")
@@ -38,13 +49,14 @@ public class RequisicaoExame {
     @JoinColumn(name = "RequisicaoExameLayoutVigenteId")
     private Layout layout;
     @Column(name = "RequisicaoExameDataHoraColeta")
-    private LocalDate dataHoraColeta;
+    private LocalDateTime dataHoraColeta;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "RequisicaoExameMotivoRecoletaId")
     private MotivoRecoleta motivoRecoleta;
     @Column(name = "RequisicaoExameImpresso")
-    private Boolean exameImpresso;
-    @Column(name = "RequisicaoExameBioquimicoId")
+    private boolean exameImpresso;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "RequisicaoExameBioquimicoId")
     private Bioquimico bioquimico;
     @Column(name = "RequisicaoExameBioquimicoAssinatura")
     private String bioquimicoAssinatura;
@@ -58,8 +70,9 @@ public class RequisicaoExame {
     @JoinColumn(name = "RequisicaoExameStatusCodigo")
     private Status status;
     @Column(name = "RequisicaoExameDataHoraInclusao")
-    private LocalDate dataHoraInclusao;
+    private LocalDateTime dataHoraInclusao;
     @Column(name = "RequisicaoExameDataHoraTriagem")
-    private LocalDate dataHoraTriagem;
-
+    private LocalDateTime dataHoraTriagem;
+    @OneToMany(mappedBy = "requisicaoExame", fetch = FetchType.EAGER)
+    List<RequisicaoExameItensResultado> itensResultado;
 }

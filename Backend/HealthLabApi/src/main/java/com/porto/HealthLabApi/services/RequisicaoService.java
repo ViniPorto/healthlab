@@ -13,6 +13,8 @@ import com.porto.HealthLabApi.domain.requisicao.Requisicao;
 import com.porto.HealthLabApi.domain.requisicao.RequisicaoExame;
 import com.porto.HealthLabApi.domain.requisicao.RequisicaoExameItensResultado;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestCadastrarRequisicao;
+import com.porto.HealthLabApi.domain.requisicao.DTO.RequestEditarRequisicao;
+import com.porto.HealthLabApi.infra.exception.exceptions.RequisicaoExameComResultadoException;
 import com.porto.HealthLabApi.repositories.ExameRepository;
 import com.porto.HealthLabApi.repositories.LayoutRepository;
 import com.porto.HealthLabApi.repositories.MedicoRepository;
@@ -24,6 +26,7 @@ import com.porto.HealthLabApi.repositories.StatusRepository;
 import com.porto.HealthLabApi.repositories.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 @Service
 public class RequisicaoService {
@@ -95,6 +98,31 @@ public class RequisicaoService {
         requisicao.setPretoTotal(precoTotal);
 
         return requisicaoRepository.save(requisicao);
+    }
+
+    @Transactional
+    public Requisicao editarRequisicao(@Valid RequestEditarRequisicao dadosRequisicao) {
+        var requisicao = requisicaoRepository.findById(dadosRequisicao.requisicaoId()).get();
+
+        //lógica: se o exame da minha lista de exames da requisição não está na nova lista, verificar se existe resultado informado -> se existir, lançar exceção, senão exclui da lista de exames
+        for(RequisicaoExame requisicaoExame : requisicao.getRequisicaoExames()){
+            if(!contemId(dadosRequisicao.examesId(), requisicaoExame.getId())){
+                if(!requisicaoExame.getItensResultado().isEmpty()){
+                    throw new RequisicaoExameComResultadoException();
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private boolean contemId(Long[] examesId, Long id){
+        for(Long exameId : examesId){
+            if(exameId == id){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

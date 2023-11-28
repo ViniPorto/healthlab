@@ -21,6 +21,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.porto.HealthLabApi.infra.exception.exceptions.CPFJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.MedicoJaCadastradoException;
+import com.porto.HealthLabApi.infra.exception.exceptions.RequisicaoExameComResultadoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.SiglaJaCadastradaException;
 import com.porto.HealthLabApi.infra.exception.exceptions.TokenJWTInvalidoOuExpiradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.TokenJWTNaoInformadoException;
@@ -92,6 +93,11 @@ public class TratadorDeErros implements AccessDeniedHandler{
     @ExceptionHandler(SiglaJaCadastradaException.class)
     public ResponseEntity<Object> tratarErroSiglaJaCadastrada(){
         return responseHandler.generateResponse("Já existe exame cadastrado com a sigla informada", false, HttpStatus.FORBIDDEN, null); 
+    }
+
+    @ExceptionHandler(RequisicaoExameComResultadoException.class)
+    public ResponseEntity<Object> tratarErroRequisicaoExameComResultado(){
+        return responseHandler.generateResponse("Não é possível excluir exame com resultado lançado", false, HttpStatus.FORBIDDEN, null); 
     }
 
     private record DadosErroValidacao(String campo, String mensagem){

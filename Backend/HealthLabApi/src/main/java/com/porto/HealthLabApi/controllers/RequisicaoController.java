@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,7 @@ import com.porto.HealthLabApi.domain.requisicao.Requisicao;
 import com.porto.HealthLabApi.domain.requisicao.RequisicaoExame;
 import com.porto.HealthLabApi.domain.requisicao.RequisicaoExameItensResultado;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestCadastrarRequisicao;
+import com.porto.HealthLabApi.domain.requisicao.DTO.RequestEditarRequisicao;
 import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicao;
 import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicaoExame;
 import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicaoExameItensResultado;
@@ -29,7 +31,6 @@ import com.porto.HealthLabApi.services.LayoutService;
 import com.porto.HealthLabApi.services.RequisicaoService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
@@ -59,11 +60,17 @@ public class RequisicaoController {
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity<Object> cadastrarRequisicao(@RequestBody @Valid RequestCadastrarRequisicao dadosRequisicao){
         var requisicaoCadastrada = requisicaoService.cadastrarRequisicao(dadosRequisicao);
 
         return responseHandler.generateResponse("Cadastrado com sucesso", true, HttpStatus.CREATED, new ResponseRequisicao(requisicaoCadastrada, toResponseRequisicaoExames(requisicaoCadastrada.getRequisicaoExames())));
+    }
+
+    @PutMapping
+    public ResponseEntity<Object> editarRequisicao(@RequestBody @Valid RequestEditarRequisicao dadosRequisicao){
+        var requisicaoEditada = requisicaoService.editarRequisicao(dadosRequisicao);
+
+        return responseHandler.generateResponse("Editado com sucesso", true, HttpStatus.OK, new ResponseRequisicao(requisicaoEditada, toResponseRequisicaoExames(requisicaoEditada.getRequisicaoExames())));
     }
 
     private List<ResponseRequisicaoExame> toResponseRequisicaoExames(List<RequisicaoExame> requisicaoExames){

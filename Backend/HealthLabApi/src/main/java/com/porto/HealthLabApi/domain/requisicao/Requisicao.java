@@ -42,7 +42,7 @@ public class Requisicao {
         this.pessoa = pessoa;
         this.usuario = usuario;
         this.paga = dadosRequisicao.paga();
-        this.pretoTotal = new BigDecimal(0);
+        this.precoTotal = new BigDecimal(0);
         this.requisicaoExames = new ArrayList<RequisicaoExame>();
     }
 
@@ -66,12 +66,18 @@ public class Requisicao {
     @Column(name = "RequisicaoPaga")
     private boolean paga;
     @Column(name = "RequisicaoPrecoTotal")
-    private BigDecimal pretoTotal;
+    private BigDecimal precoTotal;
     @OneToMany(mappedBy = "requisicao", fetch = FetchType.EAGER)
     List<RequisicaoExame> requisicaoExames;
 
     public void adicionarExame(RequisicaoExame requisicaoExame) {
+        this.precoTotal = this.precoTotal.add(requisicaoExame.getExame().getPreco());
         this.requisicaoExames.add(requisicaoExame);
+    }
+
+    public void removerExame(RequisicaoExame requisicaoExame){
+        this.precoTotal = this.precoTotal.subtract(requisicaoExame.getExame().getPreco());
+        this.requisicaoExames.remove(requisicaoExame);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.porto.HealthLabApi.domain.requisicao.DTO;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotNull;
 
 public record RequestEditarRequisicao(
@@ -7,7 +9,7 @@ public record RequestEditarRequisicao(
     Long requisicaoId,
     boolean urgente,
     boolean paga,
-    Long[] examesId
+    List<Long> examesId
 ) {
 
 }

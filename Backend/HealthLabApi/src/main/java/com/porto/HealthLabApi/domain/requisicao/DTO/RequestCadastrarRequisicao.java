@@ -1,5 +1,7 @@
 package com.porto.HealthLabApi.domain.requisicao.DTO;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotNull;
 
 public record RequestCadastrarRequisicao(
@@ -13,7 +15,7 @@ public record RequestCadastrarRequisicao(
     @NotNull
     boolean paga,
     @NotNull
-    Long[] examesId
+    List<Long> examesId
 ) {
 
 }

@@ -7,7 +7,6 @@ import com.porto.HealthLabApi.domain.bioquimico.Bioquimico;
 import com.porto.HealthLabApi.domain.exame.Exame;
 import com.porto.HealthLabApi.domain.layout.Layout;
 import com.porto.HealthLabApi.domain.motivoRecoleta.MotivoRecoleta;
-import com.porto.HealthLabApi.domain.requisicao.DTO.RequestCadastrarRequisicao;
 import com.porto.HealthLabApi.domain.status.Status;
 
 import jakarta.persistence.Column;
@@ -33,7 +32,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = "id")
 public class RequisicaoExame {
     
-    public RequisicaoExame(RequestCadastrarRequisicao dadosRequisicao, Layout layout, Requisicao requisicao, Exame exame, Status status) {
+    public RequisicaoExame(Layout layout, Requisicao requisicao, Exame exame, Status status) {
         this.layout = layout;
         this.requisicao = requisicao;
         this.exame = exame;

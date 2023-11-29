@@ -29,7 +29,7 @@ public record ResponseRequisicao(
             requisicao.isUrgente(), 
             new ResponseUsuario(requisicao.getUsuario()), 
             requisicao.isPaga(), 
-            requisicao.getPretoTotal(), 
+            requisicao.getPrecoTotal(), 
             requisicaoExames);
     }
     

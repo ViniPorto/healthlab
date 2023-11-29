@@ -1,6 +1,6 @@
 package com.porto.HealthLabApi.services;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import com.porto.HealthLabApi.domain.requisicao.DTO.RequestCadastrarRequisicao;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestEditarRequisicao;
 import com.porto.HealthLabApi.infra.exception.exceptions.RequisicaoExameComResultadoException;
 import com.porto.HealthLabApi.repositories.ExameRepository;
-import com.porto.HealthLabApi.repositories.LayoutRepository;
 import com.porto.HealthLabApi.repositories.MedicoRepository;
 import com.porto.HealthLabApi.repositories.PessoaRepository;
 import com.porto.HealthLabApi.repositories.RequisicaoExameItensResultadoRepository;
@@ -50,9 +49,6 @@ public class RequisicaoService {
     private ExameRepository exameRepository;
 
     @Autowired
-    private LayoutRepository layoutRepository;
-
-    @Autowired
     private StatusRepository statusRepository;
 
     @Autowired
@@ -81,21 +77,18 @@ public class RequisicaoService {
         var requisicao = new Requisicao(dadosRequisicao, medico, pessoa, usuario);
 
         requisicaoRepository.save(requisicao);
-
-        var precoTotal = new BigDecimal(0);
+        
         var status = statusRepository.findByCodigo("CD").get();
         for(Long exameId : dadosRequisicao.examesId()){
             var exame = exameRepository.findById(exameId).get();
-            var layout = layoutRepository.findById(exame.getLayout().getId()).get();
-            precoTotal = precoTotal.add(exame.getPreco());
+            var layout = exame.getLayout();
 
-            var requisicaoExame = new RequisicaoExame(dadosRequisicao, layout, requisicao, exame, status);
+            var requisicaoExame = new RequisicaoExame(layout, requisicao, exame, status);
 
             requisicaoExameRepository.save(requisicaoExame);
 
             requisicao.adicionarExame(requisicaoExame);
         }
-        requisicao.setPretoTotal(precoTotal);
 
         return requisicaoRepository.save(requisicao);
     }
@@ -104,25 +97,40 @@ public class RequisicaoService {
     public Requisicao editarRequisicao(@Valid RequestEditarRequisicao dadosRequisicao) {
         var requisicao = requisicaoRepository.findById(dadosRequisicao.requisicaoId()).get();
 
+        var examesId = dadosRequisicao.examesId();
+
+        var requisicaoExamesRemover = new ArrayList<RequisicaoExame>();
+        var examesRemover = new ArrayList<Long>();
+
         //lógica: se o exame da minha lista de exames da requisição não está na nova lista, verificar se existe resultado informado -> se existir, lançar exceção, senão exclui da lista de exames
         for(RequisicaoExame requisicaoExame : requisicao.getRequisicaoExames()){
-            if(!contemId(dadosRequisicao.examesId(), requisicaoExame.getId())){
+            if(!examesId.contains(requisicaoExame.getId())){
                 if(!requisicaoExame.getItensResultado().isEmpty()){
                     throw new RequisicaoExameComResultadoException();
                 }
+                //se não tem resultado, então pode excluir da lista de exames
+                requisicaoExamesRemover.add(requisicaoExame);
+            }else{ //se contem o exame, então retira o id da lista de examesId
+                examesRemover.add(requisicaoExame.getId());
             }
         }
 
-        return null;
-    }
+        requisicaoExamesRemover.forEach(re -> requisicao.removerExame(re));
+        examesRemover.forEach(e -> examesId.remove(e));
 
-    private boolean contemId(Long[] examesId, Long id){
+        var status = statusRepository.findByCodigo("CD").get();
+
         for(Long exameId : examesId){
-            if(exameId == id){
-                return true;
-            }
+            var exame = exameRepository.findById(exameId).get();
+            var layout = exame.getLayout();
+            var requisicaoExame = new RequisicaoExame(layout, requisicao, exame, status);
+            
+            requisicaoExameRepository.save(requisicaoExame);
+
+            requisicao.adicionarExame(requisicaoExame);
         }
-        return false;
+
+        return requisicaoRepository.save(requisicao);
     }
 
 }

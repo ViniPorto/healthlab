@@ -142,4 +142,18 @@ public class RequisicaoService {
         return requisicaoRepository.save(requisicao);
     }
 
+    @Transactional
+    public void deletarRequisicao(Long id) {
+        var requisicao = requisicaoRepository.findById(id).get();
+
+        for(int i = 0; i < requisicao.getRequisicaoExames().size(); i++){
+            if(!requisicao.getRequisicaoExames().get(i).getItensResultado().isEmpty()){
+                throw new RequisicaoExameComResultadoException();
+            }
+            requisicaoExameRepository.delete(requisicao.getRequisicaoExames().get(i));
+        }
+
+        requisicaoRepository.delete(requisicao);
+    }
+
 }

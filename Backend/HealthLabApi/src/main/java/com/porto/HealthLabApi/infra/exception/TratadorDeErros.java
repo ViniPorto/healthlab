@@ -98,7 +98,7 @@ public class TratadorDeErros implements AccessDeniedHandler{
 
     @ExceptionHandler(RequisicaoExameComResultadoException.class)
     public ResponseEntity<Object> tratarErroRequisicaoExameComResultado(){
-        return responseHandler.generateResponse("Não é possível excluir exame com resultado lançado", false, HttpStatus.FORBIDDEN, null); 
+        return responseHandler.generateResponse("Não é possível excluir quando exame possui resultado lançado", false, HttpStatus.FORBIDDEN, null); 
     }
 
     @ExceptionHandler(ExameJaCadastradoException.class)

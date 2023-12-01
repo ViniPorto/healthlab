@@ -14,6 +14,7 @@ import com.porto.HealthLabApi.domain.requisicao.RequisicaoExame;
 import com.porto.HealthLabApi.domain.requisicao.RequisicaoExameItensResultado;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestCadastrarRequisicao;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestEditarRequisicao;
+import com.porto.HealthLabApi.infra.exception.exceptions.ExameJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.RequisicaoExameComResultadoException;
 import com.porto.HealthLabApi.repositories.ExameRepository;
 import com.porto.HealthLabApi.repositories.MedicoRepository;
@@ -80,6 +81,9 @@ public class RequisicaoService {
         
         var status = statusRepository.findByCodigo("CD").get();
         for(Long exameId : dadosRequisicao.examesId()){
+            if(requisicaoExameRepository.existsById(exameId, requisicao.getId())){
+                throw new ExameJaCadastradoException();
+            }
             var exame = exameRepository.findById(exameId).get();
             var layout = exame.getLayout();
 
@@ -104,23 +108,28 @@ public class RequisicaoService {
 
         //lógica: se o exame da minha lista de exames da requisição não está na nova lista, verificar se existe resultado informado -> se existir, lançar exceção, senão exclui da lista de exames
         for(RequisicaoExame requisicaoExame : requisicao.getRequisicaoExames()){
-            if(!examesId.contains(requisicaoExame.getId())){
+            if(!examesId.contains(requisicaoExame.getExame().getId())){
                 if(!requisicaoExame.getItensResultado().isEmpty()){
                     throw new RequisicaoExameComResultadoException();
                 }
                 //se não tem resultado, então pode excluir da lista de exames
                 requisicaoExamesRemover.add(requisicaoExame);
             }else{ //se contem o exame, então retira o id da lista de examesId
-                examesRemover.add(requisicaoExame.getId());
+                examesRemover.add(requisicaoExame.getExame().getId());
             }
         }
 
         requisicaoExamesRemover.forEach(re -> requisicao.removerExame(re));
+        requisicaoExamesRemover.forEach(re -> requisicaoExameRepository.delete(re));
         examesRemover.forEach(e -> examesId.remove(e));
 
         var status = statusRepository.findByCodigo("CD").get();
 
         for(Long exameId : examesId){
+            System.out.println(exameId + " " + requisicao.getId());
+            if(requisicaoExameRepository.existsById(exameId, requisicao.getId())){
+                throw new ExameJaCadastradoException();
+            }
             var exame = exameRepository.findById(exameId).get();
             var layout = exame.getLayout();
             var requisicaoExame = new RequisicaoExame(layout, requisicao, exame, status);

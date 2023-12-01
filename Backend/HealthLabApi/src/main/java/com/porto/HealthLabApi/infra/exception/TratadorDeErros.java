@@ -20,6 +20,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.porto.HealthLabApi.infra.exception.exceptions.CPFJaCadastradoException;
+import com.porto.HealthLabApi.infra.exception.exceptions.ExameJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.MedicoJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.RequisicaoExameComResultadoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.SiglaJaCadastradaException;
@@ -98,6 +99,11 @@ public class TratadorDeErros implements AccessDeniedHandler{
     @ExceptionHandler(RequisicaoExameComResultadoException.class)
     public ResponseEntity<Object> tratarErroRequisicaoExameComResultado(){
         return responseHandler.generateResponse("Não é possível excluir exame com resultado lançado", false, HttpStatus.FORBIDDEN, null); 
+    }
+
+    @ExceptionHandler(ExameJaCadastradoException.class)
+    public ResponseEntity<Object> tratarErroExameJaCadastrado(){
+        return responseHandler.generateResponse("Não é possível cadastrar o mesmo exame mais de 1 vez em uma unica requisição", false, HttpStatus.FORBIDDEN, null); 
     }
 
     private record DadosErroValidacao(String campo, String mensagem){

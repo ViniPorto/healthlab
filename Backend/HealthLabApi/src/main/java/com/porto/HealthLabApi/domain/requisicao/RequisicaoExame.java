@@ -74,4 +74,16 @@ public class RequisicaoExame {
     private LocalDateTime dataHoraTriagem;
     @OneToMany(mappedBy = "requisicaoExame", fetch = FetchType.EAGER)
     List<RequisicaoExameItensResultado> itensResultado;
+
+    public void deletarItensResultados() {
+        this.itensResultado.clear();
+    }
+
+    public void adicionarItemResultado(RequisicaoExameItensResultado itemResultado) {
+        this.itensResultado.add(itemResultado);
+    }
+
+    public void atualizarStatus(Status status) {
+        this.status = status;
+    }
 }

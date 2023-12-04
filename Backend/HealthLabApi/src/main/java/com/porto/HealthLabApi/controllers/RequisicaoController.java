@@ -26,6 +26,7 @@ import com.porto.HealthLabApi.domain.requisicao.RequisicaoExame;
 import com.porto.HealthLabApi.domain.requisicao.RequisicaoExameItensResultado;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestCadastrarRequisicao;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestEditarRequisicao;
+import com.porto.HealthLabApi.domain.requisicao.DTO.RequestInformarResultado;
 import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicao;
 import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicaoExame;
 import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicaoExameItensResultado;
@@ -80,6 +81,13 @@ public class RequisicaoController {
         requisicaoService.deletarRequisicao(id);
 
         return responseHandler.generateResponse("Excluido com sucesso", true, HttpStatus.OK, null);
+    }
+
+    @PutMapping("/informarResultado")
+    public ResponseEntity<Object> informarResultado(@RequestBody @Valid RequestInformarResultado dadosResultado){
+        var requisicao = requisicaoService.informarResultado(dadosResultado);
+
+        return responseHandler.generateResponse("Resultado informado com sucesso", true, HttpStatus.OK, new ResponseRequisicao(requisicao, toResponseRequisicaoExames(requisicao.getRequisicaoExames())));
     }
 
     private List<ResponseRequisicaoExame> toResponseRequisicaoExames(List<RequisicaoExame> requisicaoExames){

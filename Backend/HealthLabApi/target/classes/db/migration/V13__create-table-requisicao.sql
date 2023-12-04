@@ -39,7 +39,7 @@ create table RequisicaoExameItensResultado(
     RequisicaoExameItensResultadoId bigint not null auto_increment,
     RequisicaoExameItensResultadoRequisicaoExameId bigint not null,
     RequisicaoExameItensResultadoResultado varchar(100),
-    RequisicaoExameItensResultadoObservacao text,
+    RequisicaoExameItensResultadoCodigoCampo bigint not null,
 
     primary key(RequisicaoExameItensResultadoId),
     foreign key(RequisicaoExameItensResultadoRequisicaoExameId) references RequisicaoExame(RequisicaoExameId)

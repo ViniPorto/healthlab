@@ -24,6 +24,7 @@ import com.porto.HealthLabApi.infra.exception.exceptions.ExameJaCadastradoExcept
 import com.porto.HealthLabApi.infra.exception.exceptions.MedicoJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.RequisicaoExameComResultadoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.SiglaJaCadastradaException;
+import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaReceberResultado;
 import com.porto.HealthLabApi.infra.exception.exceptions.TokenJWTInvalidoOuExpiradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.TokenJWTNaoInformadoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.UsuarioNaoAdministradorException;
@@ -104,6 +105,11 @@ public class TratadorDeErros implements AccessDeniedHandler{
     @ExceptionHandler(ExameJaCadastradoException.class)
     public ResponseEntity<Object> tratarErroExameJaCadastrado(){
         return responseHandler.generateResponse("Não é possível cadastrar o mesmo exame mais de 1 vez em uma unica requisição", false, HttpStatus.FORBIDDEN, null); 
+    }
+
+    @ExceptionHandler(StatusInvalidoParaReceberResultado.class)
+    public ResponseEntity<Object> tratarErroStatusInvalidoParaReceberResultado(){
+        return responseHandler.generateResponse("Não é possível informar resultado para exame no status atual", false, HttpStatus.FORBIDDEN, null); 
     }
 
     private record DadosErroValidacao(String campo, String mensagem){

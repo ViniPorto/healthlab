@@ -14,8 +14,11 @@ import com.porto.HealthLabApi.domain.requisicao.RequisicaoExame;
 import com.porto.HealthLabApi.domain.requisicao.RequisicaoExameItensResultado;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestCadastrarRequisicao;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestEditarRequisicao;
+import com.porto.HealthLabApi.domain.requisicao.DTO.RequestInformarResultado;
+import com.porto.HealthLabApi.domain.requisicao.DTO.RequestInformarResultadoRequisicaoExameItensResultado;
 import com.porto.HealthLabApi.infra.exception.exceptions.ExameJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.RequisicaoExameComResultadoException;
+import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaReceberResultado;
 import com.porto.HealthLabApi.repositories.ExameRepository;
 import com.porto.HealthLabApi.repositories.MedicoRepository;
 import com.porto.HealthLabApi.repositories.PessoaRepository;
@@ -154,6 +157,35 @@ public class RequisicaoService {
         }
 
         requisicaoRepository.delete(requisicao);
+    }
+
+    @Transactional
+    public Requisicao informarResultado(RequestInformarResultado dadosResultado) {
+        var requisicaoExame = requisicaoExameRepository.findById(dadosResultado.requisicaoExameId()).get();
+
+        //verificar se status do exame é apto para receber resultado -> apenas é possível informar resultado caso status seja material triado ou resultado informado
+        if(!(requisicaoExame.getStatus().getCodigo().equals("MT") || requisicaoExame.getStatus().getCodigo().equals("RI"))){
+            throw new StatusInvalidoParaReceberResultado();
+        }
+
+        //deletar todos os resultados
+        requisicaoExameItensResultadoRepository.deleteByRequisicaoExame(requisicaoExame);
+        requisicaoExame.deletarItensResultados();
+
+        //cadastrar o que veio de resultado
+        for(RequestInformarResultadoRequisicaoExameItensResultado requestItensResultado : dadosResultado.camposResultado()){
+            var itemResultado = new RequisicaoExameItensResultado(requestItensResultado, requisicaoExame);
+            requisicaoExameItensResultadoRepository.save(itemResultado);
+            requisicaoExame.adicionarItemResultado(itemResultado);
+        }
+
+        var status = statusRepository.findByCodigo("RI").get();
+
+        requisicaoExame.atualizarStatus(status); //atualizando status para resultado informado
+
+        requisicaoExameRepository.save(requisicaoExame);
+
+        return requisicaoExame.getRequisicao();
     }
 
 }

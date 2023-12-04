@@ -10,5 +10,7 @@ import com.porto.HealthLabApi.domain.requisicao.RequisicaoExameItensResultado;
 public interface RequisicaoExameItensResultadoRepository extends JpaRepository<RequisicaoExameItensResultado, Long> {
 
     List<RequisicaoExameItensResultado> findByRequisicaoExame(RequisicaoExame requisicaoExame);
+
+    void deleteByRequisicaoExame(RequisicaoExame requisicaoExame);
     
 }

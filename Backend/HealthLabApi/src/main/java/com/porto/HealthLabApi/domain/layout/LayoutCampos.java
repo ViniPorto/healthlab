@@ -45,7 +45,7 @@ public class LayoutCampos {
     @Column(name = "LayoutCamposId")
     private Long id;
     @Column(name = "LayoutCamposCodigoCampo")
-    private Integer codigoCampo;
+    private Long codigoCampo;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "LayoutCamposLayoutId")
     private Layout layout;

@@ -1,5 +1,7 @@
 package com.porto.HealthLabApi.domain.requisicao;
 
+import com.porto.HealthLabApi.domain.requisicao.DTO.RequestInformarResultadoRequisicaoExameItensResultado;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -22,6 +24,12 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = "id")
 public class RequisicaoExameItensResultado {
     
+    public RequisicaoExameItensResultado(RequestInformarResultadoRequisicaoExameItensResultado requestItensResultado, RequisicaoExame requisicaoExame) {
+        this.codigoCampo = requestItensResultado.codigoCampo();
+        this.requisicaoExame = requisicaoExame;
+        this.resultado = requestItensResultado.resultado();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RequisicaoExameItensResultadoId")
@@ -31,7 +39,7 @@ public class RequisicaoExameItensResultado {
     private RequisicaoExame requisicaoExame;
     @Column(name = "RequisicaoExameItensResultadoResultado")
     private String resultado;
-    @Column(name = "RequisicaoExameItensResultadoObservacao")
-    private String observacao;
+    @Column(name = "RequisicaoExameItensResultadoCodigoCampo")
+    private Long codigoCampo;
 
 }

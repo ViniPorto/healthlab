@@ -5,11 +5,11 @@ import com.porto.HealthLabApi.domain.requisicao.RequisicaoExameItensResultado;
 public record ResponseRequisicaoExameItensResultado(
     Long requisicaoExameItensResultadoId,
     String requisicaoExameItensResultadoResultado,
-    String requisicaoExameItensResultadoObservacao
+    Long requisicaoExameItensResultadoCodigoCampo
 ) {
 
     public ResponseRequisicaoExameItensResultado(RequisicaoExameItensResultado itensResultado) {
-        this(itensResultado.getId(), itensResultado.getResultado(), itensResultado.getObservacao());
+        this(itensResultado.getId(), itensResultado.getResultado(), itensResultado.getCodigoCampo());
     }
     
 }

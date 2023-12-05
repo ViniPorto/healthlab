@@ -104,6 +104,13 @@ public class RequisicaoController {
         return responseHandler.generateResponse("Data e hora da triagem informadas com sucesso", true, HttpStatus.OK, new ResponseRequisicao(requisicao, toResponseRequisicaoExames(requisicao.getRequisicaoExames())));
     }
 
+    @DeleteMapping("/excluirResultado/{id}")
+    public ResponseEntity<Object> excluirResultado(@PathVariable Long id){
+        var requisicao = requisicaoService.excluirResultado(id);
+
+        return responseHandler.generateResponse("Resultados excluídos com sucesso", true, HttpStatus.OK, new ResponseRequisicao(requisicao, toResponseRequisicaoExames(requisicao.getRequisicaoExames())));
+    }
+
     private List<ResponseRequisicaoExame> toResponseRequisicaoExames(List<RequisicaoExame> requisicaoExames){
         List<ResponseRequisicaoExame> responseRequisicaoExames = new ArrayList<>();
         for(RequisicaoExame requisicaoExame : requisicaoExames){

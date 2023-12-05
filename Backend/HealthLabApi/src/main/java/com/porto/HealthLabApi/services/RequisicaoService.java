@@ -204,6 +204,7 @@ public class RequisicaoService {
         return requisicaoExame.getRequisicao();
     }
 
+    @Transactional
     public Requisicao informarTriagem(Long id) {
         var requisicaoExame = requisicaoExameRepository.findById(id).get();
         var status = statusRepository.findByCodigo("MT").get();
@@ -213,6 +214,24 @@ public class RequisicaoService {
         }
 
         requisicaoExame.atualizarDataHoraTriagem();
+        requisicaoExame.atualizarStatus(status);
+
+        requisicaoExameRepository.save(requisicaoExame);
+
+        return requisicaoExame.getRequisicao();
+    }
+
+    @Transactional
+    public Requisicao excluirResultado(Long id) {
+        var requisicaoExame = requisicaoExameRepository.findById(id).get();
+        var status = statusRepository.findByCodigo("MT").get();
+
+        if(!requisicaoExame.getStatus().getCodigo().equals("RI")){
+            throw new StatusInvalidoParaRealizarOperacao("Excluir Resultado - Status: " + requisicaoExame.getStatus().getNome());
+        }
+
+        requisicaoExameItensResultadoRepository.deleteByRequisicaoExame(requisicaoExame);
+        requisicaoExame.deletarItensResultados();
         requisicaoExame.atualizarStatus(status);
 
         requisicaoExameRepository.save(requisicaoExame);

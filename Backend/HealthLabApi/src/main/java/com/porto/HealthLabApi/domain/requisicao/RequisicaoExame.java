@@ -86,4 +86,8 @@ public class RequisicaoExame {
     public void atualizarStatus(Status status) {
         this.status = status;
     }
+
+    public void atualizarDataHoraColeta() {
+        this.dataHoraColeta = LocalDateTime.now();
+    }
 }

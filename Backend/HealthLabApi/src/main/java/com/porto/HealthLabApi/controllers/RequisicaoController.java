@@ -90,6 +90,13 @@ public class RequisicaoController {
         return responseHandler.generateResponse("Resultado informado com sucesso", true, HttpStatus.OK, new ResponseRequisicao(requisicao, toResponseRequisicaoExames(requisicao.getRequisicaoExames())));
     }
 
+    @PostMapping("/informarColeta/{id}")
+    public ResponseEntity<Object> informarColeta(@PathVariable Long id){
+        var requisicao = requisicaoService.informarColeta(id);
+
+        return responseHandler.generateResponse("Data e hora da coleta informados com sucesso", true, HttpStatus.OK, new ResponseRequisicao(requisicao, toResponseRequisicaoExames(requisicao.getRequisicaoExames())));
+    }
+
     private List<ResponseRequisicaoExame> toResponseRequisicaoExames(List<RequisicaoExame> requisicaoExames){
         List<ResponseRequisicaoExame> responseRequisicaoExames = new ArrayList<>();
         for(RequisicaoExame requisicaoExame : requisicaoExames){

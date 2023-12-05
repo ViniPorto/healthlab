@@ -18,6 +18,7 @@ import com.porto.HealthLabApi.domain.requisicao.DTO.RequestInformarResultado;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestInformarResultadoRequisicaoExameItensResultado;
 import com.porto.HealthLabApi.infra.exception.exceptions.ExameJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.RequisicaoExameComResultadoException;
+import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaInformarDataHoraColeta;
 import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaReceberResultado;
 import com.porto.HealthLabApi.repositories.ExameRepository;
 import com.porto.HealthLabApi.repositories.MedicoRepository;
@@ -129,7 +130,6 @@ public class RequisicaoService {
         var status = statusRepository.findByCodigo("CD").get();
 
         for(Long exameId : examesId){
-            System.out.println(exameId + " " + requisicao.getId());
             if(requisicaoExameRepository.existsById(exameId, requisicao.getId())){
                 throw new ExameJaCadastradoException();
             }
@@ -182,6 +182,23 @@ public class RequisicaoService {
         var status = statusRepository.findByCodigo("RI").get();
 
         requisicaoExame.atualizarStatus(status); //atualizando status para resultado informado
+
+        requisicaoExameRepository.save(requisicaoExame);
+
+        return requisicaoExame.getRequisicao();
+    }
+
+    @Transactional
+    public Requisicao informarColeta(Long id) {
+        var requisicaoExame = requisicaoExameRepository.findById(id).get();
+        var status = statusRepository.findByCodigo("MC").get();
+
+        if(!requisicaoExame.getStatus().getCodigo().equals("CD")){ //só pode informar data e hora de coleta se o status do exame for exame cadastrado
+            throw new StatusInvalidoParaInformarDataHoraColeta();
+        }
+
+        requisicaoExame.atualizarDataHoraColeta();
+        requisicaoExame.atualizarStatus(status);
 
         requisicaoExameRepository.save(requisicaoExame);
 

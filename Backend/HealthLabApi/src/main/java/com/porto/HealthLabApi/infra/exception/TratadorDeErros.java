@@ -24,6 +24,7 @@ import com.porto.HealthLabApi.infra.exception.exceptions.ExameJaCadastradoExcept
 import com.porto.HealthLabApi.infra.exception.exceptions.MedicoJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.RequisicaoExameComResultadoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.SiglaJaCadastradaException;
+import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaInformarDataHoraColeta;
 import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaReceberResultado;
 import com.porto.HealthLabApi.infra.exception.exceptions.TokenJWTInvalidoOuExpiradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.TokenJWTNaoInformadoException;
@@ -99,7 +100,7 @@ public class TratadorDeErros implements AccessDeniedHandler{
 
     @ExceptionHandler(RequisicaoExameComResultadoException.class)
     public ResponseEntity<Object> tratarErroRequisicaoExameComResultado(){
-        return responseHandler.generateResponse("Não é possível excluir quando exame possui resultado lançado", false, HttpStatus.FORBIDDEN, null); 
+        return responseHandler.generateResponse("Não é possível excluir exame quando há resultado lançado", false, HttpStatus.FORBIDDEN, null); 
     }
 
     @ExceptionHandler(ExameJaCadastradoException.class)
@@ -110,6 +111,11 @@ public class TratadorDeErros implements AccessDeniedHandler{
     @ExceptionHandler(StatusInvalidoParaReceberResultado.class)
     public ResponseEntity<Object> tratarErroStatusInvalidoParaReceberResultado(){
         return responseHandler.generateResponse("Não é possível informar resultado para exame no status atual", false, HttpStatus.FORBIDDEN, null); 
+    }
+
+    @ExceptionHandler(StatusInvalidoParaInformarDataHoraColeta.class)
+    public ResponseEntity<Object> tratarErroStatusInvalidoParaInformarDataHoraColeta(){
+        return responseHandler.generateResponse("Não é possível informar data e hora de coleta para exame no status atual", false, HttpStatus.FORBIDDEN, null); 
     }
 
     private record DadosErroValidacao(String campo, String mensagem){

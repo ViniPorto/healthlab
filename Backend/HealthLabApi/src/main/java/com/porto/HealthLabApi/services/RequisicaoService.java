@@ -18,8 +18,7 @@ import com.porto.HealthLabApi.domain.requisicao.DTO.RequestInformarResultado;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestInformarResultadoRequisicaoExameItensResultado;
 import com.porto.HealthLabApi.infra.exception.exceptions.ExameJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.RequisicaoExameComResultadoException;
-import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaInformarDataHoraColeta;
-import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaReceberResultado;
+import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaRealizarOperacao;
 import com.porto.HealthLabApi.repositories.ExameRepository;
 import com.porto.HealthLabApi.repositories.MedicoRepository;
 import com.porto.HealthLabApi.repositories.PessoaRepository;
@@ -165,7 +164,7 @@ public class RequisicaoService {
 
         //verificar se status do exame é apto para receber resultado -> apenas é possível informar resultado caso status seja material triado ou resultado informado
         if(!(requisicaoExame.getStatus().getCodigo().equals("MT") || requisicaoExame.getStatus().getCodigo().equals("RI"))){
-            throw new StatusInvalidoParaReceberResultado();
+            throw new StatusInvalidoParaRealizarOperacao("Informar Resultado - Status: " + requisicaoExame.getStatus().getNome());
         }
 
         //deletar todos os resultados
@@ -194,10 +193,26 @@ public class RequisicaoService {
         var status = statusRepository.findByCodigo("MC").get();
 
         if(!requisicaoExame.getStatus().getCodigo().equals("CD")){ //só pode informar data e hora de coleta se o status do exame for exame cadastrado
-            throw new StatusInvalidoParaInformarDataHoraColeta();
+            throw new StatusInvalidoParaRealizarOperacao("Informar Coleta - Status: " + requisicaoExame.getStatus().getNome());
         }
 
         requisicaoExame.atualizarDataHoraColeta();
+        requisicaoExame.atualizarStatus(status);
+
+        requisicaoExameRepository.save(requisicaoExame);
+
+        return requisicaoExame.getRequisicao();
+    }
+
+    public Requisicao informarTriagem(Long id) {
+        var requisicaoExame = requisicaoExameRepository.findById(id).get();
+        var status = statusRepository.findByCodigo("MT").get();
+
+        if(!requisicaoExame.getStatus().getCodigo().equals("MC")){
+            throw new StatusInvalidoParaRealizarOperacao("Informar Triagem - Status: " + requisicaoExame.getStatus().getNome());
+        }
+
+        requisicaoExame.atualizarDataHoraTriagem();
         requisicaoExame.atualizarStatus(status);
 
         requisicaoExameRepository.save(requisicaoExame);

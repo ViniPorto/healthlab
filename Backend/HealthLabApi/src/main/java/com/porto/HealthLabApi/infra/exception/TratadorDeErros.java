@@ -24,8 +24,7 @@ import com.porto.HealthLabApi.infra.exception.exceptions.ExameJaCadastradoExcept
 import com.porto.HealthLabApi.infra.exception.exceptions.MedicoJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.RequisicaoExameComResultadoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.SiglaJaCadastradaException;
-import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaInformarDataHoraColeta;
-import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaReceberResultado;
+import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaRealizarOperacao;
 import com.porto.HealthLabApi.infra.exception.exceptions.TokenJWTInvalidoOuExpiradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.TokenJWTNaoInformadoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.UsuarioNaoAdministradorException;
@@ -108,14 +107,9 @@ public class TratadorDeErros implements AccessDeniedHandler{
         return responseHandler.generateResponse("Não é possível cadastrar o mesmo exame mais de 1 vez em uma unica requisição", false, HttpStatus.FORBIDDEN, null); 
     }
 
-    @ExceptionHandler(StatusInvalidoParaReceberResultado.class)
-    public ResponseEntity<Object> tratarErroStatusInvalidoParaReceberResultado(){
-        return responseHandler.generateResponse("Não é possível informar resultado para exame no status atual", false, HttpStatus.FORBIDDEN, null); 
-    }
-
-    @ExceptionHandler(StatusInvalidoParaInformarDataHoraColeta.class)
-    public ResponseEntity<Object> tratarErroStatusInvalidoParaInformarDataHoraColeta(){
-        return responseHandler.generateResponse("Não é possível informar data e hora de coleta para exame no status atual", false, HttpStatus.FORBIDDEN, null); 
+    @ExceptionHandler(StatusInvalidoParaRealizarOperacao.class)
+    public ResponseEntity<Object> tratarErroStatusInvalidoParaRealizarOperacao(StatusInvalidoParaRealizarOperacao ex){
+        return responseHandler.generateResponse("Não é possível realizar a operação para o status atual: " + ex.getMessage(), false, HttpStatus.FORBIDDEN, null); 
     }
 
     private record DadosErroValidacao(String campo, String mensagem){

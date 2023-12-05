@@ -90,4 +90,8 @@ public class RequisicaoExame {
     public void atualizarDataHoraColeta() {
         this.dataHoraColeta = LocalDateTime.now();
     }
+
+    public void atualizarDataHoraTriagem() {
+        this.dataHoraTriagem = LocalDateTime.now();
+    }
 }

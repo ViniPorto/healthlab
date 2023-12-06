@@ -5,4 +5,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RequisicaoExameComResultadoException extends RuntimeException {
 
+    public RequisicaoExameComResultadoException(String msg){
+        super(msg);
+    }
+
 }

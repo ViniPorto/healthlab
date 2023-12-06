@@ -113,7 +113,7 @@ public class RequisicaoService {
         for(RequisicaoExame requisicaoExame : requisicao.getRequisicaoExames()){
             if(!examesId.contains(requisicaoExame.getExame().getId())){
                 if(!requisicaoExame.getItensResultado().isEmpty()){
-                    throw new RequisicaoExameComResultadoException();
+                    throw new RequisicaoExameComResultadoException("Excluir exame");
                 }
                 //se não tem resultado, então pode excluir da lista de exames
                 requisicaoExamesRemover.add(requisicaoExame);
@@ -150,7 +150,7 @@ public class RequisicaoService {
 
         for(int i = 0; i < requisicao.getRequisicaoExames().size(); i++){
             if(!requisicao.getRequisicaoExames().get(i).getItensResultado().isEmpty()){
-                throw new RequisicaoExameComResultadoException();
+                throw new RequisicaoExameComResultadoException("Deletar requisição");
             }
             requisicaoExameRepository.delete(requisicao.getRequisicaoExames().get(i));
         }
@@ -228,6 +228,24 @@ public class RequisicaoService {
 
         if(!requisicaoExame.getStatus().getCodigo().equals("RI")){
             throw new StatusInvalidoParaRealizarOperacao("Excluir Resultado - Status: " + requisicaoExame.getStatus().getNome());
+        }
+
+        requisicaoExameItensResultadoRepository.deleteByRequisicaoExame(requisicaoExame);
+        requisicaoExame.deletarItensResultados();
+        requisicaoExame.atualizarStatus(status);
+
+        requisicaoExameRepository.save(requisicaoExame);
+
+        return requisicaoExame.getRequisicao();
+    }
+
+    @Transactional
+    public Requisicao cancelarExame(Long id) {
+        var requisicaoExame = requisicaoExameRepository.findById(id).get();
+        var status = statusRepository.findByCodigo("CA").get();
+
+        if(requisicaoExame.getStatus().getCodigo() == "CA" || requisicaoExame.getStatus().getCodigo() == "RL"){
+            throw new StatusInvalidoParaRealizarOperacao("Cancelar Exame - Status: " + requisicaoExame.getStatus().getNome());
         }
 
         requisicaoExameItensResultadoRepository.deleteByRequisicaoExame(requisicaoExame);

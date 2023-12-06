@@ -111,6 +111,13 @@ public class RequisicaoController {
         return responseHandler.generateResponse("Resultados excluídos com sucesso", true, HttpStatus.OK, new ResponseRequisicao(requisicao, toResponseRequisicaoExames(requisicao.getRequisicaoExames())));
     }
 
+    @DeleteMapping("/cancelarExame/{id}")
+    public ResponseEntity<Object> cancelarExame(@PathVariable Long id){
+        var requisicao = requisicaoService.cancelarExame(id);
+
+        return responseHandler.generateResponse("Exame cancelado com sucesso", true, HttpStatus.OK, new ResponseRequisicao(requisicao, toResponseRequisicaoExames(requisicao.getRequisicaoExames())));
+    }
+
     private List<ResponseRequisicaoExame> toResponseRequisicaoExames(List<RequisicaoExame> requisicaoExames){
         List<ResponseRequisicaoExame> responseRequisicaoExames = new ArrayList<>();
         for(RequisicaoExame requisicaoExame : requisicaoExames){

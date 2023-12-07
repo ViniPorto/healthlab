@@ -17,6 +17,7 @@ import com.porto.HealthLabApi.domain.requisicao.DTO.RequestCadastrarRequisicao;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestEditarRequisicao;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestInformarResultado;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestInformarResultadoRequisicaoExameItensResultado;
+import com.porto.HealthLabApi.domain.requisicao.DTO.RequestSolicitarRecoleta;
 import com.porto.HealthLabApi.infra.exception.exceptions.ExameJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.RequisicaoExameComResultadoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaRealizarOperacao;
@@ -25,6 +26,7 @@ import com.porto.HealthLabApi.infra.security.SecurityFilter;
 import com.porto.HealthLabApi.repositories.BioquimicoRepository;
 import com.porto.HealthLabApi.repositories.ExameRepository;
 import com.porto.HealthLabApi.repositories.MedicoRepository;
+import com.porto.HealthLabApi.repositories.MotivoRecoletaRepository;
 import com.porto.HealthLabApi.repositories.PessoaRepository;
 import com.porto.HealthLabApi.repositories.RequisicaoExameItensResultadoRepository;
 import com.porto.HealthLabApi.repositories.RequisicaoExameRepository;
@@ -65,6 +67,9 @@ public class RequisicaoService {
 
     @Autowired
     private BioquimicoRepository bioquimicoRepository;
+
+    @Autowired
+    private MotivoRecoletaRepository motivoRecoletaRepository;
 
     @Autowired
     private RequisicaoExameItensResultadoRepository requisicaoExameItensResultadoRepository;
@@ -203,8 +208,12 @@ public class RequisicaoService {
         var requisicaoExame = requisicaoExameRepository.findById(id).get();
         var status = statusRepository.findByCodigo("MC").get();
 
-        if(!requisicaoExame.getStatus().getCodigo().equals("CD")){ //só pode informar data e hora de coleta se o status do exame for exame cadastrado
+        if(!(requisicaoExame.getStatus().getCodigo().equals("CD") || requisicaoExame.getStatus().getCodigo().equals("SR"))){ //só pode informar data e hora de coleta se o status do exame for exame cadastrado
             throw new StatusInvalidoParaRealizarOperacao("Informar Coleta - Status: " + requisicaoExame.getStatus().getNome());
+        }
+
+        if(requisicaoExame.getStatus().getCodigo().equals("SR")){
+            requisicaoExame.setMotivoRecoleta(null);
         }
 
         requisicaoExame.atualizarDataHoraColeta();
@@ -268,6 +277,7 @@ public class RequisicaoService {
         return requisicaoExame.getRequisicao();
     }
 
+    @Transactional
     public Requisicao liberarResultado(Long id, HttpServletRequest request) {
         var requisicaoExame = requisicaoExameRepository.findById(id).get();
         var status = statusRepository.findByCodigo("RL").get();
@@ -286,6 +296,52 @@ public class RequisicaoService {
         requisicaoExame.atualizarStatus(status);
         requisicaoExame.setBioquimico(bioquimico);
         requisicaoExame.setBioquimicoAssinatura(bioquimico.getAssinatura());
+
+        requisicaoExameRepository.save(requisicaoExame);
+
+        return requisicaoExame.getRequisicao();
+    }
+
+    @Transactional
+    public Requisicao solicitarRecoleta(RequestSolicitarRecoleta dadosRecoleta, HttpServletRequest request) {
+        var requisicaoExame = requisicaoExameRepository.findById(dadosRecoleta.requisicaoExameId()).get();
+        var status = statusRepository.findByCodigo("SR").get();
+        var usuario = extrairUsuario(request);
+        var motivoRecoleta = motivoRecoletaRepository.findById(dadosRecoleta.motivoRecoletaId()).get();
+
+        if(!bioquimicoRepository.existsByUsuario(usuario)){
+            throw new UsuarioNaoBioquimicoException();
+        }
+
+        if(!(requisicaoExame.getStatus().getCodigo().equals("RI") || requisicaoExame.getStatus().getCodigo().equals("MT"))){
+            throw new StatusInvalidoParaRealizarOperacao("Solicitar Recoleta - Status: " + requisicaoExame.getStatus().getNome());
+        }
+
+        requisicaoExame.atualizarStatus(status);
+        requisicaoExame.setMotivoRecoleta(motivoRecoleta);
+
+        requisicaoExameRepository.save(requisicaoExame);
+
+        return requisicaoExame.getRequisicao();
+    }
+
+    @Transactional
+    public Requisicao cancelarLiberacao(Long id, HttpServletRequest request) {
+        var requisicaoExame = requisicaoExameRepository.findById(id).get();
+        var status = statusRepository.findByCodigo("RI").get();
+        var usuario = extrairUsuario(request);
+
+        if(!bioquimicoRepository.existsByUsuario(usuario)){
+            throw new UsuarioNaoBioquimicoException();
+        }
+
+        if(!requisicaoExame.getStatus().getCodigo().equals("RL")){
+            throw new StatusInvalidoParaRealizarOperacao("Cancelar Liberação - Status: " + requisicaoExame.getStatus().getNome());
+        }
+
+        requisicaoExame.atualizarStatus(status);
+        requisicaoExame.setBioquimico(null);
+        requisicaoExame.setBioquimicoAssinatura(null);
 
         requisicaoExameRepository.save(requisicaoExame);
 

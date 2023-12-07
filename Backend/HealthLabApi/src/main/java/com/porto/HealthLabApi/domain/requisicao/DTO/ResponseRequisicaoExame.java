@@ -25,7 +25,6 @@ public record ResponseRequisicaoExame(
     boolean requisicaoExameImpresso,
     ResponseMotivoRecoleta requisicaoExameMotivoRecoleta,
     ResponseBioquimico requisicaoExameBioquimico,
-    String requisicaoExameBioquimicoAssinatura,
     Status requisicaoExameStatusCodigo,
     List<ResponseRequisicaoExameItensResultado> requisicaoExameItensResultado
 ) {
@@ -44,7 +43,6 @@ public record ResponseRequisicaoExame(
             requisicaoExame.isExameImpresso(),
             requisicaoExame.getMotivoRecoleta() != null ? new ResponseMotivoRecoleta(requisicaoExame.getMotivoRecoleta()) : null,
             requisicaoExame.getBioquimico() != null ? new ResponseBioquimico(requisicaoExame.getBioquimico(), new ResponseUsuario(requisicaoExame.getBioquimico().getUsuario())) : null,
-            requisicaoExame.getBioquimicoAssinatura(),
             requisicaoExame.getStatus(),
             responseItensResultado);
     }

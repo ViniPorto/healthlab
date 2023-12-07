@@ -27,6 +27,7 @@ import com.porto.HealthLabApi.domain.requisicao.RequisicaoExameItensResultado;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestCadastrarRequisicao;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestEditarRequisicao;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestInformarResultado;
+import com.porto.HealthLabApi.domain.requisicao.DTO.RequestSolicitarRecoleta;
 import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicao;
 import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicaoExame;
 import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicaoExameItensResultado;
@@ -124,6 +125,20 @@ public class RequisicaoController {
         var requisicao = requisicaoService.liberarResultado(id, request);
         
         return responseHandler.generateResponse("Resultado liberado com sucesso", true, HttpStatus.OK, new ResponseRequisicao(requisicao, toResponseRequisicaoExames(requisicao.getRequisicaoExames())));
+    }
+
+    @PostMapping("/solicitarRecoleta")
+    public ResponseEntity<Object> solicitarRecoleta(@RequestBody @Valid RequestSolicitarRecoleta dadosRecoleta, HttpServletRequest request) {
+        var requisicao = requisicaoService.solicitarRecoleta(dadosRecoleta, request);
+        
+        return responseHandler.generateResponse("Solicitado recoleta com sucesso", true, HttpStatus.OK, new ResponseRequisicao(requisicao, toResponseRequisicaoExames(requisicao.getRequisicaoExames())));
+    }
+    
+    @DeleteMapping("/cancelarLiberacao/{id}")
+    public ResponseEntity<Object> cancelarLiberacao(@PathVariable Long id, HttpServletRequest request){
+        var requisicao = requisicaoService.cancelarLiberacao(id, request);
+
+        return responseHandler.generateResponse("Cancelado liberação com sucesso", true, HttpStatus.OK, new ResponseRequisicao(requisicao, toResponseRequisicaoExames(requisicao.getRequisicaoExames())));
     }
     
 

@@ -28,6 +28,7 @@ import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaReali
 import com.porto.HealthLabApi.infra.exception.exceptions.TokenJWTInvalidoOuExpiradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.TokenJWTNaoInformadoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.UsuarioNaoAdministradorException;
+import com.porto.HealthLabApi.infra.exception.exceptions.UsuarioNaoBioquimicoException;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -64,7 +65,7 @@ public class TratadorDeErros implements AccessDeniedHandler{
 
     @ExceptionHandler(UsuarioNaoAdministradorException.class)
     public ResponseEntity<Object> tratarErroUsuarioNaoAdministrador(){
-        return responseHandler.generateResponse("Usuário sem permissão para realizar ação", false, HttpStatus.FORBIDDEN, null);
+        return responseHandler.generateResponse("Usuário deve ser administrador para realizar a ação", false, HttpStatus.FORBIDDEN, null);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
@@ -110,6 +111,11 @@ public class TratadorDeErros implements AccessDeniedHandler{
     @ExceptionHandler(StatusInvalidoParaRealizarOperacao.class)
     public ResponseEntity<Object> tratarErroStatusInvalidoParaRealizarOperacao(StatusInvalidoParaRealizarOperacao ex){
         return responseHandler.generateResponse("Não é possível realizar a operação para o status atual: " + ex.getMessage(), false, HttpStatus.FORBIDDEN, null); 
+    }
+
+    @ExceptionHandler(UsuarioNaoBioquimicoException.class)
+    public ResponseEntity<Object> tratarErroUsuarioNaoBioquimico(){
+        return responseHandler.generateResponse("Usuário deve ser bioquimico para realizar a ação", false, HttpStatus.FORBIDDEN, null); 
     }
 
     private record DadosErroValidacao(String campo, String mensagem){

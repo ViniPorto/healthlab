@@ -34,6 +34,7 @@ import com.porto.HealthLabApi.services.LayoutService;
 import com.porto.HealthLabApi.services.RequisicaoService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -118,6 +119,14 @@ public class RequisicaoController {
         return responseHandler.generateResponse("Exame cancelado com sucesso", true, HttpStatus.OK, new ResponseRequisicao(requisicao, toResponseRequisicaoExames(requisicao.getRequisicaoExames())));
     }
 
+    @PostMapping("/liberarResultado/{id}")
+    public ResponseEntity<Object> liberarResultado(@PathVariable Long id, HttpServletRequest request) {
+        var requisicao = requisicaoService.liberarResultado(id, request);
+        
+        return responseHandler.generateResponse("Resultado liberado com sucesso", true, HttpStatus.OK, new ResponseRequisicao(requisicao, toResponseRequisicaoExames(requisicao.getRequisicaoExames())));
+    }
+    
+
     private List<ResponseRequisicaoExame> toResponseRequisicaoExames(List<RequisicaoExame> requisicaoExames){
         List<ResponseRequisicaoExame> responseRequisicaoExames = new ArrayList<>();
         for(RequisicaoExame requisicaoExame : requisicaoExames){
@@ -137,4 +146,5 @@ public class RequisicaoController {
         }
         return responseRequisicaoExames;
     }
+
 }

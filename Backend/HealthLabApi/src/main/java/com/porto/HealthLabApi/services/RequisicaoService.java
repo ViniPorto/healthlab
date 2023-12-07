@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.porto.HealthLabApi.domain.medico.Medico;
@@ -19,6 +20,9 @@ import com.porto.HealthLabApi.domain.requisicao.DTO.RequestInformarResultadoRequ
 import com.porto.HealthLabApi.infra.exception.exceptions.ExameJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.RequisicaoExameComResultadoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaRealizarOperacao;
+import com.porto.HealthLabApi.infra.exception.exceptions.UsuarioNaoBioquimicoException;
+import com.porto.HealthLabApi.infra.security.SecurityFilter;
+import com.porto.HealthLabApi.repositories.BioquimicoRepository;
 import com.porto.HealthLabApi.repositories.ExameRepository;
 import com.porto.HealthLabApi.repositories.MedicoRepository;
 import com.porto.HealthLabApi.repositories.PessoaRepository;
@@ -28,6 +32,7 @@ import com.porto.HealthLabApi.repositories.RequisicaoRepository;
 import com.porto.HealthLabApi.repositories.StatusRepository;
 import com.porto.HealthLabApi.repositories.UsuarioRepository;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -54,6 +59,12 @@ public class RequisicaoService {
 
     @Autowired
     private StatusRepository statusRepository;
+
+    @Autowired
+    private TokenService tokenService;
+
+    @Autowired
+    private BioquimicoRepository bioquimicoRepository;
 
     @Autowired
     private RequisicaoExameItensResultadoRepository requisicaoExameItensResultadoRepository;
@@ -255,6 +266,37 @@ public class RequisicaoService {
         requisicaoExameRepository.save(requisicaoExame);
 
         return requisicaoExame.getRequisicao();
+    }
+
+    public Requisicao liberarResultado(Long id, HttpServletRequest request) {
+        var requisicaoExame = requisicaoExameRepository.findById(id).get();
+        var status = statusRepository.findByCodigo("RL").get();
+        var usuario = extrairUsuario(request);
+
+        if(!bioquimicoRepository.existsByUsuario(usuario)){
+            throw new UsuarioNaoBioquimicoException();
+        }
+
+        var bioquimico = bioquimicoRepository.findByUsuario(usuario);
+
+        if(!requisicaoExame.getStatus().getCodigo().equals("RI")){
+            throw new StatusInvalidoParaRealizarOperacao("Liberar Resultado - Status: " + requisicaoExame.getStatus().getNome());
+        }
+
+        requisicaoExame.atualizarStatus(status);
+        requisicaoExame.setBioquimico(bioquimico);
+        requisicaoExame.setBioquimicoAssinatura(bioquimico.getAssinatura());
+
+        requisicaoExameRepository.save(requisicaoExame);
+
+        return requisicaoExame.getRequisicao();
+    }
+
+    private UserDetails extrairUsuario(HttpServletRequest request){
+        var tokenJWT = SecurityFilter.recuperarToken(request);
+        var subject = tokenService.getSubject(tokenJWT);
+        var usuario = usuarioRepository.findByLogin(subject);
+        return usuario;
     }
 
 }

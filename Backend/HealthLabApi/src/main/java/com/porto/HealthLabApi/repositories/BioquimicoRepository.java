@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import com.porto.HealthLabApi.domain.bioquimico.Bioquimico;
@@ -18,5 +19,9 @@ public interface BioquimicoRepository extends JpaRepository<Bioquimico, Long> {
             (:nome is null or b.nome LIKE %:nome%)
             """)
     List<Bioquimico> findAll(Pageable paginacao, @Param("nome") String nome);
+
+    boolean existsByUsuario(UserDetails usuario);
+
+    Bioquimico findByUsuario(UserDetails usuario);
     
 }

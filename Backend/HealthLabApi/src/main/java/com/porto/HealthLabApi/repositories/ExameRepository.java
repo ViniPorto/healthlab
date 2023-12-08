@@ -25,5 +25,7 @@ public interface ExameRepository extends JpaRepository<Exame, Long> {
     boolean existsBySigla(String sigla);
 
     Optional<Exame> findById(Integer exameId);
+
+    List<Exame> findByPrincipalTrue(Pageable paginacao);
     
 }

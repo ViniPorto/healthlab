@@ -86,6 +86,15 @@ public class ExameController {
         return responseHandler.generateResponse("Deletado com sucesso", true, HttpStatus.OK, null);
     }
 
+    @GetMapping("/principais")
+    public ResponseEntity<Object> listarExamesPrincipais(@PageableDefault(size = 10, sort = {"titulo"}) Pageable paginacao){
+        var exames = exameService.listarExamesPrincipais(paginacao);
+
+        var responseExames = exames.stream().map(e -> toResponseExame(e)).toList();
+
+        return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, responseExames);
+    }
+
     private ResponseExame toResponseExame(Exame exame){
         var responseSetor = new ResponseSetor(exame.getSetor());
 

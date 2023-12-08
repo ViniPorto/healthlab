@@ -18,5 +18,11 @@ public interface RequisicaoExameRepository extends JpaRepository<RequisicaoExame
             WHERE Rex.exame.id = :exameId AND Rex.requisicao.id = :requisicaoId
             """)
     boolean existsById(@Param("exameId") Long exameId, @Param("requisicaoId") Long requisicaoId);
+
+    @Query(value = """
+            SELECT Re FROM RequisicaoExame Re
+            WHERE Re.status.codigo NOT IN ('RL', 'CA') AND Re.dataHoraColeta IS NOT NULL
+            """)
+    List<RequisicaoExame> listarExamesNaoLiberados();
     
 }

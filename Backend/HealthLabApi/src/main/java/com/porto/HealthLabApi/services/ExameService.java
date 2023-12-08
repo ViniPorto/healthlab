@@ -102,6 +102,10 @@ public class ExameService {
         return exameRepository.existsBySigla(sigla);
     }
 
+    public List<Exame> listarExamesPrincipais(Pageable paginacao) {
+        return exameRepository.findByPrincipalTrue(paginacao);
+    }
+
     
     
 

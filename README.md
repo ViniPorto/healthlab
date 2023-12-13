@@ -115,6 +115,13 @@ Este projeto é divido em 2 partes:
 
 💡O Frontend precisa que o Backend esteja sendo executado para funcionar.
 
+## 🛠 Próximos passos
+
+### 🌟 Implementar o front end em um ambiente Desktop com a linguagem Delphi ✨
+
+---
+
+
 ### Pré-requisitos
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
@@ -185,10 +192,6 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 > Veja o arquivo  [package.json](https://github.com/viniporto/healthlab/blob/master/web/package.json)
 -->
-
-## 💡Próximos passos
-
-🌟 Implementar o front end em um ambiente Desktop com a linguagem Delphi ✨
 
 #### **Server**  ([Java](https://www.java.com/pt-BR/)  +  [Spring](https://spring.io/projects/spring-boot))
 

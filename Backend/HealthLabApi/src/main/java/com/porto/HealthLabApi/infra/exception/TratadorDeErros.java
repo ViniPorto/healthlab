@@ -19,6 +19,7 @@ import org.springframework.web.client.HttpServerErrorException.InternalServerErr
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.porto.HealthLabApi.infra.exception.exceptions.AgendamentoJaCadastradoNoHorarioException;
 import com.porto.HealthLabApi.infra.exception.exceptions.CPFJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.ExameJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.MedicoJaCadastradoException;
@@ -116,6 +117,11 @@ public class TratadorDeErros implements AccessDeniedHandler{
     @ExceptionHandler(UsuarioNaoBioquimicoException.class)
     public ResponseEntity<Object> tratarErroUsuarioNaoBioquimico(){
         return responseHandler.generateResponse("Usuário deve ser bioquimico para realizar a ação", false, HttpStatus.FORBIDDEN, null); 
+    }
+
+    @ExceptionHandler(AgendamentoJaCadastradoNoHorarioException.class)
+    public ResponseEntity<Object> tratarErroAgendamentoJaCadastradoNoHorario(AgendamentoJaCadastradoNoHorarioException ex){
+        return responseHandler.generateResponse("Já existe agendamento cadastrado no horário informado: " + ex.getMessage(), false, HttpStatus.FORBIDDEN, null); 
     }
 
     private record DadosErroValidacao(String campo, String mensagem){

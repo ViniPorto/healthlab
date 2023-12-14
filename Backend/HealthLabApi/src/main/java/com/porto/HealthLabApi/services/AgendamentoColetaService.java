@@ -37,7 +37,7 @@ public class AgendamentoColetaService {
     @Transactional
     public AgendamentoColeta cadastrarAgendamentoColeta(RequestCadastrarAgendamentoColeta dadosAgendamentoColeta) {
         if(agendamentoColetaRepository.existsByDataHoraColeta(dadosAgendamentoColeta.dataHoraColeta())){
-            throw new AgendamentoJaCadastradoNoHorarioException("" + dadosAgendamentoColeta.dataHoraColeta());
+            throw new AgendamentoJaCadastradoNoHorarioException(dadosAgendamentoColeta.dataHoraColeta().toString());
         }
         var pessoa = pessoaRepository.findById(dadosAgendamentoColeta.pessoaId()).get();
         var requisicao = requisicaoRepository.findById(dadosAgendamentoColeta.requisicaoId()).get();

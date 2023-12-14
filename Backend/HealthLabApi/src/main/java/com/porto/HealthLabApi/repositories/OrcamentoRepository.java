@@ -7,16 +7,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.porto.HealthLabApi.domain.requisicao.Requisicao;
+import com.porto.HealthLabApi.domain.orcamento.Orcamento;
 
 @Repository
-public interface RequisicaoRepository extends JpaRepository<Requisicao, Long> {
+public interface OrcamentoRepository extends JpaRepository<Orcamento, Long> {
 
     @Query(value = """
-            SELECT r FROM Requisicao r WHERE
-            (:pessoa is null or r.pessoa.nome LIKE %:pessoa%)
-            AND (:id is null or r.id = :id)
+            SELECT o FROM Orcamento o WHERE
+            (:pessoaNome is null or o.pessoa.nome LIKE %:pessoaNome%)
+            AND (:id is null or o.id = :id)
             """)
-    Page<Requisicao> findAll(Pageable paginacao, @Param("pessoa") String pessoaNome, @Param("id") Integer id);
+    Page<Orcamento> findAll(Pageable paginacao, @Param("pessoaNome") String pessoaNome, @Param("id") Integer id);
     
 }

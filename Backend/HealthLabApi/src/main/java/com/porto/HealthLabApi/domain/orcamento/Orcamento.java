@@ -1,10 +1,12 @@
 package com.porto.HealthLabApi.domain.orcamento;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.porto.HealthLabApi.domain.medico.Medico;
+import com.porto.HealthLabApi.domain.orcamento.DTO.RequestCadastrarOrcamento;
 import com.porto.HealthLabApi.domain.pessoa.Pessoa;
 import com.porto.HealthLabApi.domain.usuario.Usuario;
 
@@ -31,6 +33,15 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = "id")
 public class Orcamento {
     
+    public Orcamento(RequestCadastrarOrcamento dadosOrcamento, Pessoa pessoa, Medico medico, Usuario usuario) {
+        this.usuario = usuario;
+        this.pessoa = pessoa;
+        this.medico = medico;
+        this.data = dadosOrcamento.data();
+        this.precoTotal = new BigDecimal(0);
+        this.orcamentoExames = new ArrayList<OrcamentoExame>();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "OrcamentoId")
@@ -45,10 +56,15 @@ public class Orcamento {
     @JoinColumn(name = "OrcamentoMedicoId")
     private Medico medico;
     @Column(name = "OrcamentoData")
-    private LocalDate data;
+    private LocalDateTime data;
     @Column(name = "OrcamentoPrecoTotal")
     private BigDecimal precoTotal;
     @OneToMany(mappedBy = "orcamento", fetch = FetchType.EAGER)
     List<OrcamentoExame> orcamentoExames;
+
+    public void adicionarExame(OrcamentoExame orcamentoExame) {
+        this.precoTotal = this.precoTotal.add(orcamentoExame.getExame().getPreco());
+        this.orcamentoExames.add(orcamentoExame);
+    }
 
 }

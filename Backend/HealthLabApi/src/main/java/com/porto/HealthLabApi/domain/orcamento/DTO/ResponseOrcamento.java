@@ -1,7 +1,7 @@
 package com.porto.HealthLabApi.domain.orcamento.DTO;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.porto.HealthLabApi.domain.medico.DTO.ResponseMedico;
@@ -14,7 +14,7 @@ public record ResponseOrcamento(
     ResponseUsuario orcamentoUsuario,
     ResponsePessoa orcamentoPessoa,
     ResponseMedico orcamentoMedico,
-    LocalDate orcamentoData,
+    LocalDateTime orcamentoData,
     BigDecimal orcamentoPrecoTotal,
     List<ResponseOrcamentoExame> orcamentoExames
 ) {

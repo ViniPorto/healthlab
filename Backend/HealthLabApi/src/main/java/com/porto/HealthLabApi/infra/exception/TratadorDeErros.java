@@ -106,7 +106,7 @@ public class TratadorDeErros implements AccessDeniedHandler{
 
     @ExceptionHandler(ExameJaCadastradoException.class)
     public ResponseEntity<Object> tratarErroExameJaCadastrado(){
-        return responseHandler.generateResponse("Não é possível cadastrar o mesmo exame mais de 1 vez em uma unica requisição", false, HttpStatus.FORBIDDEN, null); 
+        return responseHandler.generateResponse("Não é possível cadastrar o mesmo exame mais de 1 vez em uma unica requisição ou orçamento", false, HttpStatus.FORBIDDEN, null); 
     }
 
     @ExceptionHandler(StatusInvalidoParaRealizarOperacao.class)

@@ -24,6 +24,11 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = "id")
 public class OrcamentoExame {
 
+    public OrcamentoExame(Orcamento orcamento, Exame exame) {
+        this.orcamento = orcamento;
+        this.exame = exame;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "OrcamentoExameId")

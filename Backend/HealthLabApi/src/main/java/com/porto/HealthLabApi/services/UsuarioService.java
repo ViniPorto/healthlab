@@ -32,7 +32,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public Usuario cadastrarUsuario(@Valid RequestCadastrarUsuario dadosUsuario) {
+    public Usuario cadastrarUsuario(@Valid RequestCadastrarUsuario dadosUsuario, Usuario usuario) {
         var novoUsuario = new Usuario(dadosUsuario);
         novoUsuario.setSenha(passwordEncoder.encode(dadosUsuario.senha()));
         return usuarioRepository.save(novoUsuario);

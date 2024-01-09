@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.porto.HealthLabApi.domain.pessoa.DTO.RequestCadastrarPessoa;
 import com.porto.HealthLabApi.domain.pessoa.DTO.RequestEditarPessoa;
 import com.porto.HealthLabApi.domain.pessoa.DTO.ResponsePessoa;
+import com.porto.HealthLabApi.domain.usuario.Usuario;
 import com.porto.HealthLabApi.services.PessoaService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 
@@ -51,15 +53,17 @@ public class PessoaController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarPessoa(@RequestBody @Valid RequestCadastrarPessoa dadosPessoa){
-        var pessoaCriada = pessoaService.cadastrarPessoa(dadosPessoa);
+    public ResponseEntity<Object> cadastrarPessoa(@RequestBody @Valid RequestCadastrarPessoa dadosPessoa,
+                                                  @AuthenticationPrincipal Usuario usuario){
+        var pessoaCriada = pessoaService.cadastrarPessoa(dadosPessoa, usuario);
 
         return responseHandler.generateResponse("Cadastrado com sucesso", true, HttpStatus.CREATED, new ResponsePessoa(pessoaCriada));
     }
 
     @PutMapping
-    public ResponseEntity<Object> editarPessoa(@RequestBody @Valid RequestEditarPessoa dadosPessoa){
-        var pessoaEditada = pessoaService.editarPessoa(dadosPessoa);
+    public ResponseEntity<Object> editarPessoa(@RequestBody @Valid RequestEditarPessoa dadosPessoa,
+                                               @AuthenticationPrincipal Usuario usuario){
+        var pessoaEditada = pessoaService.editarPessoa(dadosPessoa, usuario);
 
         return responseHandler.generateResponse("Editado com sucesso", true, HttpStatus.OK, new ResponsePessoa(pessoaEditada));
     }

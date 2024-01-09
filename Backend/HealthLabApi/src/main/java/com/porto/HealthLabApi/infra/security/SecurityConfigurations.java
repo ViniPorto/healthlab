@@ -39,6 +39,7 @@ public class SecurityConfigurations {
                 .requestMatchers(HttpMethod.POST, "/usuario", "/usuario/reativar/{id}", "/usuario/elegerAdministrador/{id}").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/usuario").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/usuario/{id}", "/usuario/inativar/{id}", "/usuario/deletar/{id}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/historico/tabela/referenciaId").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

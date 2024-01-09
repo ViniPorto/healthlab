@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.porto.HealthLabApi.domain.medico.DTO.RequestCadastrarMedico;
 import com.porto.HealthLabApi.domain.medico.DTO.RequestEditarMedico;
 import com.porto.HealthLabApi.domain.medico.DTO.ResponseMedico;
+import com.porto.HealthLabApi.domain.usuario.Usuario;
 import com.porto.HealthLabApi.services.MedicoService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 
@@ -50,15 +52,17 @@ public class MedicoController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarMedico(@RequestBody @Valid RequestCadastrarMedico dadosMedico){
-        var medicoCriado = medicoService.cadastrarMedico(dadosMedico);
+    public ResponseEntity<Object> cadastrarMedico(@RequestBody @Valid RequestCadastrarMedico dadosMedico,
+                                                  @AuthenticationPrincipal Usuario usuario){
+        var medicoCriado = medicoService.cadastrarMedico(dadosMedico, usuario);
 
         return responseHandler.generateResponse("Cadastrado com sucesso", true, HttpStatus.CREATED, new ResponseMedico(medicoCriado));
     }
 
     @PutMapping
-    public ResponseEntity<Object> editarMedico(@RequestBody @Valid RequestEditarMedico dadosMedico){
-        var medicoEditado = medicoService.editarMedico(dadosMedico);
+    public ResponseEntity<Object> editarMedico(@RequestBody @Valid RequestEditarMedico dadosMedico,
+                                               @AuthenticationPrincipal Usuario usuario){
+        var medicoEditado = medicoService.editarMedico(dadosMedico, usuario);
 
         return responseHandler.generateResponse("Editado com sucesso", true, HttpStatus.OK, new ResponseMedico(medicoEditado));
     }

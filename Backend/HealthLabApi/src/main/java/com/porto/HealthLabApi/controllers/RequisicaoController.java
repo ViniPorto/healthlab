@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,11 +32,11 @@ import com.porto.HealthLabApi.domain.requisicao.DTO.RequestSolicitarRecoleta;
 import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicao;
 import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicaoExame;
 import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicaoExameItensResultado;
+import com.porto.HealthLabApi.domain.usuario.Usuario;
 import com.porto.HealthLabApi.services.LayoutService;
 import com.porto.HealthLabApi.services.RequisicaoService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -65,8 +66,8 @@ public class RequisicaoController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarRequisicao(@RequestBody @Valid RequestCadastrarRequisicao dadosRequisicao){
-        var requisicaoCadastrada = requisicaoService.cadastrarRequisicao(dadosRequisicao);
+    public ResponseEntity<Object> cadastrarRequisicao(@RequestBody @Valid RequestCadastrarRequisicao dadosRequisicao, @AuthenticationPrincipal Usuario usuario){
+        var requisicaoCadastrada = requisicaoService.cadastrarRequisicao(dadosRequisicao, usuario);
 
         return responseHandler.generateResponse("Cadastrado com sucesso", true, HttpStatus.CREATED, new ResponseRequisicao(requisicaoCadastrada, toResponseRequisicaoExames(requisicaoCadastrada.getRequisicaoExames())));
     }
@@ -121,22 +122,22 @@ public class RequisicaoController {
     }
 
     @PostMapping("/liberarResultado/{id}")
-    public ResponseEntity<Object> liberarResultado(@PathVariable Long id, HttpServletRequest request) {
-        var requisicao = requisicaoService.liberarResultado(id, request);
+    public ResponseEntity<Object> liberarResultado(@PathVariable Long id, @AuthenticationPrincipal Usuario usuario) {
+        var requisicao = requisicaoService.liberarResultado(id, usuario);
         
         return responseHandler.generateResponse("Resultado liberado com sucesso", true, HttpStatus.OK, new ResponseRequisicao(requisicao, toResponseRequisicaoExames(requisicao.getRequisicaoExames())));
     }
 
     @PostMapping("/solicitarRecoleta")
-    public ResponseEntity<Object> solicitarRecoleta(@RequestBody @Valid RequestSolicitarRecoleta dadosRecoleta, HttpServletRequest request) {
-        var requisicao = requisicaoService.solicitarRecoleta(dadosRecoleta, request);
+    public ResponseEntity<Object> solicitarRecoleta(@RequestBody @Valid RequestSolicitarRecoleta dadosRecoleta, @AuthenticationPrincipal Usuario usuario) {
+        var requisicao = requisicaoService.solicitarRecoleta(dadosRecoleta, usuario);
         
         return responseHandler.generateResponse("Solicitado recoleta com sucesso", true, HttpStatus.OK, new ResponseRequisicao(requisicao, toResponseRequisicaoExames(requisicao.getRequisicaoExames())));
     }
     
     @DeleteMapping("/cancelarLiberacao/{id}")
-    public ResponseEntity<Object> cancelarLiberacao(@PathVariable Long id, HttpServletRequest request){
-        var requisicao = requisicaoService.cancelarLiberacao(id, request);
+    public ResponseEntity<Object> cancelarLiberacao(@PathVariable Long id, @AuthenticationPrincipal Usuario usuario){
+        var requisicao = requisicaoService.cancelarLiberacao(id, usuario);
 
         return responseHandler.generateResponse("Cancelado liberação com sucesso", true, HttpStatus.OK, new ResponseRequisicao(requisicao, toResponseRequisicaoExames(requisicao.getRequisicaoExames())));
     }

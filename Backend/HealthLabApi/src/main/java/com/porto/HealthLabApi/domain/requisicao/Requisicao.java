@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.porto.HealthLabApi.domain.medico.Medico;
+import com.porto.HealthLabApi.domain.orcamento.Orcamento;
 import com.porto.HealthLabApi.domain.pessoa.Pessoa;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestCadastrarRequisicao;
 import com.porto.HealthLabApi.domain.usuario.Usuario;
@@ -42,6 +43,17 @@ public class Requisicao {
         this.pessoa = pessoa;
         this.usuario = usuario;
         this.paga = dadosRequisicao.paga();
+        this.precoTotal = new BigDecimal(0);
+        this.requisicaoExames = new ArrayList<RequisicaoExame>();
+    }
+
+    public Requisicao(Orcamento orcamento, Usuario usuario) {
+        this.medico = orcamento.getMedico();
+        this.data = LocalDateTime.now();
+        this.urgente = false;
+        this.pessoa = orcamento.getPessoa();
+        this.usuario = usuario;
+        this.paga = false;
         this.precoTotal = new BigDecimal(0);
         this.requisicaoExames = new ArrayList<RequisicaoExame>();
     }

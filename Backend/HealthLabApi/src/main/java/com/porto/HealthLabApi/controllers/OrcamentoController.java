@@ -19,15 +19,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.porto.HealthLabApi.domain.layout.LayoutCampos;
 import com.porto.HealthLabApi.domain.layout.DTO.ResponseLayoutCampos;
 import com.porto.HealthLabApi.domain.orcamento.Orcamento;
 import com.porto.HealthLabApi.domain.orcamento.OrcamentoExame;
 import com.porto.HealthLabApi.domain.orcamento.DTO.RequestCadastrarOrcamento;
 import com.porto.HealthLabApi.domain.orcamento.DTO.ResponseOrcamento;
 import com.porto.HealthLabApi.domain.orcamento.DTO.ResponseOrcamentoExame;
+import com.porto.HealthLabApi.domain.requisicao.RequisicaoExame;
+import com.porto.HealthLabApi.domain.requisicao.RequisicaoExameItensResultado;
+import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicao;
+import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicaoExame;
+import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicaoExameItensResultado;
 import com.porto.HealthLabApi.domain.usuario.Usuario;
 import com.porto.HealthLabApi.services.LayoutService;
 import com.porto.HealthLabApi.services.OrcamentoService;
+import com.porto.HealthLabApi.services.RequisicaoService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 
 import jakarta.validation.Valid;
@@ -41,6 +48,9 @@ public class OrcamentoController {
 
     @Autowired
     private LayoutService layoutService;
+
+    @Autowired
+    private RequisicaoService requisicaoService;
 
     @Autowired
     private ResponseHandler responseHandler;
@@ -69,6 +79,13 @@ public class OrcamentoController {
         return responseHandler.generateResponse("Deletado com sucesso", true, HttpStatus.OK, null);
     }
 
+    @PostMapping("/converterEmRequisicao/{id}")
+    public ResponseEntity<Object> converterEmRequisicao(@PathVariable Long id, @AuthenticationPrincipal Usuario usuario){
+        var requisicaoCadastrada = requisicaoService.converterOrcamentoEmRequisicao(id, usuario);
+
+        return responseHandler.generateResponse("Convertido em requisição com sucesso", true, HttpStatus.CREATED, new ResponseRequisicao(requisicaoCadastrada, toResponseRequisicaoExames(requisicaoCadastrada.getRequisicaoExames())));
+    }
+
     private ResponseOrcamento toResponseOrcamento(Orcamento orcamento){
         List<ResponseOrcamentoExame> responseOrcamentosExames = new ArrayList<>();
         for(OrcamentoExame orcamentoExame : orcamento.getOrcamentoExames()){
@@ -77,5 +94,25 @@ public class OrcamentoController {
             responseOrcamentosExames.add(new ResponseOrcamentoExame(orcamentoExame, responseLayoutCampos));
         }
         return new ResponseOrcamento(orcamento, responseOrcamentosExames);
+    }
+
+    private List<ResponseRequisicaoExame> toResponseRequisicaoExames(List<RequisicaoExame> requisicaoExames){
+        List<ResponseRequisicaoExame> responseRequisicaoExames = new ArrayList<>();
+        for(RequisicaoExame requisicaoExame : requisicaoExames){
+            List<ResponseRequisicaoExameItensResultado> responseItensResultado = new ArrayList<>();
+            if(requisicaoExame.getItensResultado() != null){
+                for(RequisicaoExameItensResultado itensResultado : requisicaoExame.getItensResultado()){
+                    responseItensResultado.add(new ResponseRequisicaoExameItensResultado(itensResultado));
+                }
+            }
+            List<ResponseLayoutCampos> responseLayoutCampos = new ArrayList<>();
+            if(layoutService.listarCamposLayout(requisicaoExame.getLayout()) != null){
+                for(LayoutCampos layoutCampo : layoutService.listarCamposLayout(requisicaoExame.getLayout())){
+                    responseLayoutCampos.add(new ResponseLayoutCampos(layoutCampo));
+                }
+            }
+            responseRequisicaoExames.add(new ResponseRequisicaoExame(requisicaoExame, responseItensResultado, responseLayoutCampos));
+        }
+        return responseRequisicaoExames;
     }
 }

@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.porto.HealthLabApi.domain.medico.Medico;
+import com.porto.HealthLabApi.domain.orcamento.OrcamentoExame;
 import com.porto.HealthLabApi.domain.requisicao.Requisicao;
 import com.porto.HealthLabApi.domain.requisicao.RequisicaoExame;
 import com.porto.HealthLabApi.domain.requisicao.RequisicaoExameItensResultado;
@@ -18,23 +18,22 @@ import com.porto.HealthLabApi.domain.requisicao.DTO.RequestEditarRequisicao;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestInformarResultado;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestInformarResultadoRequisicaoExameItensResultado;
 import com.porto.HealthLabApi.domain.requisicao.DTO.RequestSolicitarRecoleta;
+import com.porto.HealthLabApi.domain.usuario.Usuario;
 import com.porto.HealthLabApi.infra.exception.exceptions.ExameJaCadastradoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.RequisicaoExameComResultadoException;
 import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaRealizarOperacao;
 import com.porto.HealthLabApi.infra.exception.exceptions.UsuarioNaoBioquimicoException;
-import com.porto.HealthLabApi.infra.security.SecurityFilter;
 import com.porto.HealthLabApi.repositories.BioquimicoRepository;
 import com.porto.HealthLabApi.repositories.ExameRepository;
 import com.porto.HealthLabApi.repositories.MedicoRepository;
 import com.porto.HealthLabApi.repositories.MotivoRecoletaRepository;
+import com.porto.HealthLabApi.repositories.OrcamentoRepository;
 import com.porto.HealthLabApi.repositories.PessoaRepository;
 import com.porto.HealthLabApi.repositories.RequisicaoExameItensResultadoRepository;
 import com.porto.HealthLabApi.repositories.RequisicaoExameRepository;
 import com.porto.HealthLabApi.repositories.RequisicaoRepository;
 import com.porto.HealthLabApi.repositories.StatusRepository;
-import com.porto.HealthLabApi.repositories.UsuarioRepository;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
@@ -54,16 +53,10 @@ public class RequisicaoService {
     private PessoaRepository pessoaRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
     private ExameRepository exameRepository;
 
     @Autowired
     private StatusRepository statusRepository;
-
-    @Autowired
-    private TokenService tokenService;
 
     @Autowired
     private BioquimicoRepository bioquimicoRepository;
@@ -73,6 +66,9 @@ public class RequisicaoService {
 
     @Autowired
     private RequisicaoExameItensResultadoRepository requisicaoExameItensResultadoRepository;
+
+    @Autowired
+    private OrcamentoRepository orcamentoRepository;
 
     public Page<Requisicao> listarRequisicoes(Pageable paginacao, String pessoaNome, Integer id) {
         return requisicaoRepository.findAll(paginacao, pessoaNome, id);
@@ -87,13 +83,12 @@ public class RequisicaoService {
     }
 
     @Transactional
-    public Requisicao cadastrarRequisicao(RequestCadastrarRequisicao dadosRequisicao) {
+    public Requisicao cadastrarRequisicao(RequestCadastrarRequisicao dadosRequisicao, Usuario usuario) {
         Medico medico = null;
         if(dadosRequisicao.medicoId() != null){
             medico = medicoRepository.findById(dadosRequisicao.medicoId()).get();
         }
         var pessoa = pessoaRepository.findById(dadosRequisicao.pessoaId()).get();
-        var usuario = usuarioRepository.findById(dadosRequisicao.usuarioId()).get();
         var requisicao = new Requisicao(dadosRequisicao, medico, pessoa, usuario);
 
         requisicaoRepository.save(requisicao);
@@ -278,10 +273,9 @@ public class RequisicaoService {
     }
 
     @Transactional
-    public Requisicao liberarResultado(Long id, HttpServletRequest request) {
+    public Requisicao liberarResultado(Long id, Usuario usuario) {
         var requisicaoExame = requisicaoExameRepository.findById(id).get();
         var status = statusRepository.findByCodigo("RL").get();
-        var usuario = extrairUsuario(request);
 
         if(!bioquimicoRepository.existsByUsuario(usuario)){
             throw new UsuarioNaoBioquimicoException();
@@ -303,10 +297,9 @@ public class RequisicaoService {
     }
 
     @Transactional
-    public Requisicao solicitarRecoleta(RequestSolicitarRecoleta dadosRecoleta, HttpServletRequest request) {
+    public Requisicao solicitarRecoleta(RequestSolicitarRecoleta dadosRecoleta, Usuario usuario) {
         var requisicaoExame = requisicaoExameRepository.findById(dadosRecoleta.requisicaoExameId()).get();
         var status = statusRepository.findByCodigo("SR").get();
-        var usuario = extrairUsuario(request);
         var motivoRecoleta = motivoRecoletaRepository.findById(dadosRecoleta.motivoRecoletaId()).get();
 
         if(!bioquimicoRepository.existsByUsuario(usuario)){
@@ -326,10 +319,9 @@ public class RequisicaoService {
     }
 
     @Transactional
-    public Requisicao cancelarLiberacao(Long id, HttpServletRequest request) {
+    public Requisicao cancelarLiberacao(Long id, Usuario usuario) {
         var requisicaoExame = requisicaoExameRepository.findById(id).get();
         var status = statusRepository.findByCodigo("RI").get();
-        var usuario = extrairUsuario(request);
 
         if(!bioquimicoRepository.existsByUsuario(usuario)){
             throw new UsuarioNaoBioquimicoException();
@@ -348,11 +340,24 @@ public class RequisicaoService {
         return requisicaoExame.getRequisicao();
     }
 
-    private UserDetails extrairUsuario(HttpServletRequest request){
-        var tokenJWT = SecurityFilter.recuperarToken(request);
-        var subject = tokenService.getSubject(tokenJWT);
-        var usuario = usuarioRepository.findByLogin(subject);
-        return usuario;
+
+    public Requisicao converterOrcamentoEmRequisicao(Long id, Usuario usuario) {
+        var orcamento = orcamentoRepository.findById(id).get();
+
+        var requisicao = new Requisicao(orcamento, usuario);
+
+        requisicaoRepository.save(requisicao);
+        
+        var status = statusRepository.findByCodigo("CD").get();
+        for(OrcamentoExame orcamentoExame : orcamento.getOrcamentoExames()){
+            var requisicaoExame = new RequisicaoExame(orcamentoExame.getExame().getLayout(), requisicao, orcamentoExame.getExame(), status);
+
+            requisicaoExameRepository.save(requisicaoExame);
+
+            requisicao.adicionarExame(requisicaoExame);
+        }
+
+        return requisicaoRepository.save(requisicao);
     }
 
 }

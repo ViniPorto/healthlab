@@ -59,7 +59,7 @@ public class UsuarioController {
     @PutMapping
     public ResponseEntity<Object> editarUsuario(@RequestBody @Valid RequestEditarUsuario dadosUsuario,
                                                 @AuthenticationPrincipal Usuario usuario){
-        var usuarioEditado = usuarioService.editarUsuario(dadosUsuario);
+        var usuarioEditado = usuarioService.editarUsuario(dadosUsuario, usuario);
         
         return responseHandler.generateResponse("Editado com sucesso", true, HttpStatus.OK, new ResponseUsuario(usuarioEditado));
     }
@@ -67,7 +67,7 @@ public class UsuarioController {
     @DeleteMapping("/inativar/{id}")
     public ResponseEntity<Object> inativarUsuario(@PathVariable Long id,
                                                   @AuthenticationPrincipal Usuario usuario){
-        usuarioService.inativarUsuario(id);
+        usuarioService.inativarUsuario(id, usuario);
 
         return responseHandler.generateResponse("Inativado com sucesso", true, HttpStatus.OK, null);
     }
@@ -75,7 +75,7 @@ public class UsuarioController {
     @PostMapping("/reativar/{id}")
     public ResponseEntity<Object> reativarUsuario(@PathVariable Long id,
                                                   @AuthenticationPrincipal Usuario usuario){
-        usuarioService.reativarUsuario(id);
+        usuarioService.reativarUsuario(id, usuario);
 
         return responseHandler.generateResponse("Reativado com sucesso", true, HttpStatus.OK, null);
     }
@@ -90,12 +90,11 @@ public class UsuarioController {
     @PostMapping("/elegerAdministrador/{id}")
     public ResponseEntity<Object> elegerAdministrador(@PathVariable Long id,
                                                       @AuthenticationPrincipal Usuario usuario){
-        usuarioService.elegerAdministrador(id);
+        usuarioService.elegerAdministrador(id, usuario);
 
         return responseHandler.generateResponse("Eleito administrador com sucesso", true, HttpStatus.OK, null);
     }
 
-    //HttpStatus.OK -> poderia ser substituido por HttpStatus.NO_CONTENT em alguns métodos, 
-    //porém para fins estudantis e para testes estou utilizando o status "fora do padrão"
+    //HttpStatus.OK -> poderia ser substituido por HttpStatus.NO_CONTENT em alguns métodos
     
 }

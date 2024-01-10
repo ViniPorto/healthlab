@@ -1,5 +1,6 @@
 package com.porto.HealthLabApi.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.porto.HealthLabApi.domain.historico.Historico;
 import com.porto.HealthLabApi.domain.medico.Medico;
 import com.porto.HealthLabApi.domain.orcamento.OrcamentoExame;
 import com.porto.HealthLabApi.domain.requisicao.Requisicao;
@@ -25,6 +27,7 @@ import com.porto.HealthLabApi.infra.exception.exceptions.StatusInvalidoParaReali
 import com.porto.HealthLabApi.infra.exception.exceptions.UsuarioNaoBioquimicoException;
 import com.porto.HealthLabApi.repositories.BioquimicoRepository;
 import com.porto.HealthLabApi.repositories.ExameRepository;
+import com.porto.HealthLabApi.repositories.HistoricoRepository;
 import com.porto.HealthLabApi.repositories.MedicoRepository;
 import com.porto.HealthLabApi.repositories.MotivoRecoletaRepository;
 import com.porto.HealthLabApi.repositories.OrcamentoRepository;
@@ -68,6 +71,9 @@ public class RequisicaoService {
     private RequisicaoExameItensResultadoRepository requisicaoExameItensResultadoRepository;
 
     @Autowired
+    private HistoricoRepository historicoRepository;
+
+    @Autowired
     private OrcamentoRepository orcamentoRepository;
 
     public Page<Requisicao> listarRequisicoes(Pageable paginacao, String pessoaNome, Integer id) {
@@ -108,11 +114,15 @@ public class RequisicaoService {
             requisicao.adicionarExame(requisicaoExame);
         }
 
-        return requisicaoRepository.save(requisicao);
+        requisicaoRepository.save(requisicao);
+
+        historicoRepository.save(new Historico(requisicao.getId(), "REQUISICAO", usuario, "CADASTRO", LocalDateTime.now(), gerarDadosRequisicao(requisicao)));
+
+        return requisicao;
     }
 
     @Transactional
-    public Requisicao editarRequisicao(@Valid RequestEditarRequisicao dadosRequisicao) {
+    public Requisicao editarRequisicao(@Valid RequestEditarRequisicao dadosRequisicao, Usuario usuario) {
         var requisicao = requisicaoRepository.findById(dadosRequisicao.requisicaoId()).get();
 
         var examesId = dadosRequisicao.examesId();
@@ -152,7 +162,11 @@ public class RequisicaoService {
             requisicao.adicionarExame(requisicaoExame);
         }
 
-        return requisicaoRepository.save(requisicao);
+        requisicaoRepository.save(requisicao);
+
+        historicoRepository.save(new Historico(requisicao.getId(), "REQUISICAO", usuario, "EDIÇÃO", LocalDateTime.now(), gerarDadosRequisicao(requisicao)));
+
+        return requisicao;
     }
 
     @Transactional
@@ -170,7 +184,7 @@ public class RequisicaoService {
     }
 
     @Transactional
-    public Requisicao informarResultado(RequestInformarResultado dadosResultado) {
+    public Requisicao informarResultado(RequestInformarResultado dadosResultado, Usuario usuario) {
         var requisicaoExame = requisicaoExameRepository.findById(dadosResultado.requisicaoExameId()).get();
 
         //verificar se status do exame é apto para receber resultado -> apenas é possível informar resultado caso status seja material triado ou resultado informado
@@ -195,11 +209,13 @@ public class RequisicaoService {
 
         requisicaoExameRepository.save(requisicaoExame);
 
+        
+
         return requisicaoExame.getRequisicao();
     }
 
     @Transactional
-    public Requisicao informarColeta(Long id) {
+    public Requisicao informarColeta(Long id, Usuario usuario) {
         var requisicaoExame = requisicaoExameRepository.findById(id).get();
         var status = statusRepository.findByCodigo("MC").get();
 
@@ -220,7 +236,7 @@ public class RequisicaoService {
     }
 
     @Transactional
-    public Requisicao informarTriagem(Long id) {
+    public Requisicao informarTriagem(Long id, Usuario usuario) {
         var requisicaoExame = requisicaoExameRepository.findById(id).get();
         var status = statusRepository.findByCodigo("MT").get();
 
@@ -237,7 +253,7 @@ public class RequisicaoService {
     }
 
     @Transactional
-    public Requisicao excluirResultado(Long id) {
+    public Requisicao excluirResultado(Long id, Usuario usuario) {
         var requisicaoExame = requisicaoExameRepository.findById(id).get();
         var status = statusRepository.findByCodigo("MT").get();
 
@@ -255,7 +271,7 @@ public class RequisicaoService {
     }
 
     @Transactional
-    public Requisicao cancelarExame(Long id) {
+    public Requisicao cancelarExame(Long id, Usuario usuario) {
         var requisicaoExame = requisicaoExameRepository.findById(id).get();
         var status = statusRepository.findByCodigo("CA").get();
 
@@ -360,4 +376,34 @@ public class RequisicaoService {
         return requisicaoRepository.save(requisicao);
     }
 
+    private String gerarDadosRequisicao(Requisicao requisicao){
+        var dados = "NOME PACIENTE: " + requisicao.getPessoa().getNome() +
+        "\nDATA DE CADASTRO: " + requisicao.getData() +
+        "\nCADASTRADO POR: " + requisicao.getUsuario().getNome() +
+        "\nSOLICITADO POR: " + requisicao.getMedico().getNome() +
+        "\nURGENTE: " + requisicao.isUrgente() +
+        "\nPAGA: " + requisicao.isPaga() +
+        "\nPREÇO TOTAL : " + requisicao.getPrecoTotal() +
+        "\nEXAMES:";
+
+        var dadosExames = "";
+        
+        for(RequisicaoExame requisicaoExame : requisicao.getRequisicaoExames()){
+            dadosExames += gerarDadosRequisicaoExame(requisicaoExame);
+        }
+        
+        return dados + dadosExames;
+    }
+
+    private String gerarDadosRequisicaoExame(RequisicaoExame requisicaoExame){
+        return "\n\tEXAME: " + requisicaoExame.getExame().getTitulo() +
+        "\n\tDATA INCLUSÃO: " + requisicaoExame.getDataHoraInclusao() +
+        "\n\tDATA COLETA: " + requisicaoExame.getDataHoraColeta() + 
+        "\n\tDATA TRIAGEM: " + requisicaoExame.getDataHoraTriagem() +
+        "\n\tSTATUS: " + requisicaoExame.getStatus().getNome() +
+        "\n\tEXAME IMPRESSO: " + requisicaoExame.isExameImpresso() +
+        "\n\tMOTIVO RECOLETA: " + requisicaoExame.getMotivoRecoleta().getNome() +
+        "\n\tBIOQUIMICO: " + requisicaoExame.getBioquimico().getNome() +
+        "\n=-=-=-=-=-=-=-=-=-=-=-=";
+    }
 }

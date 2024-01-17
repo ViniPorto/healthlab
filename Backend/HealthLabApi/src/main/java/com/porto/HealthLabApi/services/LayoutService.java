@@ -1,16 +1,20 @@
 package com.porto.HealthLabApi.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.porto.HealthLabApi.domain.historico.Historico;
 import com.porto.HealthLabApi.domain.layout.Layout;
 import com.porto.HealthLabApi.domain.layout.LayoutCampos;
 import com.porto.HealthLabApi.domain.layout.DTO.RequestCadastrarLayout;
 import com.porto.HealthLabApi.domain.layout.DTO.RequestCadastrarLayoutCampos;
+import com.porto.HealthLabApi.domain.usuario.Usuario;
 import com.porto.HealthLabApi.repositories.ExameRepository;
+import com.porto.HealthLabApi.repositories.HistoricoRepository;
 import com.porto.HealthLabApi.repositories.LayoutCamposRepository;
 import com.porto.HealthLabApi.repositories.LayoutRepository;
 
@@ -28,6 +32,9 @@ public class LayoutService {
     @Autowired 
     private LayoutCamposRepository layoutCamposRepository;
 
+    @Autowired
+    private HistoricoRepository historicoRepository;
+
     public Layout detalharLayout(Long id) {
         return layoutRepository.findById(id).get();
     }
@@ -37,14 +44,18 @@ public class LayoutService {
     }
 
     @Transactional
-    public Layout cadastrarLayout(Long exameId) {
+    public Layout cadastrarLayout(Long exameId, Usuario usuario) {
         var exame = exameRepository.findById(exameId).get();
         var layout = new Layout();
 
         exame.alterarLayout(layout);
 
         exameRepository.save(exame);
-        return layoutRepository.save(layout);
+        layoutRepository.save(layout);
+
+        historicoRepository.save(new Historico(layout.getId(), "LAYOUT", usuario, "CADATRO", LocalDateTime.now(), gerarDados(layout)));
+
+        return layout;
     }
 
     @Transactional
@@ -58,7 +69,9 @@ public class LayoutService {
         return layoutCamposCriados;
     }
 
-
+    private String gerarDados(Layout layout){
+        return "ID: " + layout.getId();
+    }
 
 
 }

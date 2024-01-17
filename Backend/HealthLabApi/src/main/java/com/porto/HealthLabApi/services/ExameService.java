@@ -1,5 +1,6 @@
 package com.porto.HealthLabApi.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,15 @@ import org.springframework.stereotype.Service;
 import com.porto.HealthLabApi.domain.exame.Exame;
 import com.porto.HealthLabApi.domain.exame.DTO.RequestCadastrarExame;
 import com.porto.HealthLabApi.domain.exame.DTO.RequestEditarExame;
+import com.porto.HealthLabApi.domain.historico.Historico;
 import com.porto.HealthLabApi.domain.layout.Layout;
 import com.porto.HealthLabApi.domain.material.Material;
 import com.porto.HealthLabApi.domain.metodo.Metodo;
 import com.porto.HealthLabApi.domain.setor.Setor;
+import com.porto.HealthLabApi.domain.usuario.Usuario;
 import com.porto.HealthLabApi.infra.exception.exceptions.SiglaJaCadastradaException;
 import com.porto.HealthLabApi.repositories.ExameRepository;
+import com.porto.HealthLabApi.repositories.HistoricoRepository;
 import com.porto.HealthLabApi.repositories.LayoutRepository;
 import com.porto.HealthLabApi.repositories.MaterialRepository;
 import com.porto.HealthLabApi.repositories.MetodoRepository;
@@ -41,6 +45,9 @@ public class ExameService {
     @Autowired
     private LayoutRepository layoutRepository;
 
+    @Autowired
+    private HistoricoRepository historicoRepository;
+
     
     public List<Exame> listarExames(Pageable paginacao, String titulo) {
         return exameRepository.findAll(paginacao, titulo);
@@ -59,7 +66,7 @@ public class ExameService {
     }
 
     @Transactional
-    public Exame cadastrarExame(RequestCadastrarExame dadosExame) {
+    public Exame cadastrarExame(RequestCadastrarExame dadosExame, Usuario usuario) {
         if(existeExameCadastradoComSiglaInformada(dadosExame.sigla())){
             throw new SiglaJaCadastradaException();
         }
@@ -70,11 +77,15 @@ public class ExameService {
         var layout = layoutRepository.save(new Layout());
         var exame = new Exame(dadosExame, layout, setor, metodo, material);
 
-        return exameRepository.save(exame);
+        exameRepository.save(exame);
+
+        historicoRepository.save(new Historico(exame.getId(), "EXAME", usuario, "CADASTRO", LocalDateTime.now(), gerarDados(exame)));
+
+        return exame;
     }
 
     @Transactional
-    public Exame editarExame(RequestEditarExame dadosExame) {
+    public Exame editarExame(RequestEditarExame dadosExame, Usuario usuario) {
         
         var exame = exameRepository.findById(dadosExame.exameId()).get();
 
@@ -88,7 +99,11 @@ public class ExameService {
 
         exame.atualizarInformacoes(dadosExame, setor, metodo, material);
 
-        return exameRepository.save(exame);
+        exameRepository.save(exame);
+
+        historicoRepository.save(new Historico(exame.getId(), "EXAME", usuario, "EDIÇÃO", LocalDateTime.now(), gerarDados(exame)));
+
+        return exame;
     }
 
     @Transactional
@@ -106,7 +121,17 @@ public class ExameService {
         return exameRepository.findByPrincipalTrue(paginacao);
     }
 
-    
-    
+    private String gerarDados(Exame exame){
+        return "TITULO: " + exame.getTitulo() +
+        "\nSIGLA: " + exame.getSigla() +
+        exame.getDescricao() != null ? "\nDESCRICAO: " + exame.getDescricao() : "" +
+        "\nSETOR: " + exame.getSetor() +
+        "\nMETODO: " + exame.getMetodo() +
+        "\nMATERIAL: " + exame.getMaterial() +
+        "\nPRINCIPAL: " + exame.isPrincipal() +
+        "\nPRECO: " + exame.getPreco() +
+        "\nTEMPO EXECUCAO NORMAL: " + exame.getTempoExecucaoNormal() +
+        "\nTEMPO EXECUCAO URGENTE: " + exame.getTempoExecucaoUrgente();
+    }
 
 }

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.porto.HealthLabApi.domain.setor.DTO.RequestCadastrarSetor;
 import com.porto.HealthLabApi.domain.setor.DTO.RequestEditarSetor;
 import com.porto.HealthLabApi.domain.setor.DTO.ResponseSetor;
+import com.porto.HealthLabApi.domain.usuario.Usuario;
 import com.porto.HealthLabApi.services.SetorService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 
@@ -49,15 +51,17 @@ public class SetorController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarSetor(@RequestBody @Valid RequestCadastrarSetor dadosSetor){
-        var setorCadastrado = setorService.cadastrarSetor(dadosSetor);
+    public ResponseEntity<Object> cadastrarSetor(@RequestBody @Valid RequestCadastrarSetor dadosSetor,
+                                                 @AuthenticationPrincipal Usuario usuario){
+        var setorCadastrado = setorService.cadastrarSetor(dadosSetor, usuario);
 
         return responseHandler.generateResponse("Cadastrado com sucesso", true, HttpStatus.CREATED, new ResponseSetor(setorCadastrado));
     }
 
     @PutMapping
-    public ResponseEntity<Object> editarSetor(@RequestBody @Valid RequestEditarSetor dadosSetor){
-        var setorEditado = setorService.editarSetor(dadosSetor);
+    public ResponseEntity<Object> editarSetor(@RequestBody @Valid RequestEditarSetor dadosSetor,
+                                              @AuthenticationPrincipal Usuario usuario){
+        var setorEditado = setorService.editarSetor(dadosSetor, usuario);
 
         return responseHandler.generateResponse("Editado com sucesso", true, HttpStatus.OK, new ResponseSetor(setorEditado));
     }

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import com.porto.HealthLabApi.domain.layout.LayoutCampos;
 import com.porto.HealthLabApi.domain.layout.DTO.RequestCadastrarLayout;
 import com.porto.HealthLabApi.domain.layout.DTO.ResponseLayout;
 import com.porto.HealthLabApi.domain.layout.DTO.ResponseLayoutCampos;
+import com.porto.HealthLabApi.domain.usuario.Usuario;
 import com.porto.HealthLabApi.services.LayoutService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 
@@ -48,8 +50,9 @@ public class LayoutController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Object> cadastrarLayout(@RequestBody @Valid RequestCadastrarLayout dadosLayout){
-        var layoutCriado = layoutService.cadastrarLayout(dadosLayout.exameId());
+    public ResponseEntity<Object> cadastrarLayout(@RequestBody @Valid RequestCadastrarLayout dadosLayout,
+                                                  @AuthenticationPrincipal Usuario usuario){
+        var layoutCriado = layoutService.cadastrarLayout(dadosLayout.exameId(), usuario);
         var layoutCamposCriados = layoutService.cadastrarLayoutCampos(layoutCriado, dadosLayout);
         List<ResponseLayoutCampos> responseLayoutCampos = new ArrayList<>();
         for(LayoutCampos layout : layoutCamposCriados){

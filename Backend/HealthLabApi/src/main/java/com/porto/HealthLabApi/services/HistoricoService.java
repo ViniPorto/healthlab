@@ -3,6 +3,7 @@ package com.porto.HealthLabApi.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,11 @@ public class HistoricoService {
     private HistoricoRepository historicoRepository;
 
     public List<Historico> listarHistoricos(Pageable paginacao, String tabela, Long referenciaId) {
-        return historicoRepository.findByTabelaAndReferenciaId(paginacao, tabela, referenciaId);
+        return historicoRepository.findByTabelaAndReferenciaId(paginacao, tabela.toUpperCase(), referenciaId);
+    }
+
+    public Page<Historico> listarTodosHistoricos(Pageable paginacao) {
+        return historicoRepository.findAll(paginacao);
     }
 
 }

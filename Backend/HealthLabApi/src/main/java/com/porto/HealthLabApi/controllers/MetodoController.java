@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.porto.HealthLabApi.domain.metodo.DTO.RequestCadastrarMetodo;
 import com.porto.HealthLabApi.domain.metodo.DTO.RequestEditarMetodo;
 import com.porto.HealthLabApi.domain.metodo.DTO.ResponseMetodo;
+import com.porto.HealthLabApi.domain.usuario.Usuario;
 import com.porto.HealthLabApi.services.MetodoService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 
@@ -49,15 +51,17 @@ public class MetodoController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarMetodo(@RequestBody @Valid RequestCadastrarMetodo dadosMetodo){
-        var metodoCadastrado = metodoService.cadastrarMetodo(dadosMetodo);
+    public ResponseEntity<Object> cadastrarMetodo(@RequestBody @Valid RequestCadastrarMetodo dadosMetodo,
+                                                  @AuthenticationPrincipal Usuario usuario){
+        var metodoCadastrado = metodoService.cadastrarMetodo(dadosMetodo, usuario);
 
         return responseHandler.generateResponse("Cadastrado com sucesso", true, HttpStatus.CREATED, new ResponseMetodo(metodoCadastrado));
     }
 
     @PutMapping
-    public ResponseEntity<Object> editarMetodo(@RequestBody @Valid RequestEditarMetodo dadosMetodo){
-        var metodoEditado = metodoService.editarMaterial(dadosMetodo);
+    public ResponseEntity<Object> editarMetodo(@RequestBody @Valid RequestEditarMetodo dadosMetodo,
+                                               @AuthenticationPrincipal Usuario usuario){
+        var metodoEditado = metodoService.editarMaterial(dadosMetodo, usuario);
 
         return responseHandler.generateResponse("Editado com sucesso", true, HttpStatus.OK, new ResponseMetodo(metodoEditado));
     }

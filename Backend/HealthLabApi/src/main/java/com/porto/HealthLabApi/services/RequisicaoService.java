@@ -209,7 +209,7 @@ public class RequisicaoService {
 
         requisicaoExameRepository.save(requisicaoExame);
 
-        
+        historicoRepository.save(new Historico(requisicaoExame.getId(), "REQUISICAO EXAME", usuario, "INFORMAR RESULTADO", LocalDateTime.now(), gerarDadosItensResultado(requisicaoExame)));
 
         return requisicaoExame.getRequisicao();
     }
@@ -232,6 +232,8 @@ public class RequisicaoService {
 
         requisicaoExameRepository.save(requisicaoExame);
 
+        historicoRepository.save(new Historico(requisicaoExame.getId(), "REQUISICAO EXAME", usuario, "INFORMAR COLETA", LocalDateTime.now(), gerarDadosRequisicaoExame(requisicaoExame)));
+
         return requisicaoExame.getRequisicao();
     }
 
@@ -248,6 +250,8 @@ public class RequisicaoService {
         requisicaoExame.atualizarStatus(status);
 
         requisicaoExameRepository.save(requisicaoExame);
+
+        historicoRepository.save(new Historico(requisicaoExame.getId(), "REQUISICAO EXAME", usuario, "INFORMAR TRIAGEM", LocalDateTime.now(), gerarDadosRequisicaoExame(requisicaoExame)));
 
         return requisicaoExame.getRequisicao();
     }
@@ -267,6 +271,8 @@ public class RequisicaoService {
 
         requisicaoExameRepository.save(requisicaoExame);
 
+        historicoRepository.save(new Historico(requisicaoExame.getId(), "REQUISICAO EXAME", usuario, "EXCLUSÃO RESULTADO", LocalDateTime.now(), gerarDadosRequisicaoExame(requisicaoExame)));
+
         return requisicaoExame.getRequisicao();
     }
 
@@ -284,6 +290,8 @@ public class RequisicaoService {
         requisicaoExame.atualizarStatus(status);
 
         requisicaoExameRepository.save(requisicaoExame);
+
+        historicoRepository.save(new Historico(requisicaoExame.getId(), "REQUISICAO EXAME", usuario, "CANCELAMENTO EXAME", LocalDateTime.now(), gerarDadosRequisicaoExame(requisicaoExame)));
 
         return requisicaoExame.getRequisicao();
     }
@@ -309,6 +317,8 @@ public class RequisicaoService {
 
         requisicaoExameRepository.save(requisicaoExame);
 
+        historicoRepository.save(new Historico(requisicaoExame.getId(), "REQUISICAO EXAME", usuario, "LIBERAÇÃO RESULTADO", LocalDateTime.now(), gerarDadosRequisicaoExame(requisicaoExame)));
+
         return requisicaoExame.getRequisicao();
     }
 
@@ -330,6 +340,8 @@ public class RequisicaoService {
         requisicaoExame.setMotivoRecoleta(motivoRecoleta);
 
         requisicaoExameRepository.save(requisicaoExame);
+
+        historicoRepository.save(new Historico(requisicaoExame.getId(), "REQUISICAO EXAME", usuario, "SOLICITAÇÃO RECOLETA", LocalDateTime.now(), gerarDadosRequisicaoExame(requisicaoExame)));
 
         return requisicaoExame.getRequisicao();
     }
@@ -353,6 +365,8 @@ public class RequisicaoService {
 
         requisicaoExameRepository.save(requisicaoExame);
 
+        historicoRepository.save(new Historico(requisicaoExame.getId(), "REQUISICAO EXAME", usuario, "CANCELAMENTO LIBERAÇÃO", LocalDateTime.now(), gerarDadosRequisicaoExame(requisicaoExame)));
+
         return requisicaoExame.getRequisicao();
     }
 
@@ -373,7 +387,11 @@ public class RequisicaoService {
             requisicao.adicionarExame(requisicaoExame);
         }
 
-        return requisicaoRepository.save(requisicao);
+        requisicaoRepository.save(requisicao);
+
+        historicoRepository.save(new Historico(requisicao.getId(), "REQUISICAO", usuario, "CONVERSÃO ORÇAMENTO EM REQUISIÇÃO", LocalDateTime.now(), gerarDadosRequisicao(requisicao)));
+
+        return requisicao;
     }
 
     private String gerarDadosRequisicao(Requisicao requisicao){
@@ -390,6 +408,7 @@ public class RequisicaoService {
         
         for(RequisicaoExame requisicaoExame : requisicao.getRequisicaoExames()){
             dadosExames += gerarDadosRequisicaoExame(requisicaoExame);
+            dadosExames += "\n=-=-=-=-=-=-=-=-=-=-=-=";
         }
         
         return dados + dadosExames;
@@ -398,12 +417,21 @@ public class RequisicaoService {
     private String gerarDadosRequisicaoExame(RequisicaoExame requisicaoExame){
         return "\n\tEXAME: " + requisicaoExame.getExame().getTitulo() +
         "\n\tDATA INCLUSÃO: " + requisicaoExame.getDataHoraInclusao() +
-        "\n\tDATA COLETA: " + requisicaoExame.getDataHoraColeta() + 
-        "\n\tDATA TRIAGEM: " + requisicaoExame.getDataHoraTriagem() +
+        requisicaoExame.getDataHoraColeta() != null ? "\n\tDATA COLETA: " + requisicaoExame.getDataHoraColeta() : "" +
+        requisicaoExame.getDataHoraTriagem() != null ? "\n\tDATA TRIAGEM: " + requisicaoExame.getDataHoraTriagem() : "" +
         "\n\tSTATUS: " + requisicaoExame.getStatus().getNome() +
         "\n\tEXAME IMPRESSO: " + requisicaoExame.isExameImpresso() +
-        "\n\tMOTIVO RECOLETA: " + requisicaoExame.getMotivoRecoleta().getNome() +
+        requisicaoExame.getMotivoRecoleta() != null ? "\n\tMOTIVO RECOLETA: " + requisicaoExame.getMotivoRecoleta().getNome() : "" +
         "\n\tBIOQUIMICO: " + requisicaoExame.getBioquimico().getNome() +
-        "\n=-=-=-=-=-=-=-=-=-=-=-=";
+        requisicaoExame.getBioquimico() != null ? "\n\tBIOQUIMICO: " + requisicaoExame.getBioquimico().getNome() : "";
+    }
+
+    private String gerarDadosItensResultado(RequisicaoExame requisicaoExame){
+        String dadosItensResultado = "";
+        for(RequisicaoExameItensResultado itenResultado : requisicaoExame.getItensResultado()){
+            dadosItensResultado += "RESULTADO: " + itenResultado.getResultado() +
+                                   "\nCÓDIGO DO CAMPO: " + itenResultado.getCodigoCampo() + "\n";
+        }
+        return dadosItensResultado;
     }
 }

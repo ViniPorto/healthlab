@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import com.porto.HealthLabApi.domain.layout.DTO.ResponseLayoutCampos;
 import com.porto.HealthLabApi.domain.material.DTO.ResponseMaterial;
 import com.porto.HealthLabApi.domain.metodo.DTO.ResponseMetodo;
 import com.porto.HealthLabApi.domain.setor.DTO.ResponseSetor;
+import com.porto.HealthLabApi.domain.usuario.Usuario;
 import com.porto.HealthLabApi.services.ExameService;
 import com.porto.HealthLabApi.services.LayoutService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
@@ -53,28 +55,30 @@ public class ExameController {
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, responseExames);
     }
 
-    @GetMapping("/{idOuSigle}")
-    public ResponseEntity<Object> detalharExame(@PathVariable String idOuSigle){
+    @GetMapping("/{idOuSigla}")
+    public ResponseEntity<Object> detalharExame(@PathVariable String idOuSigla){
         Exame exame = null;
         try{
-            Long id = Long.parseLong(idOuSigle);
+            Long id = Long.parseLong(idOuSigla);
             exame = exameService.detalharPorId(id);
         }catch(Exception e){
-            exame = exameService.detalharPorSigla(idOuSigle);
+            exame = exameService.detalharPorSigla(idOuSigla);
         }
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, toResponseExame(exame));
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarExame(@RequestBody @Valid RequestCadastrarExame dadosExame){
-        var exameCadastrado = exameService.cadastrarExame(dadosExame);
+    public ResponseEntity<Object> cadastrarExame(@RequestBody @Valid RequestCadastrarExame dadosExame,
+                                                 @AuthenticationPrincipal Usuario usuario){
+        var exameCadastrado = exameService.cadastrarExame(dadosExame, usuario);
 
         return responseHandler.generateResponse("Cadastrado com sucesso", true, HttpStatus.CREATED, toResponseExame(exameCadastrado));
     }
 
     @PutMapping
-    public ResponseEntity<Object> editarExame(@RequestBody @Valid RequestEditarExame dadosExame){
-        var exameEditado = exameService.editarExame(dadosExame);
+    public ResponseEntity<Object> editarExame(@RequestBody @Valid RequestEditarExame dadosExame,
+                                              @AuthenticationPrincipal Usuario usuario){
+        var exameEditado = exameService.editarExame(dadosExame, usuario);
 
         return responseHandler.generateResponse("Editado com sucesso", true, HttpStatus.OK, toResponseExame(exameEditado));
     }

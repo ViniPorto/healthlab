@@ -17,6 +17,7 @@ import com.porto.HealthLabApi.repositories.ExameRepository;
 import com.porto.HealthLabApi.repositories.HistoricoRepository;
 import com.porto.HealthLabApi.repositories.LayoutCamposRepository;
 import com.porto.HealthLabApi.repositories.LayoutRepository;
+import com.porto.HealthLabApi.repositories.RequisicaoExameRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -35,6 +36,9 @@ public class LayoutService {
     @Autowired
     private HistoricoRepository historicoRepository;
 
+    @Autowired
+    private RequisicaoExameRepository requisicaoExameRepository;
+
     public Layout detalharLayout(Long id) {
         return layoutRepository.findById(id).get();
     }
@@ -52,6 +56,8 @@ public class LayoutService {
 
         exameRepository.save(exame);
         layoutRepository.save(layout);
+
+        requisicaoExameRepository.atualizarLayoutDeExamesNaoLiberados(exame.getId(), layout);
 
         historicoRepository.save(new Historico(layout.getId(), "LAYOUT", usuario, "CADATRO", LocalDateTime.now(), gerarDados(layout)));
 

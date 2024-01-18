@@ -31,4 +31,11 @@ public class RelatoriosController {
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, relatorio);
     }
 
+    @PostMapping("/examesMaisRealizados")
+    public ResponseEntity<?> gerarRelatorio10ExamesMaisRealizados(){
+        var relatorio = relatoriosService.gerarRelatorio10ExamesMaisRealizados();
+        
+        return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, relatorio);
+    }
+
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.porto.HealthLabApi.domain.relatorios.examesMaisRealizados.DTO.ResponseRelatorioExamesMaisRealizados;
 import com.porto.HealthLabApi.domain.relatorios.examesRealizadosPorPeriodo.DTO.RequestRelatorioExamesRealizadosPorPeriodo;
 import com.porto.HealthLabApi.domain.relatorios.examesRealizadosPorPeriodo.DTO.ResponseRelatorioExamesRealizadosPorPeriodo;
 import com.porto.HealthLabApi.domain.relatorios.examesRealizadosPorPeriodo.DTO.ResponseRelatorioExamesRealizadosPorPeriodoExames;
@@ -31,6 +32,10 @@ public class RelatoriosService {
         }
 
         return relatorio;
+    }
+
+    public List<ResponseRelatorioExamesMaisRealizados> gerarRelatorio10ExamesMaisRealizados() {
+        return requisicaoExameRepository.listarExamesMaisRealizados();
     }
 
     

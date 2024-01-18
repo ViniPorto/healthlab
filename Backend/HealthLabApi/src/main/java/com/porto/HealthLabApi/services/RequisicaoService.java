@@ -269,6 +269,8 @@ public class RequisicaoService {
         requisicaoExame.deletarItensResultados();
         requisicaoExame.atualizarStatus(status);
 
+        requisicaoExameRepository.atualizarLayoutDoExame(requisicaoExame.getId(), requisicaoExame.getExame().getLayout());
+
         requisicaoExameRepository.save(requisicaoExame);
 
         historicoRepository.save(new Historico(requisicaoExame.getId(), "REQUISICAO EXAME", usuario, "EXCLUSÃO RESULTADO", LocalDateTime.now(), gerarDadosRequisicaoExame(requisicaoExame)));
@@ -364,6 +366,8 @@ public class RequisicaoService {
         requisicaoExame.setBioquimico(null);
         requisicaoExame.setBioquimicoAssinatura(null);
         requisicaoExame.setDataHoraLiberacao(null);
+
+        requisicaoExameRepository.atualizarLayoutDoExame(requisicaoExame.getId(), requisicaoExame.getExame().getLayout());
 
         requisicaoExameRepository.save(requisicaoExame);
 

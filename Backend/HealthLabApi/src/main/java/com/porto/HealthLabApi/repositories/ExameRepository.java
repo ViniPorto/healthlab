@@ -29,3 +29,4 @@ public interface ExameRepository extends JpaRepository<Exame, Long> {
     List<Exame> findByPrincipalTrue(Pageable paginacao);
     
 }
+

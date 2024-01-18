@@ -35,21 +35,21 @@ public class UsuarioController {
     private ResponseHandler responseHandler;
 
     @GetMapping
-    public ResponseEntity<Object> listarUsuarios(){
+    public ResponseEntity<?> listarUsuarios(){
         var usuarios = usuarioService.listarUsuarios().stream().map(usuario -> new ResponseUsuario(usuario)).collect(Collectors.toList());
 
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, usuarios);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> detalharUsuario(@PathVariable Long id){
+    public ResponseEntity<?> detalharUsuario(@PathVariable Long id){
         var usuario = usuarioService.detalharUsuario(id);
 
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, new ResponseUsuario(usuario));
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarUsuario(@RequestBody @Valid RequestCadastrarUsuario dadosUsuario,
+    public ResponseEntity<?> cadastrarUsuario(@RequestBody @Valid RequestCadastrarUsuario dadosUsuario,
                                                    @AuthenticationPrincipal Usuario usuario){
         var usuarioCriado = usuarioService.cadastrarUsuario(dadosUsuario, usuario);
         
@@ -57,7 +57,7 @@ public class UsuarioController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> editarUsuario(@RequestBody @Valid RequestEditarUsuario dadosUsuario,
+    public ResponseEntity<?> editarUsuario(@RequestBody @Valid RequestEditarUsuario dadosUsuario,
                                                 @AuthenticationPrincipal Usuario usuario){
         var usuarioEditado = usuarioService.editarUsuario(dadosUsuario, usuario);
         
@@ -65,7 +65,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/inativar/{id}")
-    public ResponseEntity<Object> inativarUsuario(@PathVariable Long id,
+    public ResponseEntity<?> inativarUsuario(@PathVariable Long id,
                                                   @AuthenticationPrincipal Usuario usuario){
         usuarioService.inativarUsuario(id, usuario);
 
@@ -73,7 +73,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/reativar/{id}")
-    public ResponseEntity<Object> reativarUsuario(@PathVariable Long id,
+    public ResponseEntity<?> reativarUsuario(@PathVariable Long id,
                                                   @AuthenticationPrincipal Usuario usuario){
         usuarioService.reativarUsuario(id, usuario);
 
@@ -81,14 +81,14 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<Object> deletarUsuario(@PathVariable Long id){
+    public ResponseEntity<?> deletarUsuario(@PathVariable Long id){
         usuarioService.deletarUsuario(id);
 
         return responseHandler.generateResponse("Deletado com sucesso", true, HttpStatus.OK, null);
     }
 
     @PostMapping("/elegerAdministrador/{id}")
-    public ResponseEntity<Object> elegerAdministrador(@PathVariable Long id,
+    public ResponseEntity<?> elegerAdministrador(@PathVariable Long id,
                                                       @AuthenticationPrincipal Usuario usuario){
         usuarioService.elegerAdministrador(id, usuario);
 

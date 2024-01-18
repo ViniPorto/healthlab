@@ -35,21 +35,21 @@ public class MotivoRecoletaController {
     private ResponseHandler responseHandler;
 
     @GetMapping
-    public ResponseEntity<Object> listarMotivosRecoleta(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){
-        var motivosRecoleta = motivoRecoletaService.listarMotivosRecoleta(paginacao).map(ResponseMotivoRecoleta::new);
+    public ResponseEntity<?> listarMotivosRecoleta(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){
+        var motivosRecoleta = motivoRecoletaService.listarMotivosRecoleta(paginacao).map(ResponseMotivoRecoleta::new).toList();
 
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, motivosRecoleta);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> detalharMotivoRecoleta(@PathVariable Long id){
+    public ResponseEntity<?> detalharMotivoRecoleta(@PathVariable Long id){
         var motivoRecoleta = motivoRecoletaService.detalharMotivoRecoleta(id);
 
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, new ResponseMotivoRecoleta(motivoRecoleta));
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarMotivoRecoleta(@RequestBody @Valid RequestCadastrarMotivoRecoleta dadosMotivoRecoleta,
+    public ResponseEntity<?> cadastrarMotivoRecoleta(@RequestBody @Valid RequestCadastrarMotivoRecoleta dadosMotivoRecoleta,
                                                           @AuthenticationPrincipal Usuario usuario){
         var motivoRecoletaCriado = motivoRecoletaService.cadastrarMotivoRecoleta(dadosMotivoRecoleta, usuario);
 
@@ -57,7 +57,7 @@ public class MotivoRecoletaController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> editarMotivoRecoleta(@RequestBody @Valid RequestEditarMotivoRecoleta dadosMotivoRecoleta,
+    public ResponseEntity<?> editarMotivoRecoleta(@RequestBody @Valid RequestEditarMotivoRecoleta dadosMotivoRecoleta,
                                                        @AuthenticationPrincipal Usuario usuario){
         var motivoRecoletaEditado = motivoRecoletaService.editarMotivoRecoleta(dadosMotivoRecoleta, usuario);
 
@@ -65,7 +65,7 @@ public class MotivoRecoletaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deletarMotivoRecoleta(@PathVariable Long id){
+    public ResponseEntity<?> deletarMotivoRecoleta(@PathVariable Long id){
         motivoRecoletaService.deletarMotivoRecoleta(id);
 
         return responseHandler.generateResponse("Excluido com sucesso", true, HttpStatus.OK, null);

@@ -21,7 +21,7 @@ public class IndicadoresController {
     private ResponseHandler responseHandler;
 
     @GetMapping
-    public ResponseEntity<Object> consultarIndicadores(){
+    public ResponseEntity<?> consultarIndicadores(){
         var indicadores = indicadoresService.consultarIndicadores();
 
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, indicadores);

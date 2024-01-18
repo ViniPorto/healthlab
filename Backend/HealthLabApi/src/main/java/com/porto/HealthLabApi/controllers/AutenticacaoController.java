@@ -32,7 +32,7 @@ public class AutenticacaoController {
     private TokenService tokenService;
 
     @PostMapping
-    public ResponseEntity<Object> efetuarLogin(@RequestBody @Valid RequestAutenticacaoUsuario dados){
+    public ResponseEntity<?> efetuarLogin(@RequestBody @Valid RequestAutenticacaoUsuario dados){
         var tokenSpring = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
         var authentication = authenticationManager.authenticate(tokenSpring);
         var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());

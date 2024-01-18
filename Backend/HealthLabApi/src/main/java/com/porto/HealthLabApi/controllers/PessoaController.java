@@ -36,24 +36,24 @@ public class PessoaController {
     private PessoaService pessoaService;
 
     @GetMapping
-    public ResponseEntity<Object> listarPessoas(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao,
+    public ResponseEntity<?> listarPessoas(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao,
                                                 @RequestParam(required = false) String nome,
                                                 @RequestParam(required = false) String cpf){
-        var pessoas = pessoaService.listarPessoas(paginacao, nome, cpf).map(ResponsePessoa::new);
+        var pessoas = pessoaService.listarPessoas(paginacao, nome, cpf).map(ResponsePessoa::new).toList();
 
         
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, pessoas);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> detalharPessoa(@PathVariable Long id){
+    public ResponseEntity<?> detalharPessoa(@PathVariable Long id){
         var pessoa =  pessoaService.detalharPessoa(id);
 
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, new ResponsePessoa(pessoa));
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarPessoa(@RequestBody @Valid RequestCadastrarPessoa dadosPessoa,
+    public ResponseEntity<?> cadastrarPessoa(@RequestBody @Valid RequestCadastrarPessoa dadosPessoa,
                                                   @AuthenticationPrincipal Usuario usuario){
         var pessoaCriada = pessoaService.cadastrarPessoa(dadosPessoa, usuario);
 
@@ -61,7 +61,7 @@ public class PessoaController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> editarPessoa(@RequestBody @Valid RequestEditarPessoa dadosPessoa,
+    public ResponseEntity<?> editarPessoa(@RequestBody @Valid RequestEditarPessoa dadosPessoa,
                                                @AuthenticationPrincipal Usuario usuario){
         var pessoaEditada = pessoaService.editarPessoa(dadosPessoa, usuario);
 
@@ -69,7 +69,7 @@ public class PessoaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deletarPessoa(@PathVariable Long id){
+    public ResponseEntity<?> deletarPessoa(@PathVariable Long id){
         pessoaService.deletarPessoa(id);
 
         return responseHandler.generateResponse("Deletado com sucesso", true, HttpStatus.OK, null);

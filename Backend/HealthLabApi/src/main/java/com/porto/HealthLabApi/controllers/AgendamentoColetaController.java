@@ -34,7 +34,7 @@ public class AgendamentoColetaController {
     private ResponseHandler responseHandler;
 
     @GetMapping
-    public ResponseEntity<Object> listarAgendamentosColeta(@PageableDefault(size = 10, sort = {"dataHoraColeta"}, direction = Direction.DESC) Pageable paginacao,
+    public ResponseEntity<?> listarAgendamentosColeta(@PageableDefault(size = 10, sort = {"dataHoraColeta"}, direction = Direction.DESC) Pageable paginacao,
                                                             @RequestParam(required = false) String nome,
                                                             @RequestParam(required = false) Long requisicaoId) {
         var agendamentosColeta = agendamentoColetaService.listarAgendamentosColeta(paginacao, nome, requisicaoId).map(ResponseAgendamentoColeta::new).toList();
@@ -43,14 +43,14 @@ public class AgendamentoColetaController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarAgendamentoColeta(@RequestBody @Valid RequestCadastrarAgendamentoColeta dadosAgendamentoColeta){
+    public ResponseEntity<?> cadastrarAgendamentoColeta(@RequestBody @Valid RequestCadastrarAgendamentoColeta dadosAgendamentoColeta){
         var agendamentoColeta = agendamentoColetaService.cadastrarAgendamentoColeta(dadosAgendamentoColeta);
 
         return responseHandler.generateResponse("Cadastrado com sucesso", true, HttpStatus.OK, new ResponseAgendamentoColeta(agendamentoColeta));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deletarAgendamentoColeta(@PathVariable Long id){
+    public ResponseEntity<?> deletarAgendamentoColeta(@PathVariable Long id){
         agendamentoColetaService.deletarAgendamentoColeta(id);
 
         return responseHandler.generateResponse("Deletado com sucesso", true, HttpStatus.OK, null);

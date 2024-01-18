@@ -46,7 +46,7 @@ public class ExameController {
     private ResponseHandler responseHandler;
 
     @GetMapping
-    public ResponseEntity<Object> listarExames(@PageableDefault(size = 10, sort = {"titulo"}) Pageable paginacao,
+    public ResponseEntity<?> listarExames(@PageableDefault(size = 10, sort = {"titulo"}) Pageable paginacao,
                                                 @RequestParam(required = false) String titulo){
         var exames = exameService.listarExames(paginacao, titulo);
 
@@ -56,7 +56,7 @@ public class ExameController {
     }
 
     @GetMapping("/{idOuSigla}")
-    public ResponseEntity<Object> detalharExame(@PathVariable String idOuSigla){
+    public ResponseEntity<?> detalharExame(@PathVariable String idOuSigla){
         Exame exame = null;
         try{
             Long id = Long.parseLong(idOuSigla);
@@ -68,7 +68,7 @@ public class ExameController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarExame(@RequestBody @Valid RequestCadastrarExame dadosExame,
+    public ResponseEntity<?> cadastrarExame(@RequestBody @Valid RequestCadastrarExame dadosExame,
                                                  @AuthenticationPrincipal Usuario usuario){
         var exameCadastrado = exameService.cadastrarExame(dadosExame, usuario);
 
@@ -76,7 +76,7 @@ public class ExameController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> editarExame(@RequestBody @Valid RequestEditarExame dadosExame,
+    public ResponseEntity<?> editarExame(@RequestBody @Valid RequestEditarExame dadosExame,
                                               @AuthenticationPrincipal Usuario usuario){
         var exameEditado = exameService.editarExame(dadosExame, usuario);
 
@@ -84,14 +84,14 @@ public class ExameController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deletarExame(@PathVariable Long id){
+    public ResponseEntity<?> deletarExame(@PathVariable Long id){
         exameService.deletarExame(id);
 
         return responseHandler.generateResponse("Deletado com sucesso", true, HttpStatus.OK, null);
     }
 
     @GetMapping("/principais")
-    public ResponseEntity<Object> listarExamesPrincipais(@PageableDefault(size = 10, sort = {"titulo"}) Pageable paginacao){
+    public ResponseEntity<?> listarExamesPrincipais(@PageableDefault(size = 10, sort = {"titulo"}) Pageable paginacao){
         var exames = exameService.listarExamesPrincipais(paginacao);
 
         var responseExames = exames.stream().map(e -> toResponseExame(e)).toList();

@@ -36,22 +36,22 @@ public class SetorController {
     private ResponseHandler responseHandler;
 
     @GetMapping
-    public ResponseEntity<Object> listarSetores(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao,
+    public ResponseEntity<?> listarSetores(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao,
                                                 @RequestParam(required = false) String nome){
-        var setores = setorService.listarSetores(paginacao, nome).map(ResponseSetor::new);
+        var setores = setorService.listarSetores(paginacao, nome).map(ResponseSetor::new).toList();
 
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, setores);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> detalharSetor(@PathVariable Long id){
+    public ResponseEntity<?> detalharSetor(@PathVariable Long id){
         var setor = setorService.detalharSetor(id);
 
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, setor);
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarSetor(@RequestBody @Valid RequestCadastrarSetor dadosSetor,
+    public ResponseEntity<?> cadastrarSetor(@RequestBody @Valid RequestCadastrarSetor dadosSetor,
                                                  @AuthenticationPrincipal Usuario usuario){
         var setorCadastrado = setorService.cadastrarSetor(dadosSetor, usuario);
 
@@ -59,7 +59,7 @@ public class SetorController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> editarSetor(@RequestBody @Valid RequestEditarSetor dadosSetor,
+    public ResponseEntity<?> editarSetor(@RequestBody @Valid RequestEditarSetor dadosSetor,
                                               @AuthenticationPrincipal Usuario usuario){
         var setorEditado = setorService.editarSetor(dadosSetor, usuario);
 
@@ -67,7 +67,7 @@ public class SetorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deletarSetor(@PathVariable Long id){
+    public ResponseEntity<?> deletarSetor(@PathVariable Long id){
         setorService.deletarSetor(id);
 
         return responseHandler.generateResponse("Deletado com sucesso", true, HttpStatus.OK, null);

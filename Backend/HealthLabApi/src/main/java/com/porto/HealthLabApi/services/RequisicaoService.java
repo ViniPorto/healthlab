@@ -314,6 +314,7 @@ public class RequisicaoService {
         requisicaoExame.atualizarStatus(status);
         requisicaoExame.setBioquimico(bioquimico);
         requisicaoExame.setBioquimicoAssinatura(bioquimico.getAssinatura());
+        requisicaoExame.setDataHoraLiberacao(LocalDateTime.now());
 
         requisicaoExameRepository.save(requisicaoExame);
 
@@ -362,6 +363,7 @@ public class RequisicaoService {
         requisicaoExame.atualizarStatus(status);
         requisicaoExame.setBioquimico(null);
         requisicaoExame.setBioquimicoAssinatura(null);
+        requisicaoExame.setDataHoraLiberacao(null);
 
         requisicaoExameRepository.save(requisicaoExame);
 
@@ -397,8 +399,11 @@ public class RequisicaoService {
     private String gerarDadosRequisicao(Requisicao requisicao){
         var dados = "NOME PACIENTE: " + requisicao.getPessoa().getNome() +
         "\nDATA DE CADASTRO: " + requisicao.getData() +
-        "\nCADASTRADO POR: " + requisicao.getUsuario().getNome() +
-        "\nSOLICITADO POR: " + requisicao.getMedico().getNome() +
+        "\nCADASTRADO POR: " + requisicao.getUsuario().getNome();
+        if(requisicao.getMedico() != null){
+            dados += "\nSOLICITADO POR: " + requisicao.getMedico().getNome();
+        }
+        dados +=
         "\nURGENTE: " + requisicao.isUrgente() +
         "\nPAGA: " + requisicao.isPaga() +
         "\nPREÇO TOTAL : " + requisicao.getPrecoTotal() +
@@ -408,22 +413,34 @@ public class RequisicaoService {
         
         for(RequisicaoExame requisicaoExame : requisicao.getRequisicaoExames()){
             dadosExames += gerarDadosRequisicaoExame(requisicaoExame);
-            dadosExames += "\n=-=-=-=-=-=-=-=-=-=-=-=";
+            dadosExames += "\n\t=-=-=-=-=-=-=-=-=-=-=-=";
         }
         
         return dados + dadosExames;
     }
 
     private String gerarDadosRequisicaoExame(RequisicaoExame requisicaoExame){
-        return "\n\tEXAME: " + requisicaoExame.getExame().getTitulo() +
-        "\n\tDATA INCLUSÃO: " + requisicaoExame.getDataHoraInclusao() +
-        requisicaoExame.getDataHoraColeta() != null ? "\n\tDATA COLETA: " + requisicaoExame.getDataHoraColeta() : "" +
-        requisicaoExame.getDataHoraTriagem() != null ? "\n\tDATA TRIAGEM: " + requisicaoExame.getDataHoraTriagem() : "" +
+        var dados = "\n\tEXAME: " + requisicaoExame.getExame().getTitulo() +
+        "\n\tDATA INCLUSÃO: " + requisicaoExame.getDataHoraInclusao();
+        if(requisicaoExame.getDataHoraColeta() != null){
+            dados += "\n\tDATA COLETA: " + requisicaoExame.getDataHoraColeta();
+        }
+        if(requisicaoExame.getDataHoraTriagem() != null){
+            dados += "\n\tDATA TRIAGEM: " + requisicaoExame.getDataHoraTriagem();
+        }
+        dados +=
         "\n\tSTATUS: " + requisicaoExame.getStatus().getNome() +
-        "\n\tEXAME IMPRESSO: " + requisicaoExame.isExameImpresso() +
-        requisicaoExame.getMotivoRecoleta() != null ? "\n\tMOTIVO RECOLETA: " + requisicaoExame.getMotivoRecoleta().getNome() : "" +
-        "\n\tBIOQUIMICO: " + requisicaoExame.getBioquimico().getNome() +
-        requisicaoExame.getBioquimico() != null ? "\n\tBIOQUIMICO: " + requisicaoExame.getBioquimico().getNome() : "";
+        "\n\tEXAME IMPRESSO: " + requisicaoExame.isExameImpresso();
+        if(requisicaoExame.getMotivoRecoleta() != null){
+            dados += "\n\tMOTIVO RECOLETA: " + requisicaoExame.getMotivoRecoleta().getNome();
+        }
+        if(requisicaoExame.getBioquimico() != null){
+            dados += "\n\tBIOQUIMICO: " + requisicaoExame.getBioquimico().getNome();
+        }
+        if(requisicaoExame.getDataHoraLiberacao() != null){
+            dados += "\n\tDATA HORA LIBERAÇÃO: " + requisicaoExame.getDataHoraLiberacao();
+        }
+        return dados;
     }
 
     private String gerarDadosItensResultado(RequisicaoExame requisicaoExame){

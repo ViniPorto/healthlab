@@ -36,7 +36,7 @@ public class LayoutController {
     private ResponseHandler responseHandler;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> detalharLayout(@PathVariable Long id){
+    public ResponseEntity<?> detalharLayout(@PathVariable Long id){
         var layout = layoutService.detalharLayout(id);
         var layoutCampos = layoutService.listarCamposLayout(layout);
         List<ResponseLayoutCampos> responseLayoutCampos = new ArrayList<>();
@@ -50,7 +50,7 @@ public class LayoutController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<Object> cadastrarLayout(@RequestBody @Valid RequestCadastrarLayout dadosLayout,
+    public ResponseEntity<?> cadastrarLayout(@RequestBody @Valid RequestCadastrarLayout dadosLayout,
                                                   @AuthenticationPrincipal Usuario usuario){
         var layoutCriado = layoutService.cadastrarLayout(dadosLayout.exameId(), usuario);
         var layoutCamposCriados = layoutService.cadastrarLayoutCampos(layoutCriado, dadosLayout);

@@ -39,38 +39,38 @@ public class BioquimicoController {
     private ResponseHandler responseHandler;
 
     @GetMapping
-    private ResponseEntity<Object> listarBioquimicos(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao,
-                                                    @RequestParam(required = false) String nome){
+    private ResponseEntity<?> listarBioquimicos(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao,
+                                                @RequestParam(required = false) String nome){
         List<ResponseBioquimico> bioquimicos = bioquimicoService.listarBioquimicos(paginacao, nome).stream().map(b -> new ResponseBioquimico(b, new ResponseUsuario(b.getUsuario()))).toList();
 
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, bioquimicos);
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<Object> detalharBioquimico(@PathVariable Long id){
+    private ResponseEntity<?> detalharBioquimico(@PathVariable Long id){
         var bioquimico = bioquimicoService.detalharBioquimico(id);
 
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, new ResponseBioquimico(bioquimico, new ResponseUsuario(bioquimico.getUsuario())));
     }
 
     @PostMapping
-    private ResponseEntity<Object> cadastrarBioquimico(@RequestBody @Valid RequestCadastrarBioquimico dadosBioquimico,
-                                                       @AuthenticationPrincipal Usuario usuario){
+    private ResponseEntity<?> cadastrarBioquimico(@RequestBody @Valid RequestCadastrarBioquimico dadosBioquimico,
+                                                  @AuthenticationPrincipal Usuario usuario){
         var bioquimicoCriado = bioquimicoService.cadastrarBioquimico(dadosBioquimico, usuario);
 
         return responseHandler.generateResponse("Cadastrado com sucesso", true, HttpStatus.CREATED, new ResponseBioquimico(bioquimicoCriado, new ResponseUsuario(bioquimicoCriado.getUsuario())));
     }
 
     @PutMapping
-    private ResponseEntity<Object> editarBioquimico(@RequestBody @Valid RequestEditarBioquimico dadosBioquimico,
-                                                    @AuthenticationPrincipal Usuario usuario){
+    private ResponseEntity<?> editarBioquimico(@RequestBody @Valid RequestEditarBioquimico dadosBioquimico,
+                                               @AuthenticationPrincipal Usuario usuario){
         var bioquimicoEditado = bioquimicoService.editarBioquimico(dadosBioquimico, usuario);
 
         return responseHandler.generateResponse("Editado com sucesso", true, HttpStatus.OK, new ResponseBioquimico(bioquimicoEditado, new ResponseUsuario(bioquimicoEditado.getUsuario())));
     }
 
     @DeleteMapping("/{id}")
-    private ResponseEntity<Object> deletarBioquimico(@PathVariable Long id){
+    private ResponseEntity<?> deletarBioquimico(@PathVariable Long id){
         bioquimicoService.deletarBioquimico(id);
 
         return responseHandler.generateResponse("Deletado com sucesso", true, HttpStatus.OK, null);

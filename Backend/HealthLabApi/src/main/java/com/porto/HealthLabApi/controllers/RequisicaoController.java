@@ -53,7 +53,7 @@ public class RequisicaoController {
     private ResponseHandler responseHandler;
 
     @GetMapping
-    public ResponseEntity<Object> listarRequisicoes(@PageableDefault(size = 10, sort = {"id"}, direction = Direction.DESC) Pageable paginacao,
+    public ResponseEntity<?> listarRequisicoes(@PageableDefault(size = 10, sort = {"id"}, direction = Direction.DESC) Pageable paginacao,
                                                 @RequestParam(required = false) String pessoaNome,
                                                 @RequestParam(required = false) Integer id){
         List<ResponseRequisicao> responseRequisicao = new ArrayList<>();
@@ -66,7 +66,7 @@ public class RequisicaoController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarRequisicao(@RequestBody @Valid RequestCadastrarRequisicao dadosRequisicao, 
+    public ResponseEntity<?> cadastrarRequisicao(@RequestBody @Valid RequestCadastrarRequisicao dadosRequisicao, 
                                                       @AuthenticationPrincipal Usuario usuario){
         var requisicaoCadastrada = requisicaoService.cadastrarRequisicao(dadosRequisicao, usuario);
 
@@ -74,7 +74,7 @@ public class RequisicaoController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> editarRequisicao(@RequestBody @Valid RequestEditarRequisicao dadosRequisicao,
+    public ResponseEntity<?> editarRequisicao(@RequestBody @Valid RequestEditarRequisicao dadosRequisicao,
                                                    @AuthenticationPrincipal Usuario usuario){
         var requisicaoEditada = requisicaoService.editarRequisicao(dadosRequisicao, usuario);
 
@@ -82,14 +82,14 @@ public class RequisicaoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deletarRequisicao(@PathVariable Long id){
+    public ResponseEntity<?> deletarRequisicao(@PathVariable Long id){
         requisicaoService.deletarRequisicao(id);
 
         return responseHandler.generateResponse("Excluido com sucesso", true, HttpStatus.OK, null);
     }
 
     @PutMapping("/informarResultado")
-    public ResponseEntity<Object> informarResultado(@RequestBody @Valid RequestInformarResultado dadosResultado,
+    public ResponseEntity<?> informarResultado(@RequestBody @Valid RequestInformarResultado dadosResultado,
                                                     @AuthenticationPrincipal Usuario usuario){
         var requisicao = requisicaoService.informarResultado(dadosResultado, usuario);
 
@@ -97,7 +97,7 @@ public class RequisicaoController {
     }
 
     @PostMapping("/informarColeta/{id}")
-    public ResponseEntity<Object> informarColeta(@PathVariable Long id,
+    public ResponseEntity<?> informarColeta(@PathVariable Long id,
                                                  @AuthenticationPrincipal Usuario usuario){
         var requisicao = requisicaoService.informarColeta(id, usuario);
 
@@ -105,7 +105,7 @@ public class RequisicaoController {
     }
 
     @PostMapping("/informarTriagem/{id}")
-    public ResponseEntity<Object> informarTriagem(@PathVariable Long id, 
+    public ResponseEntity<?> informarTriagem(@PathVariable Long id, 
                                                   @AuthenticationPrincipal Usuario usuario){
         var requisicao = requisicaoService.informarTriagem(id, usuario);
 
@@ -113,7 +113,7 @@ public class RequisicaoController {
     }
 
     @DeleteMapping("/excluirResultado/{id}")
-    public ResponseEntity<Object> excluirResultado(@PathVariable Long id,
+    public ResponseEntity<?> excluirResultado(@PathVariable Long id,
                                                    @AuthenticationPrincipal Usuario usuario){
         var requisicao = requisicaoService.excluirResultado(id, usuario);
 
@@ -121,7 +121,7 @@ public class RequisicaoController {
     }
 
     @DeleteMapping("/cancelarExame/{id}")
-    public ResponseEntity<Object> cancelarExame(@PathVariable Long id,
+    public ResponseEntity<?> cancelarExame(@PathVariable Long id,
                                                 @AuthenticationPrincipal Usuario usuario){
         var requisicao = requisicaoService.cancelarExame(id, usuario);
 
@@ -129,7 +129,7 @@ public class RequisicaoController {
     }
 
     @PostMapping("/liberarResultado/{id}")
-    public ResponseEntity<Object> liberarResultado(@PathVariable Long id, 
+    public ResponseEntity<?> liberarResultado(@PathVariable Long id, 
                                                    @AuthenticationPrincipal Usuario usuario) {
         var requisicao = requisicaoService.liberarResultado(id, usuario);
         
@@ -137,7 +137,7 @@ public class RequisicaoController {
     }
 
     @PostMapping("/solicitarRecoleta")
-    public ResponseEntity<Object> solicitarRecoleta(@RequestBody @Valid RequestSolicitarRecoleta dadosRecoleta, 
+    public ResponseEntity<?> solicitarRecoleta(@RequestBody @Valid RequestSolicitarRecoleta dadosRecoleta, 
                                                     @AuthenticationPrincipal Usuario usuario) {
         var requisicao = requisicaoService.solicitarRecoleta(dadosRecoleta, usuario);
         
@@ -145,7 +145,7 @@ public class RequisicaoController {
     }
     
     @DeleteMapping("/cancelarLiberacao/{id}")
-    public ResponseEntity<Object> cancelarLiberacao(@PathVariable Long id, 
+    public ResponseEntity<?> cancelarLiberacao(@PathVariable Long id, 
                                                     @AuthenticationPrincipal Usuario usuario){
         var requisicao = requisicaoService.cancelarLiberacao(id, usuario);
 

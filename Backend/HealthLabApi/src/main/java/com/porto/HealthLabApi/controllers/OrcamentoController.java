@@ -56,7 +56,7 @@ public class OrcamentoController {
     private ResponseHandler responseHandler;
 
     @GetMapping
-    public ResponseEntity<Object> listarOrcamentos(@PageableDefault(size = 10, sort = {"data"}, direction = Direction.DESC) Pageable paginacao, 
+    public ResponseEntity<?> listarOrcamentos(@PageableDefault(size = 10, sort = {"data"}, direction = Direction.DESC) Pageable paginacao, 
                                                 @RequestParam(required = false) String pessoaNome,
                                                 @RequestParam(required = false) Integer id){
         List<ResponseOrcamento> responseOrcamento = new ArrayList<>();                                            
@@ -66,21 +66,21 @@ public class OrcamentoController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarOrcamento(@RequestBody @Valid RequestCadastrarOrcamento dadosOrcamento, @AuthenticationPrincipal Usuario usuario){
+    public ResponseEntity<?> cadastrarOrcamento(@RequestBody @Valid RequestCadastrarOrcamento dadosOrcamento, @AuthenticationPrincipal Usuario usuario){
         var orcamentoCadastrado = orcamentoService.cadastrarOrcamento(dadosOrcamento, usuario);
 
         return responseHandler.generateResponse("Cadastrado com sucesso", true, HttpStatus.OK, toResponseOrcamento(orcamentoCadastrado));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deletarOrcamento(@PathVariable Long id){
+    public ResponseEntity<?> deletarOrcamento(@PathVariable Long id){
         orcamentoService.deletarOrcamento(id);
 
         return responseHandler.generateResponse("Deletado com sucesso", true, HttpStatus.OK, null);
     }
 
     @PostMapping("/converterEmRequisicao/{id}")
-    public ResponseEntity<Object> converterEmRequisicao(@PathVariable Long id, @AuthenticationPrincipal Usuario usuario){
+    public ResponseEntity<?> converterEmRequisicao(@PathVariable Long id, @AuthenticationPrincipal Usuario usuario){
         var requisicaoCadastrada = requisicaoService.converterOrcamentoEmRequisicao(id, usuario);
 
         return responseHandler.generateResponse("Convertido em requisição com sucesso", true, HttpStatus.CREATED, new ResponseRequisicao(requisicaoCadastrada, toResponseRequisicaoExames(requisicaoCadastrada.getRequisicaoExames())));

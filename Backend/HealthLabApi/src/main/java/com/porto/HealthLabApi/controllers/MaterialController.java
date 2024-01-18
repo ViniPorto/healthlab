@@ -36,22 +36,22 @@ public class MaterialController {
     private ResponseHandler responseHandler;
 
     @GetMapping
-    public ResponseEntity<Object> listarMateriais(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao,
+    public ResponseEntity<?> listarMateriais(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao,
                                                   @RequestParam(required = false) String nome){
-        var materiais = materialService.listarMateriais(paginacao, nome).map(ResponseMaterial::new);
+        var materiais = materialService.listarMateriais(paginacao, nome).map(ResponseMaterial::new).toList();
 
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, materiais);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> detalharMaterial(@PathVariable Long id){
+    public ResponseEntity<?> detalharMaterial(@PathVariable Long id){
         var material = materialService.detalharMaterial(id);
 
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, new ResponseMaterial(material));
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarMaterial(@RequestBody @Valid RequestCadastrarMaterial dadosMaterial,
+    public ResponseEntity<?> cadastrarMaterial(@RequestBody @Valid RequestCadastrarMaterial dadosMaterial,
                                                     @AuthenticationPrincipal Usuario usuario){
         var materialCadastrado = materialService.cadastrarMaterial(dadosMaterial, usuario);
 
@@ -59,7 +59,7 @@ public class MaterialController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> editarMaterial(@RequestBody @Valid RequestEditarMaterial dadosMaterial,
+    public ResponseEntity<?> editarMaterial(@RequestBody @Valid RequestEditarMaterial dadosMaterial,
                                                  @AuthenticationPrincipal Usuario usuario){
         var materialEditado = materialService.editarMaterial(dadosMaterial, usuario);
 
@@ -67,7 +67,7 @@ public class MaterialController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deletarMaterial(@PathVariable Long id){
+    public ResponseEntity<?> deletarMaterial(@PathVariable Long id){
         materialService.deletarMaterial(id);
 
         return responseHandler.generateResponse("Deletado com sucesso", true, HttpStatus.OK, null);

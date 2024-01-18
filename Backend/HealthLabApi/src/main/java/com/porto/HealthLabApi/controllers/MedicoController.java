@@ -36,23 +36,23 @@ public class MedicoController {
     private ResponseHandler responseHandler;
 
     @GetMapping
-    public ResponseEntity<Object> listarMedicos(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao,
+    public ResponseEntity<?> listarMedicos(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao,
                                                 @RequestParam(required = false) String nome,
                                                 @RequestParam(required = false) String crm){
-        var medicos = medicoService.listarMedicos(paginacao, nome, crm).map(ResponseMedico::new);
+        var medicos = medicoService.listarMedicos(paginacao, nome, crm).map(ResponseMedico::new).toList();
 
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, medicos);
     } 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> detalharMedico(@PathVariable Long id){
+    public ResponseEntity<?> detalharMedico(@PathVariable Long id){
         var medico = medicoService.detalharMedico(id);
 
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, new ResponseMedico(medico));
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarMedico(@RequestBody @Valid RequestCadastrarMedico dadosMedico,
+    public ResponseEntity<?> cadastrarMedico(@RequestBody @Valid RequestCadastrarMedico dadosMedico,
                                                   @AuthenticationPrincipal Usuario usuario){
         var medicoCriado = medicoService.cadastrarMedico(dadosMedico, usuario);
 
@@ -60,7 +60,7 @@ public class MedicoController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> editarMedico(@RequestBody @Valid RequestEditarMedico dadosMedico,
+    public ResponseEntity<?> editarMedico(@RequestBody @Valid RequestEditarMedico dadosMedico,
                                                @AuthenticationPrincipal Usuario usuario){
         var medicoEditado = medicoService.editarMedico(dadosMedico, usuario);
 
@@ -68,7 +68,7 @@ public class MedicoController {
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deletarMedico(@PathVariable Long id){
+    public ResponseEntity<?> deletarMedico(@PathVariable Long id){
         medicoService.deletarMedico(id);
 
         return responseHandler.generateResponse("Deletado com sucesso", true, HttpStatus.OK, null);

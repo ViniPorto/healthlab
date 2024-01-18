@@ -74,6 +74,8 @@ public class RequisicaoExame {
     private LocalDateTime dataHoraInclusao;
     @Column(name = "RequisicaoExameDataHoraTriagem")
     private LocalDateTime dataHoraTriagem;
+    @Column(name = "RequisicaoExameDataHoraLiberacao")
+    private LocalDateTime dataHoraLiberacao;
     @OneToMany(mappedBy = "requisicaoExame", fetch = FetchType.EAGER)
     List<RequisicaoExameItensResultado> itensResultado;
 

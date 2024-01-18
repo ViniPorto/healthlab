@@ -122,9 +122,12 @@ public class ExameService {
     }
 
     private String gerarDados(Exame exame){
-        return "TITULO: " + exame.getTitulo() +
-        "\nSIGLA: " + exame.getSigla() +
-        exame.getDescricao() != null ? "\nDESCRICAO: " + exame.getDescricao() : "" +
+        var dados = "TITULO: " + exame.getTitulo() +
+        "\nSIGLA: " + exame.getSigla();
+        if(exame.getDescricao() != null){
+            dados += "\nDESCRICAO: " + exame.getDescricao();
+        }
+        dados +=
         "\nSETOR: " + exame.getSetor() +
         "\nMETODO: " + exame.getMetodo() +
         "\nMATERIAL: " + exame.getMaterial() +
@@ -132,6 +135,7 @@ public class ExameService {
         "\nPRECO: " + exame.getPreco() +
         "\nTEMPO EXECUCAO NORMAL: " + exame.getTempoExecucaoNormal() +
         "\nTEMPO EXECUCAO URGENTE: " + exame.getTempoExecucaoUrgente();
+        return dados;
     }
 
 }

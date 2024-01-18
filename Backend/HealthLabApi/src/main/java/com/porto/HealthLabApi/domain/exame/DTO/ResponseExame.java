@@ -14,13 +14,13 @@ public record ResponseExame(
     String exameSigla,
     String exameDescricao,
     boolean examePrincipal,
-    ResponseSetor setor,
-    ResponseMaterial material,
-    ResponseMetodo metodo,
+    ResponseSetor exameSetor,
+    ResponseMaterial exameMaterial,
+    ResponseMetodo exameMetodo,
     BigDecimal examePreco,
-    Integer tempoExecucaoNormal,
-    Integer tempoExecucaoUrgente,
-    ResponseLayout layout
+    Integer exameTempoExecucaoNormal,
+    Integer exameTempoExecucaoUrgente,
+    ResponseLayout exameLayout
 ) {
 
     public ResponseExame(Exame exame, ResponseSetor responseSetor, ResponseMaterial responseMaterial, ResponseMetodo responseMetodo, ResponseLayout responseLayout) {

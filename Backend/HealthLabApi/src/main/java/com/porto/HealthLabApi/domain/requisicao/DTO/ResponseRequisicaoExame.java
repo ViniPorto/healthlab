@@ -26,6 +26,7 @@ public record ResponseRequisicaoExame(
     ResponseMotivoRecoleta requisicaoExameMotivoRecoleta,
     ResponseBioquimico requisicaoExameBioquimico,
     Status requisicaoExameStatusCodigo,
+    LocalDateTime requisicaoExameDataHoraLiberacao,
     List<ResponseRequisicaoExameItensResultado> requisicaoExameItensResultado
 ) {
 
@@ -44,6 +45,7 @@ public record ResponseRequisicaoExame(
             requisicaoExame.getMotivoRecoleta() != null ? new ResponseMotivoRecoleta(requisicaoExame.getMotivoRecoleta()) : null,
             requisicaoExame.getBioquimico() != null ? new ResponseBioquimico(requisicaoExame.getBioquimico(), new ResponseUsuario(requisicaoExame.getBioquimico().getUsuario())) : null,
             requisicaoExame.getStatus(),
+            requisicaoExame.getDataHoraLiberacao(),
             responseItensResultado);
     }
     

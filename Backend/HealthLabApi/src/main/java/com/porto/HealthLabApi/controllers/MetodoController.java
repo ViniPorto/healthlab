@@ -36,22 +36,22 @@ public class MetodoController {
     private ResponseHandler responseHandler;
 
     @GetMapping
-    public ResponseEntity<Object> listarMetodos(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao,
+    public ResponseEntity<?> listarMetodos(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao,
                                                 @RequestParam(required = false) String nome){
-        var metodos = metodoService.listarMetodos(paginacao, nome).map(ResponseMetodo::new);
+        var metodos = metodoService.listarMetodos(paginacao, nome).map(ResponseMetodo::new).toList();
 
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, metodos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> detalharMetodo(@PathVariable Long id){
+    public ResponseEntity<?> detalharMetodo(@PathVariable Long id){
         var metodo = metodoService.detalharMetodo(id);
 
         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, new ResponseMetodo(metodo));
     }
 
     @PostMapping
-    public ResponseEntity<Object> cadastrarMetodo(@RequestBody @Valid RequestCadastrarMetodo dadosMetodo,
+    public ResponseEntity<?> cadastrarMetodo(@RequestBody @Valid RequestCadastrarMetodo dadosMetodo,
                                                   @AuthenticationPrincipal Usuario usuario){
         var metodoCadastrado = metodoService.cadastrarMetodo(dadosMetodo, usuario);
 
@@ -59,7 +59,7 @@ public class MetodoController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> editarMetodo(@RequestBody @Valid RequestEditarMetodo dadosMetodo,
+    public ResponseEntity<?> editarMetodo(@RequestBody @Valid RequestEditarMetodo dadosMetodo,
                                                @AuthenticationPrincipal Usuario usuario){
         var metodoEditado = metodoService.editarMaterial(dadosMetodo, usuario);
 
@@ -67,7 +67,7 @@ public class MetodoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deletarMetodo(@PathVariable Long id){
+    public ResponseEntity<?> deletarMetodo(@PathVariable Long id){
         metodoService.deletarMetodo(id);
 
         return responseHandler.generateResponse("Deletado com sucesso", true, HttpStatus.OK, null);

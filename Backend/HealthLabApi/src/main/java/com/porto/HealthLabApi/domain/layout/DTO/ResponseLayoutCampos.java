@@ -6,7 +6,7 @@ import com.porto.HealthLabApi.domain.layout.TipoCampo;
 
 public record ResponseLayoutCampos(
     Long layoutCamposId,
-    Long codigoCampo,
+    Long layoutCamposCodigoCampo,
     TipoCampo layoutCamposTipoCampo,
     Integer layoutCamposAltura,
     Integer layoutCamposLargura,

@@ -12,7 +12,7 @@ import com.porto.HealthLabApi.domain.setor.DTO.ResponseSetor;
 
 public record ResponseOrcamentoExame(
     Long orcamentoExameId,
-    ResponseExame orcamentoExame
+    ResponseExame orcamentoExameExame
 ) {
 
     public ResponseOrcamentoExame(OrcamentoExame orcamentoExame, List<ResponseLayoutCampos> responseLayoutCampos) {

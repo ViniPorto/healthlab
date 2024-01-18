@@ -6,8 +6,8 @@ import com.porto.HealthLabApi.domain.usuario.DTO.ResponseUsuario;
 public record ResponseBioquimico(
     Long bioquimicoId,
     String bioquimicoNome,
-    ResponseUsuario usuario,
-    String assinatura
+    ResponseUsuario bioquimicoUsuario,
+    String bioquimicoAssinatura
 ) {
     public ResponseBioquimico(Bioquimico bioquimico, ResponseUsuario responseUsuario){
         this(bioquimico.getId(), bioquimico.getNome(), responseUsuario, bioquimico.getAssinatura());

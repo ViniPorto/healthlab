@@ -5,13 +5,13 @@ import java.time.LocalDateTime;
 import com.porto.HealthLabApi.domain.historico.Historico;
 
 public record ResponseHistorico(
-    Long referenciaId,
-    String tabela,
-    String usuarioNome,
-    Long usuarioId,
-    String acaoRealizada,
-    LocalDateTime acaoDataHora,
-    String dadosAtualizados
+    Long historicoReferenciaId,
+    String historicoTabela,
+    String historicoUsuarioNome,
+    Long historicoUsuarioId,
+    String historicoAcaoRealizada,
+    LocalDateTime historicoAcaoDataHora,
+    String historicoDadosAtualizados
 ) {
 
     public ResponseHistorico(Historico historico) {

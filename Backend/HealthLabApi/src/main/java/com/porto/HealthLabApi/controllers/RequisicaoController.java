@@ -88,7 +88,7 @@ public class RequisicaoController {
         return responseHandler.generateResponse("Excluido com sucesso", true, HttpStatus.OK, null);
     }
 
-    @PutMapping("/informarResultado")
+    @PostMapping("/informarResultado")
     public ResponseEntity<?> informarResultado(@RequestBody @Valid RequestInformarResultado dadosResultado,
                                                     @AuthenticationPrincipal Usuario usuario){
         var requisicao = requisicaoService.informarResultado(dadosResultado, usuario);

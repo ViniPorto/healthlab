@@ -215,16 +215,6 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 ---
 
-## 👨‍💻 Contribuidores
-
-💜 Um super thanks 👏 para a [Mirella Naspolini](https://github.com/mirellanaspolini) que me auxiliou com o React.js no frontend ❤️
-
-<table>
-  <tr>
-    <td align="center"><a href="https://github.com/mirellanaspolini"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/104786840?s=460&u=806503605676192b5d0c363e4490e13d8127ed64&v=4" width="100px;" alt=""/><br /><sub><b>Mirella Naspolini</b></sub></a><br /><a href="https://github.com/mirellanaspolini" title="Mirella">👨‍🚀</a></td> 
-  </tr>
-</table>
-
 ## 💪 Como contribuir para o projeto
 
 1. Faça um **fork** do projeto.

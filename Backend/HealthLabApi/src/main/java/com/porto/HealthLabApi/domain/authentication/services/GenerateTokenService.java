@@ -15,7 +15,7 @@ import com.porto.HealthLabApi.domain.user.entities.UserEntity;
 import lombok.AllArgsConstructor;
 
 @Service
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE) //Revisar
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @AllArgsConstructor
 public class GenerateTokenService implements GenerateTokenUsecase {
 

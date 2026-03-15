@@ -1,6 +1,7 @@
 package com.porto.HealthLabApi.app.configurations;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.porto.HealthLabApi.domain.authentication.dto.TokenPayload;
@@ -19,7 +20,12 @@ public class InterceptorRestRequests implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println(request.getRequestURI());
+        if (!(handler instanceof HandlerMethod handlerMethod)) {
+            return true;
+        }
+
+        boolean requiresAdmin = handlerMethod.getMethod().isAnnotationPresent(AdminOnly.class) || handlerMethod.getBeanType().isAnnotationPresent(AdminOnly.class);
+
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -41,6 +47,11 @@ public class InterceptorRestRequests implements HandlerInterceptor {
 
         if (tokenPayload == null || tokenPayload.getUserId() == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return false;
+        }
+
+        if(requiresAdmin && !tokenPayload.getIsAdm()) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return false;
         }
 

@@ -16,15 +16,15 @@ import lombok.AllArgsConstructor;
 
 @Repository
 @AllArgsConstructor
-public class AuthenticationRepository {
+public class AuthenticationSqlServerRepository {
 
-    private static final Logger LOGGER = Logger.getLogger(AuthenticationRepository.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AuthenticationSqlServerRepository.class.getName());
 
-    private static final String QUERY_SEARCH_USER_BY_USERNAME = "SELECT USU_CODIGO, USU_LOGIN, USU_SENHA, USU_NOME FROM T_USUARIO WHERE USU_LOGIN = ?";
+    private static final String QUERY_SEARCH_USER_BY_USERNAME = "SELECT USU_CODIGO, USU_LOGIN, USU_SENHA, USU_ATIVO, USU_ADMINISTRADOR, USU_NOME FROM T_USUARIO WHERE USU_LOGIN = ?";
     
     private final DataSource dataSource;
 
-    public UserModel getUserEntityByUsername(String username) {
+    public UserModel getUserByUsername(String username) {
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement preparedStatement = conn.prepareStatement(QUERY_SEARCH_USER_BY_USERNAME)) {
 
@@ -36,9 +36,11 @@ public class AuthenticationRepository {
 
                     UserModel userModel = new UserModel();
 
-                    userModel.setId(rs.getLong("USU_CODIGO"));
+                    userModel.setCode(rs.getLong("USU_CODIGO"));
                     userModel.setLogin(rs.getString("USU_LOGIN"));
                     userModel.setPassword(rs.getString("USU_SENHA"));
+                    userModel.setActive(rs.getBoolean("USU_ATIVO"));
+                    userModel.setAdministrator(rs.getBoolean("USU_ADMINISTRADOR"));
                     userModel.setName(rs.getString("USU_NOME"));
 
                     return userModel;

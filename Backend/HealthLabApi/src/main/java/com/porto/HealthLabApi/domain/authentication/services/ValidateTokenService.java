@@ -19,7 +19,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
 
 @Service
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE) //Revisar
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @AllArgsConstructor
 public class ValidateTokenService implements ValidateTokenUsecase {
 
@@ -43,8 +43,9 @@ public class ValidateTokenService implements ValidateTokenUsecase {
 
             Long userId = claims.get("userId", Long.class);
             String username = claims.getSubject();
+            Boolean isAdm = claims.get("isAdm", Boolean.class);
 
-            return new TokenPayload(userId, username);
+            return new TokenPayload(userId, username, isAdm);
 
         } catch (Exception e) {
             LOGGER.log(Level.INFO, e.getMessage(), e);

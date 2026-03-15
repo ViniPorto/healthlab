@@ -17,7 +17,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
 
 @Service
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE) //Revisar
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @AllArgsConstructor
 public class GenerateJWTService implements GenerateJWTUsecase {
 
@@ -30,7 +30,8 @@ public class GenerateJWTService implements GenerateJWTUsecase {
 
         return Jwts.builder()
                 .setSubject(userEntity.getLogin())
-                .claim("userId", userEntity.getId())
+                .claim("userId", userEntity.getCode())
+                .claim("isAdm", userEntity.getAdministrator())
                 .setIssuedAt(Date.from(now))
                 .setExpiration(Date.from(expiration))
                 .signWith(

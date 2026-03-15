@@ -9,5 +9,6 @@ public class TokenPayload {
     
     private Long userId;
     private String username;
+    private Boolean isAdm;
 
 }

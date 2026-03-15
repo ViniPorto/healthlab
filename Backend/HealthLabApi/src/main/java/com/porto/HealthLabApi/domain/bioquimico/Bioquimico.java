@@ -2,7 +2,7 @@ package com.porto.HealthLabApi.domain.bioquimico;
 
 import com.porto.HealthLabApi.domain.bioquimico.DTO.RequestCadastrarBioquimico;
 import com.porto.HealthLabApi.domain.bioquimico.DTO.RequestEditarBioquimico;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

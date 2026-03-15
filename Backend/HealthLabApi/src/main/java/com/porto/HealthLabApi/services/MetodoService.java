@@ -11,7 +11,7 @@ import com.porto.HealthLabApi.domain.historico.Historico;
 import com.porto.HealthLabApi.domain.metodo.Metodo;
 import com.porto.HealthLabApi.domain.metodo.DTO.RequestCadastrarMetodo;
 import com.porto.HealthLabApi.domain.metodo.DTO.RequestEditarMetodo;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 import com.porto.HealthLabApi.repositories.HistoricoRepository;
 import com.porto.HealthLabApi.repositories.MetodoRepository;
 

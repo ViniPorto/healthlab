@@ -7,7 +7,7 @@ import java.util.List;
 import com.porto.HealthLabApi.domain.medico.DTO.ResponseMedico;
 import com.porto.HealthLabApi.domain.pessoa.DTO.ResponsePessoa;
 import com.porto.HealthLabApi.domain.requisicao.Requisicao;
-import com.porto.HealthLabApi.domain.usuario.DTO.ResponseUsuario;
+import com.porto.HealthLabApi.domain.user.DTO.ResponseUsuario;
 
 public record ResponseRequisicao(
     Long requisicaoId,

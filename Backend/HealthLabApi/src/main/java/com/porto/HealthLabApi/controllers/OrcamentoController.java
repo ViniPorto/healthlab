@@ -31,7 +31,7 @@ import com.porto.HealthLabApi.domain.requisicao.RequisicaoExameItensResultado;
 import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicao;
 import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicaoExame;
 import com.porto.HealthLabApi.domain.requisicao.DTO.ResponseRequisicaoExameItensResultado;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 import com.porto.HealthLabApi.services.LayoutService;
 import com.porto.HealthLabApi.services.OrcamentoService;
 import com.porto.HealthLabApi.services.RequisicaoService;

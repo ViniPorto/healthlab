@@ -11,7 +11,7 @@ import com.porto.HealthLabApi.domain.historico.Historico;
 import com.porto.HealthLabApi.domain.setor.Setor;
 import com.porto.HealthLabApi.domain.setor.DTO.RequestCadastrarSetor;
 import com.porto.HealthLabApi.domain.setor.DTO.RequestEditarSetor;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 import com.porto.HealthLabApi.repositories.HistoricoRepository;
 import com.porto.HealthLabApi.repositories.SetorRepository;
 

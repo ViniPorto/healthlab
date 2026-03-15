@@ -11,7 +11,7 @@ import com.porto.HealthLabApi.domain.historico.Historico;
 import com.porto.HealthLabApi.domain.material.Material;
 import com.porto.HealthLabApi.domain.material.DTO.RequestCadastrarMaterial;
 import com.porto.HealthLabApi.domain.material.DTO.RequestEditarMaterial;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 import com.porto.HealthLabApi.repositories.HistoricoRepository;
 import com.porto.HealthLabApi.repositories.MaterialRepository;
 

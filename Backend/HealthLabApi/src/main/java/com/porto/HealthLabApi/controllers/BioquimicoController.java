@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.porto.HealthLabApi.domain.bioquimico.DTO.RequestCadastrarBioquimico;
 import com.porto.HealthLabApi.domain.bioquimico.DTO.RequestEditarBioquimico;
 import com.porto.HealthLabApi.domain.bioquimico.DTO.ResponseBioquimico;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
-import com.porto.HealthLabApi.domain.usuario.DTO.ResponseUsuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
+import com.porto.HealthLabApi.domain.user.DTO.ResponseUsuario;
 import com.porto.HealthLabApi.services.BioquimicoService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 

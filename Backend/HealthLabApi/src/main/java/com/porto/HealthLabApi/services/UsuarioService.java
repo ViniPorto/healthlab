@@ -8,9 +8,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.porto.HealthLabApi.domain.historico.Historico;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
-import com.porto.HealthLabApi.domain.usuario.DTO.RequestCadastrarUsuario;
-import com.porto.HealthLabApi.domain.usuario.DTO.RequestEditarUsuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
+import com.porto.HealthLabApi.domain.user.DTO.RequestCadastrarUsuario;
+import com.porto.HealthLabApi.domain.user.DTO.RequestEditarUsuario;
 import com.porto.HealthLabApi.repositories.HistoricoRepository;
 import com.porto.HealthLabApi.repositories.UsuarioRepository;
 

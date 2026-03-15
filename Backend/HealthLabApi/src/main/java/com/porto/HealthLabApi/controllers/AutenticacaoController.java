@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 import com.porto.HealthLabApi.infra.security.DTO.RequestAutenticacaoUsuario;
 import com.porto.HealthLabApi.infra.security.DTO.ResponseToken;
 import com.porto.HealthLabApi.services.TokenService;

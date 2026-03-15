@@ -9,7 +9,7 @@ import com.porto.HealthLabApi.domain.medico.Medico;
 import com.porto.HealthLabApi.domain.orcamento.Orcamento;
 import com.porto.HealthLabApi.domain.orcamento.OrcamentoExame;
 import com.porto.HealthLabApi.domain.orcamento.DTO.RequestCadastrarOrcamento;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 import com.porto.HealthLabApi.infra.exception.exceptions.ExameJaCadastradoException;
 import com.porto.HealthLabApi.repositories.ExameRepository;
 import com.porto.HealthLabApi.repositories.MedicoRepository;

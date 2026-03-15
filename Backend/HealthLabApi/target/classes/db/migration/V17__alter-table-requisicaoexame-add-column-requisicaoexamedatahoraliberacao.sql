@@ -1,1 +1,0 @@
-alter table RequisicaoExame add column RequisicaoExameDataHoraLiberacao datetime;

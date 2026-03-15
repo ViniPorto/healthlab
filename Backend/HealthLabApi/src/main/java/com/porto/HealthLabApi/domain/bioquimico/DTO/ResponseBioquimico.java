@@ -1,7 +1,7 @@
 package com.porto.HealthLabApi.domain.bioquimico.DTO;
 
 import com.porto.HealthLabApi.domain.bioquimico.Bioquimico;
-import com.porto.HealthLabApi.domain.usuario.DTO.ResponseUsuario;
+import com.porto.HealthLabApi.domain.user.DTO.ResponseUsuario;
 
 public record ResponseBioquimico(
     Long bioquimicoId,

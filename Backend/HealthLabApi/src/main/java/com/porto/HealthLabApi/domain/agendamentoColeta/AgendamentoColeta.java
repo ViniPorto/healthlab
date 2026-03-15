@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import com.porto.HealthLabApi.domain.agendamentoColeta.DTO.RequestCadastrarAgendamentoColeta;
 import com.porto.HealthLabApi.domain.pessoa.Pessoa;
 import com.porto.HealthLabApi.domain.requisicao.Requisicao;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -11,7 +11,7 @@ import com.porto.HealthLabApi.domain.historico.Historico;
 import com.porto.HealthLabApi.domain.medico.Medico;
 import com.porto.HealthLabApi.domain.medico.DTO.RequestCadastrarMedico;
 import com.porto.HealthLabApi.domain.medico.DTO.RequestEditarMedico;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 import com.porto.HealthLabApi.infra.exception.exceptions.MedicoJaCadastradoException;
 import com.porto.HealthLabApi.repositories.HistoricoRepository;
 import com.porto.HealthLabApi.repositories.MedicoRepository;

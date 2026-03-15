@@ -25,7 +25,7 @@ import com.porto.HealthLabApi.domain.layout.DTO.ResponseLayoutCampos;
 import com.porto.HealthLabApi.domain.material.DTO.ResponseMaterial;
 import com.porto.HealthLabApi.domain.metodo.DTO.ResponseMetodo;
 import com.porto.HealthLabApi.domain.setor.DTO.ResponseSetor;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 import com.porto.HealthLabApi.services.ExameService;
 import com.porto.HealthLabApi.services.LayoutService;
 import com.porto.HealthLabApi.utils.ResponseHandler;

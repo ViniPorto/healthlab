@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.porto.HealthLabApi.domain.motivoRecoleta.DTO.RequestCadastrarMotivoRecoleta;
 import com.porto.HealthLabApi.domain.motivoRecoleta.DTO.RequestEditarMotivoRecoleta;
 import com.porto.HealthLabApi.domain.motivoRecoleta.DTO.ResponseMotivoRecoleta;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 import com.porto.HealthLabApi.services.MotivoRecoletaService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 

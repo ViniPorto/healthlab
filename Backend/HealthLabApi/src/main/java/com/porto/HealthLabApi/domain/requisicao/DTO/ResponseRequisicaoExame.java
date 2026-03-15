@@ -13,7 +13,7 @@ import com.porto.HealthLabApi.domain.motivoRecoleta.DTO.ResponseMotivoRecoleta;
 import com.porto.HealthLabApi.domain.requisicao.RequisicaoExame;
 import com.porto.HealthLabApi.domain.setor.DTO.ResponseSetor;
 import com.porto.HealthLabApi.domain.status.Status;
-import com.porto.HealthLabApi.domain.usuario.DTO.ResponseUsuario;
+import com.porto.HealthLabApi.domain.user.DTO.ResponseUsuario;
 
 public record ResponseRequisicaoExame(
     Long requisicaoExameId,

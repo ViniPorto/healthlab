@@ -12,7 +12,7 @@ import com.porto.HealthLabApi.domain.layout.Layout;
 import com.porto.HealthLabApi.domain.layout.LayoutCampos;
 import com.porto.HealthLabApi.domain.layout.DTO.RequestCadastrarLayout;
 import com.porto.HealthLabApi.domain.layout.DTO.RequestCadastrarLayoutCampos;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 import com.porto.HealthLabApi.repositories.ExameRepository;
 import com.porto.HealthLabApi.repositories.HistoricoRepository;
 import com.porto.HealthLabApi.repositories.LayoutCamposRepository;

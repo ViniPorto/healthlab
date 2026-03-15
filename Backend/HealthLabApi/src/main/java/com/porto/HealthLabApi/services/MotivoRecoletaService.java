@@ -11,7 +11,7 @@ import com.porto.HealthLabApi.domain.historico.Historico;
 import com.porto.HealthLabApi.domain.motivoRecoleta.MotivoRecoleta;
 import com.porto.HealthLabApi.domain.motivoRecoleta.DTO.RequestCadastrarMotivoRecoleta;
 import com.porto.HealthLabApi.domain.motivoRecoleta.DTO.RequestEditarMotivoRecoleta;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 import com.porto.HealthLabApi.repositories.HistoricoRepository;
 import com.porto.HealthLabApi.repositories.MotivoRecoletaRepository;
 

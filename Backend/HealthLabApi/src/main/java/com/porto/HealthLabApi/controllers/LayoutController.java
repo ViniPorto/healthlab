@@ -18,7 +18,7 @@ import com.porto.HealthLabApi.domain.layout.LayoutCampos;
 import com.porto.HealthLabApi.domain.layout.DTO.RequestCadastrarLayout;
 import com.porto.HealthLabApi.domain.layout.DTO.ResponseLayout;
 import com.porto.HealthLabApi.domain.layout.DTO.ResponseLayoutCampos;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 import com.porto.HealthLabApi.services.LayoutService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 

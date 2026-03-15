@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.porto.HealthLabApi.domain.medico.DTO.RequestCadastrarMedico;
 import com.porto.HealthLabApi.domain.medico.DTO.RequestEditarMedico;
 import com.porto.HealthLabApi.domain.medico.DTO.ResponseMedico;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 import com.porto.HealthLabApi.services.MedicoService;
 import com.porto.HealthLabApi.utils.ResponseHandler;
 

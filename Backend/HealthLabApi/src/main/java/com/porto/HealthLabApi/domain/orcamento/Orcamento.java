@@ -8,7 +8,7 @@ import java.util.List;
 import com.porto.HealthLabApi.domain.medico.Medico;
 import com.porto.HealthLabApi.domain.orcamento.DTO.RequestCadastrarOrcamento;
 import com.porto.HealthLabApi.domain.pessoa.Pessoa;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

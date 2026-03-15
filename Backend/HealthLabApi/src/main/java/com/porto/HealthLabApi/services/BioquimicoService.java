@@ -11,7 +11,7 @@ import com.porto.HealthLabApi.domain.bioquimico.Bioquimico;
 import com.porto.HealthLabApi.domain.bioquimico.DTO.RequestCadastrarBioquimico;
 import com.porto.HealthLabApi.domain.bioquimico.DTO.RequestEditarBioquimico;
 import com.porto.HealthLabApi.domain.historico.Historico;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 import com.porto.HealthLabApi.repositories.BioquimicoRepository;
 import com.porto.HealthLabApi.repositories.HistoricoRepository;
 import com.porto.HealthLabApi.repositories.UsuarioRepository;

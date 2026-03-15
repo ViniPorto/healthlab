@@ -15,7 +15,7 @@ import com.porto.HealthLabApi.domain.layout.Layout;
 import com.porto.HealthLabApi.domain.material.Material;
 import com.porto.HealthLabApi.domain.metodo.Metodo;
 import com.porto.HealthLabApi.domain.setor.Setor;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 import com.porto.HealthLabApi.infra.exception.exceptions.SiglaJaCadastradaException;
 import com.porto.HealthLabApi.repositories.ExameRepository;
 import com.porto.HealthLabApi.repositories.HistoricoRepository;

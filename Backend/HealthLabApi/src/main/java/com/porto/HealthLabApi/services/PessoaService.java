@@ -11,7 +11,7 @@ import com.porto.HealthLabApi.domain.historico.Historico;
 import com.porto.HealthLabApi.domain.pessoa.Pessoa;
 import com.porto.HealthLabApi.domain.pessoa.DTO.RequestCadastrarPessoa;
 import com.porto.HealthLabApi.domain.pessoa.DTO.RequestEditarPessoa;
-import com.porto.HealthLabApi.domain.usuario.Usuario;
+import com.porto.HealthLabApi.domain.user.Usuario;
 import com.porto.HealthLabApi.infra.exception.exceptions.CPFJaCadastradoException;
 import com.porto.HealthLabApi.repositories.HistoricoRepository;
 import com.porto.HealthLabApi.repositories.PessoaRepository;

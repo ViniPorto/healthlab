@@ -1,32 +1,32 @@
-package com.porto.HealthLabApi.domain.orcamento.DTO;
+// package com.porto.HealthLabApi.domain.orcamento.DTO;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
+// import java.math.BigDecimal;
+// import java.time.LocalDateTime;
+// import java.util.List;
 
-import com.porto.HealthLabApi.domain.medico.DTO.ResponseMedico;
-import com.porto.HealthLabApi.domain.orcamento.Orcamento;
-import com.porto.HealthLabApi.domain.pessoa.DTO.ResponsePessoa;
-import com.porto.HealthLabApi.domain.user.DTO.ResponseUsuario;
+// import com.porto.HealthLabApi.domain.medico.DTO.ResponseMedico;
+// import com.porto.HealthLabApi.domain.orcamento.Orcamento;
+// import com.porto.HealthLabApi.domain.pessoa.DTO.ResponsePessoa;
+// import com.porto.HealthLabApi.domain.user.DTO.ResponseUsuario;
 
-public record ResponseOrcamento(
-    Long orcamentoId,
-    ResponseUsuario orcamentoUsuario,
-    ResponsePessoa orcamentoPessoa,
-    ResponseMedico orcamentoMedico,
-    LocalDateTime orcamentoData,
-    BigDecimal orcamentoPrecoTotal,
-    List<ResponseOrcamentoExame> orcamentoExames
-) {
+// public record ResponseOrcamento(
+//     Long orcamentoId,
+//     ResponseUsuario orcamentoUsuario,
+//     ResponsePessoa orcamentoPessoa,
+//     ResponseMedico orcamentoMedico,
+//     LocalDateTime orcamentoData,
+//     BigDecimal orcamentoPrecoTotal,
+//     List<ResponseOrcamentoExame> orcamentoExames
+// ) {
 
-    public ResponseOrcamento(Orcamento orcamento, List<ResponseOrcamentoExame> responseOrcamentoExames) {
-        this(orcamento.getId(), 
-            new ResponseUsuario(orcamento.getUsuario()), 
-            new ResponsePessoa(orcamento.getPessoa()), 
-            orcamento.getMedico() != null ? new ResponseMedico(orcamento.getMedico()) : null, 
-            orcamento.getData(),
-            orcamento.getPrecoTotal(),
-            responseOrcamentoExames);
-    }
+//     public ResponseOrcamento(Orcamento orcamento, List<ResponseOrcamentoExame> responseOrcamentoExames) {
+//         this(orcamento.getId(), 
+//             new ResponseUsuario(orcamento.getUsuario()), 
+//             new ResponsePessoa(orcamento.getPessoa()), 
+//             orcamento.getMedico() != null ? new ResponseMedico(orcamento.getMedico()) : null, 
+//             orcamento.getData(),
+//             orcamento.getPrecoTotal(),
+//             responseOrcamentoExames);
+//     }
     
-}
+// }

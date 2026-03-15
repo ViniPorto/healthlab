@@ -1,83 +1,83 @@
-package com.porto.HealthLabApi.services;
+// package com.porto.HealthLabApi.services;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+// import java.time.LocalDateTime;
+// import java.util.ArrayList;
+// import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.stereotype.Service;
 
-import com.porto.HealthLabApi.domain.historico.Historico;
-import com.porto.HealthLabApi.domain.layout.Layout;
-import com.porto.HealthLabApi.domain.layout.LayoutCampos;
-import com.porto.HealthLabApi.domain.layout.DTO.RequestCadastrarLayout;
-import com.porto.HealthLabApi.domain.layout.DTO.RequestCadastrarLayoutCampos;
-import com.porto.HealthLabApi.domain.user.Usuario;
-import com.porto.HealthLabApi.repositories.ExameRepository;
-import com.porto.HealthLabApi.repositories.HistoricoRepository;
-import com.porto.HealthLabApi.repositories.LayoutCamposRepository;
-import com.porto.HealthLabApi.repositories.LayoutRepository;
-import com.porto.HealthLabApi.repositories.RequisicaoExameRepository;
+// import com.porto.HealthLabApi.domain.historico.Historico;
+// import com.porto.HealthLabApi.domain.layout.Layout;
+// import com.porto.HealthLabApi.domain.layout.LayoutCampos;
+// import com.porto.HealthLabApi.domain.layout.DTO.RequestCadastrarLayout;
+// import com.porto.HealthLabApi.domain.layout.DTO.RequestCadastrarLayoutCampos;
+// import com.porto.HealthLabApi.domain.user.Usuario;
+// import com.porto.HealthLabApi.repositories.ExameRepository;
+// import com.porto.HealthLabApi.repositories.HistoricoRepository;
+// import com.porto.HealthLabApi.repositories.LayoutCamposRepository;
+// import com.porto.HealthLabApi.repositories.LayoutRepository;
+// import com.porto.HealthLabApi.repositories.RequisicaoExameRepository;
 
-import jakarta.transaction.Transactional;
+// import jakarta.transaction.Transactional;
 
-@Service
-public class LayoutService {
+// @Service
+// public class LayoutService {
     
-    @Autowired
-    private LayoutRepository layoutRepository;
+//     @Autowired
+//     private LayoutRepository layoutRepository;
 
-    @Autowired
-    private ExameRepository exameRepository;
+//     @Autowired
+//     private ExameRepository exameRepository;
 
-    @Autowired 
-    private LayoutCamposRepository layoutCamposRepository;
+//     @Autowired 
+//     private LayoutCamposRepository layoutCamposRepository;
 
-    @Autowired
-    private HistoricoRepository historicoRepository;
+//     @Autowired
+//     private HistoricoRepository historicoRepository;
 
-    @Autowired
-    private RequisicaoExameRepository requisicaoExameRepository;
+//     @Autowired
+//     private RequisicaoExameRepository requisicaoExameRepository;
 
-    public Layout detalharLayout(Long id) {
-        return layoutRepository.findById(id).get();
-    }
+//     public Layout detalharLayout(Long id) {
+//         return layoutRepository.findById(id).get();
+//     }
 
-    public List<LayoutCampos> listarCamposLayout(Layout layout) {
-        return layoutCamposRepository.findByLayout(layout);
-    }
+//     public List<LayoutCampos> listarCamposLayout(Layout layout) {
+//         return layoutCamposRepository.findByLayout(layout);
+//     }
 
-    @Transactional
-    public Layout cadastrarLayout(Long exameId, Usuario usuario) {
-        var exame = exameRepository.findById(exameId).get();
-        var layout = new Layout();
+//     @Transactional
+//     public Layout cadastrarLayout(Long exameId, Usuario usuario) {
+//         var exame = exameRepository.findById(exameId).get();
+//         var layout = new Layout();
 
-        exame.alterarLayout(layout);
+//         exame.alterarLayout(layout);
 
-        exameRepository.save(exame);
-        layoutRepository.save(layout);
+//         exameRepository.save(exame);
+//         layoutRepository.save(layout);
 
-        requisicaoExameRepository.atualizarLayoutDeExamesNaoLiberados(exame.getId(), layout);
+//         requisicaoExameRepository.atualizarLayoutDeExamesNaoLiberados(exame.getId(), layout);
 
-        historicoRepository.save(new Historico(layout.getId(), "LAYOUT", usuario, "CADATRO", LocalDateTime.now(), gerarDados(layout)));
+//         historicoRepository.save(new Historico(layout.getId(), "LAYOUT", usuario, "CADATRO", LocalDateTime.now(), gerarDados(layout)));
 
-        return layout;
-    }
+//         return layout;
+//     }
 
-    @Transactional
-    public List<LayoutCampos> cadastrarLayoutCampos(Layout layout, RequestCadastrarLayout dadosLayout) {
-        List<RequestCadastrarLayoutCampos> layoutCampos = dadosLayout.campos();
-        List<LayoutCampos> layoutCamposCriados = new ArrayList<>();
-        for(RequestCadastrarLayoutCampos layoutCampo : layoutCampos){
-            var novoLayoutCampo = new LayoutCampos(layout, layoutCampo);
-            layoutCamposCriados.add(layoutCamposRepository.save(novoLayoutCampo));
-        }
-        return layoutCamposCriados;
-    }
+//     @Transactional
+//     public List<LayoutCampos> cadastrarLayoutCampos(Layout layout, RequestCadastrarLayout dadosLayout) {
+//         List<RequestCadastrarLayoutCampos> layoutCampos = dadosLayout.campos();
+//         List<LayoutCampos> layoutCamposCriados = new ArrayList<>();
+//         for(RequestCadastrarLayoutCampos layoutCampo : layoutCampos){
+//             var novoLayoutCampo = new LayoutCampos(layout, layoutCampo);
+//             layoutCamposCriados.add(layoutCamposRepository.save(novoLayoutCampo));
+//         }
+//         return layoutCamposCriados;
+//     }
 
-    private String gerarDados(Layout layout){
-        return "ID: " + layout.getId();
-    }
+//     private String gerarDados(Layout layout){
+//         return "ID: " + layout.getId();
+//     }
 
 
-}
+// }

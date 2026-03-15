@@ -12,4 +12,4 @@ CREATE TABLE T_MEDICO(
 INSERT INTO T_MEDICO (MED_EMAIL, MED_TELEFONE, MED_CRM, MED_UF, MED_NOME) VALUES 
 ('luciano.martin@gmail.com', '49988763423', '26862', 'SC', 'Luciano Martin'),
 ('andersonsoares@outlook.com', '47988769223', '27632', 'SC', 'Anderson Soares'),
-('18888', 'SC', 'Joaquim Souza');
+(NULL, NULL, '18888', 'SC', 'Joaquim Souza');

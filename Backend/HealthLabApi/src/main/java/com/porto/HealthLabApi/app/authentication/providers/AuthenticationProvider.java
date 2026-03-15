@@ -21,7 +21,7 @@ public class AuthenticationProvider implements AuthenticationDataProvider {
     private final UserModelConverter userModelConverter;
 
     @Override
-    public UserEntity getUserEntityByUsername(String username) {
+    public UserEntity getUserEntityByLogin(String username) {
         UserModel userModel = this.authenticationRepository.getUserEntityByUsername(username);
 
         return this.userModelConverter.mapToEntity(userModel);

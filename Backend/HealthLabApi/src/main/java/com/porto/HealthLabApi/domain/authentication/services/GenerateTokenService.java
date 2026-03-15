@@ -23,12 +23,12 @@ public class GenerateTokenService implements GenerateTokenUsecase {
 
     private final GenerateJWTUsecase generateJWTUsecase;
     private final AuthenticationDataProvider authenticationDataProvider;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public String execute(LoginEntity loginEntity) throws InvalidUsernameOrPasswordException {
         
-        UserEntity userEntity = this.authenticationDataProvider.getUserEntityByUsername(loginEntity.getUsername());
+        UserEntity userEntity = this.authenticationDataProvider.getUserEntityByLogin(loginEntity.getUsername());
 
         if(userEntity == null) {
             throw new InvalidUsernameOrPasswordException(ERROR_MESSAGE);

@@ -1,18 +1,18 @@
-package com.porto.HealthLabApi.repositories;
+// package com.porto.HealthLabApi.repositories;
 
-import java.util.Optional;
+// import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Repository;
+// import org.springframework.data.jpa.repository.JpaRepository;
+// import org.springframework.security.core.userdetails.UserDetails;
+// import org.springframework.stereotype.Repository;
 
-import com.porto.HealthLabApi.domain.user.Usuario;
+// import com.porto.HealthLabApi.domain.user.Usuario;
 
-@Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+// @Repository
+// public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    UserDetails findByLogin(String login);
+//     UserDetails findByLogin(String login);
 
-    Optional<Usuario> findById(Integer usuarioId);
+//     Optional<Usuario> findById(Integer usuarioId);
     
-}
+// }

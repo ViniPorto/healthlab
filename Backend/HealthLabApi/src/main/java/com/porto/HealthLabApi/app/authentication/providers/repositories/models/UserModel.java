@@ -6,7 +6,7 @@ import lombok.Data;
 public class UserModel {
     
     private Long id;
-    private String username;
+    private String login;
     private String password;
     private String name;
 

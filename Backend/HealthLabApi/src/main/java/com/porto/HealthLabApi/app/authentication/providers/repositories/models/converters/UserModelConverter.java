@@ -18,7 +18,7 @@ public class UserModelConverter {
         userEntity.setId(userModel.getId());
         userEntity.setName(userModel.getName());
         userEntity.setPassword(userModel.getPassword());
-        userEntity.setUsername(userModel.getUsername());
+        userEntity.setLogin(userModel.getLogin());
 
         return userEntity;
     }

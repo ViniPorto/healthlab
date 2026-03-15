@@ -20,7 +20,7 @@ public class AuthenticationRepository {
 
     private static final Logger LOGGER = Logger.getLogger(AuthenticationRepository.class.getName());
 
-    private static final String QUERY_SEARCH_USER_BY_USERNAME = "SELECT USU_CODIGO, USU_USERNAME, USU_SENHA, USU_NOME FROM T_USUARIO WHERE USU_USERNAME = ?";
+    private static final String QUERY_SEARCH_USER_BY_USERNAME = "SELECT USU_CODIGO, USU_LOGIN, USU_SENHA, USU_NOME FROM T_USUARIO WHERE USU_LOGIN = ?";
     
     private final DataSource dataSource;
 
@@ -37,7 +37,7 @@ public class AuthenticationRepository {
                     UserModel userModel = new UserModel();
 
                     userModel.setId(rs.getLong("USU_CODIGO"));
-                    userModel.setUsername(rs.getString("USU_USERNAME"));
+                    userModel.setLogin(rs.getString("USU_LOGIN"));
                     userModel.setPassword(rs.getString("USU_SENHA"));
                     userModel.setName(rs.getString("USU_NOME"));
 

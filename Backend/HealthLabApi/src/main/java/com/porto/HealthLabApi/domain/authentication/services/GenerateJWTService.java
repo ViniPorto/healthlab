@@ -29,7 +29,7 @@ public class GenerateJWTService implements GenerateJWTUsecase {
         Instant expiration = now.plusMillis(this.appConfigurations.getTtlToken());
 
         return Jwts.builder()
-                .setSubject(userEntity.getUsername())
+                .setSubject(userEntity.getLogin())
                 .claim("userId", userEntity.getId())
                 .setIssuedAt(Date.from(now))
                 .setExpiration(Date.from(expiration))

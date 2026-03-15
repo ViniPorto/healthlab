@@ -7,6 +7,6 @@ CREATE TABLE T_SETOR(
 );
 
 INSERT INTO T_SETOR(SET_NOME, SET_DESCRICAO) VALUES 
-('Bioquimica', NULL)
+('Bioquimica', NULL),
 ('Urinalise', NULL),
 ('Hematologia', NULL);

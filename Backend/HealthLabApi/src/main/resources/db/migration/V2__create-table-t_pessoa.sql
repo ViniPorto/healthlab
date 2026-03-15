@@ -13,5 +13,5 @@ CREATE TABLE T_PESSOA(
 
 INSERT INTO T_PESSOA(PES_NOME, PES_CPF, PES_EMAIL, PES_TELEFONE, PES_DADOS_GERAIS, PES_DATA_NASCIMENTO, PES_OBSERVACAO) VALUES 
 ('Teste da Silva', '24061982001', 'testedasilva@gmail.com', '49988365688', 'Sangue O+, Altura 175cm, 75KG', '2000-01-01', 'Observação do teste da silva'),
-('Joao Antonio', '51586830007', 'joaozinho@outlook.com', '49988365653', '2002-05-30', 'Observação do joao'),
+('Joao Antonio', '51586830007', 'joaozinho@outlook.com', '49988365653', NULL, '2002-05-30', 'Observação do joao'),
 ('Marcos Almeida', '79212503004', 'marcos@gmail.com', '47988368934', 'Obesidade grau 1', '2000-01-01', 'Fumante');

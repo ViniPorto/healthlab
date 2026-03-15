@@ -1,74 +1,74 @@
-package com.porto.HealthLabApi.controllers;
+// package com.porto.HealthLabApi.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.data.domain.Pageable;
+// import org.springframework.data.web.PageableDefault;
+// import org.springframework.http.HttpStatus;
+// import org.springframework.http.ResponseEntity;
+// import org.springframework.security.core.annotation.AuthenticationPrincipal;
+// import org.springframework.web.bind.annotation.DeleteMapping;
+// import org.springframework.web.bind.annotation.GetMapping;
+// import org.springframework.web.bind.annotation.PathVariable;
+// import org.springframework.web.bind.annotation.PostMapping;
+// import org.springframework.web.bind.annotation.PutMapping;
+// import org.springframework.web.bind.annotation.RequestBody;
+// import org.springframework.web.bind.annotation.RequestMapping;
+// import org.springframework.web.bind.annotation.RestController;
 
-import com.porto.HealthLabApi.domain.motivoRecoleta.DTO.RequestCadastrarMotivoRecoleta;
-import com.porto.HealthLabApi.domain.motivoRecoleta.DTO.RequestEditarMotivoRecoleta;
-import com.porto.HealthLabApi.domain.motivoRecoleta.DTO.ResponseMotivoRecoleta;
-import com.porto.HealthLabApi.domain.user.Usuario;
-import com.porto.HealthLabApi.services.MotivoRecoletaService;
-import com.porto.HealthLabApi.utils.ResponseHandler;
+// import com.porto.HealthLabApi.domain.motivoRecoleta.DTO.RequestCadastrarMotivoRecoleta;
+// import com.porto.HealthLabApi.domain.motivoRecoleta.DTO.RequestEditarMotivoRecoleta;
+// import com.porto.HealthLabApi.domain.motivoRecoleta.DTO.ResponseMotivoRecoleta;
+// import com.porto.HealthLabApi.domain.user.Usuario;
+// import com.porto.HealthLabApi.services.MotivoRecoletaService;
+// import com.porto.HealthLabApi.utils.ResponseHandler;
 
-import jakarta.validation.Valid;
+// import jakarta.validation.Valid;
 
-@RestController
-@RequestMapping("/motivorecoleta")
-public class MotivoRecoletaController {
+// @RestController
+// @RequestMapping("/motivorecoleta")
+// public class MotivoRecoletaController {
     
-    @Autowired
-    private MotivoRecoletaService motivoRecoletaService;
+//     @Autowired
+//     private MotivoRecoletaService motivoRecoletaService;
 
-    @Autowired
-    private ResponseHandler responseHandler;
+//     @Autowired
+//     private ResponseHandler responseHandler;
 
-    @GetMapping
-    public ResponseEntity<?> listarMotivosRecoleta(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){
-        var motivosRecoleta = motivoRecoletaService.listarMotivosRecoleta(paginacao).map(ResponseMotivoRecoleta::new).toList();
+//     @GetMapping
+//     public ResponseEntity<?> listarMotivosRecoleta(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){
+//         var motivosRecoleta = motivoRecoletaService.listarMotivosRecoleta(paginacao).map(ResponseMotivoRecoleta::new).toList();
 
-        return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, motivosRecoleta);
-    }
+//         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, motivosRecoleta);
+//     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> detalharMotivoRecoleta(@PathVariable Long id){
-        var motivoRecoleta = motivoRecoletaService.detalharMotivoRecoleta(id);
+//     @GetMapping("/{id}")
+//     public ResponseEntity<?> detalharMotivoRecoleta(@PathVariable Long id){
+//         var motivoRecoleta = motivoRecoletaService.detalharMotivoRecoleta(id);
 
-        return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, new ResponseMotivoRecoleta(motivoRecoleta));
-    }
+//         return responseHandler.generateResponse("Consulta realizada com sucesso", true, HttpStatus.OK, new ResponseMotivoRecoleta(motivoRecoleta));
+//     }
 
-    @PostMapping
-    public ResponseEntity<?> cadastrarMotivoRecoleta(@RequestBody @Valid RequestCadastrarMotivoRecoleta dadosMotivoRecoleta,
-                                                          @AuthenticationPrincipal Usuario usuario){
-        var motivoRecoletaCriado = motivoRecoletaService.cadastrarMotivoRecoleta(dadosMotivoRecoleta, usuario);
+//     @PostMapping
+//     public ResponseEntity<?> cadastrarMotivoRecoleta(@RequestBody @Valid RequestCadastrarMotivoRecoleta dadosMotivoRecoleta,
+//                                                           @AuthenticationPrincipal Usuario usuario){
+//         var motivoRecoletaCriado = motivoRecoletaService.cadastrarMotivoRecoleta(dadosMotivoRecoleta, usuario);
 
-        return responseHandler.generateResponse("Cadastrado com sucesso", true, HttpStatus.CREATED, new ResponseMotivoRecoleta(motivoRecoletaCriado));
-    }
+//         return responseHandler.generateResponse("Cadastrado com sucesso", true, HttpStatus.CREATED, new ResponseMotivoRecoleta(motivoRecoletaCriado));
+//     }
 
-    @PutMapping
-    public ResponseEntity<?> editarMotivoRecoleta(@RequestBody @Valid RequestEditarMotivoRecoleta dadosMotivoRecoleta,
-                                                       @AuthenticationPrincipal Usuario usuario){
-        var motivoRecoletaEditado = motivoRecoletaService.editarMotivoRecoleta(dadosMotivoRecoleta, usuario);
+//     @PutMapping
+//     public ResponseEntity<?> editarMotivoRecoleta(@RequestBody @Valid RequestEditarMotivoRecoleta dadosMotivoRecoleta,
+//                                                        @AuthenticationPrincipal Usuario usuario){
+//         var motivoRecoletaEditado = motivoRecoletaService.editarMotivoRecoleta(dadosMotivoRecoleta, usuario);
 
-        return responseHandler.generateResponse("Editado com sucesso", true, HttpStatus.OK, new ResponseMotivoRecoleta(motivoRecoletaEditado));
-    }
+//         return responseHandler.generateResponse("Editado com sucesso", true, HttpStatus.OK, new ResponseMotivoRecoleta(motivoRecoletaEditado));
+//     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletarMotivoRecoleta(@PathVariable Long id){
-        motivoRecoletaService.deletarMotivoRecoleta(id);
+//     @DeleteMapping("/{id}")
+//     public ResponseEntity<?> deletarMotivoRecoleta(@PathVariable Long id){
+//         motivoRecoletaService.deletarMotivoRecoleta(id);
 
-        return responseHandler.generateResponse("Excluido com sucesso", true, HttpStatus.OK, null);
-    }
+//         return responseHandler.generateResponse("Excluido com sucesso", true, HttpStatus.OK, null);
+//     }
 
-}
+// }
